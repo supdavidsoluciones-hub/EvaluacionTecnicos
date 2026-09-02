@@ -4,8 +4,10 @@ services:
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT --workers 1
     envVars:
+      - key: PYTHONPATH
+        value: .
       - key: SECRET_KEY
         value: chiriqui_secret_key_super_segura_2026
       - key: DATABASE_URL
@@ -14,5 +16,3 @@ services:
         value: https://vpivzxkttjsgkpxyvpvp.supabase.co
       - key: SUPABASE_KEY
         value: sb_publishable_ewGTKWdwD3HSbNkMH6qmbw_QM0Ho4KA
-      - key: PYTHONPATH
-        value: .
