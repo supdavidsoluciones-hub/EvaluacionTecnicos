@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación Técnico - Control de Calidad</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <header class="header-banner">
+        <h1>Evaluación de Técnicos en Campo</h1>
+        <p>Control de Calidad, Procedimientos Técnicos y Auditoría de Tiempos</p>
+    </header>
+
+    <main class="main-container">
+
+        <form action="/evaluar" method="POST" id="evalForm">
+
+            <!-- Sección 1: Datos de Cuadrilla y Contrato -->
+            <div class="form-card">
+                <div class="section-title">
+                    <span class="section-icon">📋</span>
+                    <span>1. Información General de la Orden</span>
+                </div>
+
+                <div class="form-grid-2">
+
+                    <div class="form-group">
+                        <label for="movil">Móvil Asignada <span class="required">*</span></label>
+                        <select id="movil" name="movil" class="select-control" required>
+                            <option value="">-- Seleccionar Móvil --</option>
+                            <option value="Móvil 200">Móvil 200</option>
+                            <option value="Móvil 201">Móvil 201</option>
+                            <option value="Móvil 202">Móvil 202</option>
+                            <option value="Móvil 203">Móvil 203</option>
+                            <option value="Móvil 204">Móvil 204</option>
+                            <option value="Móvil 205">Móvil 205</option>
+                            <option value="Móvil 206">Móvil 206</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contrato">Número de Contrato <span class="required">*</span></label>
+                        <div class="input-prefix-group">
+                            <span class="input-prefix">P-</span>
+                            <input type="text" id="contrato" name="contrato" class="input-control" placeholder="12345678" required autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tecnico1">Técnico 1 (Principal) <span class="required">*</span></label>
+                        <input type="text" id="tecnico1" name="tecnico1" class="input-control" placeholder="Nombre completo del Técnico 1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tecnico2">Técnico 2 (Auxiliar/Acompañante)</label>
+                        <input type="text" id="tecnico2" name="tecnico2" class="input-control" placeholder="Nombre completo del Técnico 2 (Opcional)">
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Sección 2: Criterios de Evaluación Técnica -->
+            <div class="form-card">
+                <div class="section-title">
+                    <span class="section-icon">🛠️</span>
+                    <span>2. Criterios de Evaluación Técnica y Seguridad</span>
+                </div>
+
+                <!-- Item 1 -->
+                <div class="criterio-item">
+                    <div class="criterio-info">
+                        <div class="criterio-title">1. Colocación correcta de la acometida</div>
+                        <div class="criterio-desc">Verificación de tensión, anclajes, retenidas y trayectoria segura de la acometida.</div>
+                    </div>
+                    <div class="criterio-select">
+                        <select name="criterio_acometida" class="select-control" required>
+                            <option value="5">5 - Excelente</option>
+                            <option value="4">4 - Bueno</option>
+                            <option value="3">3 - Regular</option>
+                            <option value="2">2 - Deficiente</option>
+                            <option value="1">1 - Muy Deficiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="criterio-item">
+                    <div class="criterio-info">
+                        <div class="criterio-title">2. Uso de equipo de seguridad (EPP)</div>
+                        <div class="criterio-desc">Casco, arnés, líneas de vida, guantes, botas de seguridad y conos de señalización.</div>
+                    </div>
+                    <div class="criterio-select">
+                        <select name="criterio_epp" class="select-control" required>
+                            <option value="5">5 - Excelente</option>
+                            <option value="4">4 - Bueno</option>
+                            <option value="3">3 - Regular</option>
+                            <option value="2">2 - Deficiente</option>
+                            <option value="1">1 - Muy Deficiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="criterio-item">
+                    <div class="criterio-info">
+                        <div class="criterio-title">3. Recorrido correcto del NAP</div>
+                        <div class="criterio-desc">Conexión limpia en el puerto NAP asignado, peinado del cable y cierre hermético de la caja.</div>
+                    </div>
+                    <div class="criterio-select">
+                        <select name="criterio_nap" class="select-control" required>
+                            <option value="5">5 - Excelente</option>
+                            <option value="4">4 - Bueno</option>
+                            <option value="3">3 - Regular</option>
+                            <option value="2">2 - Deficiente</option>
+                            <option value="1">1 - Muy Deficiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="criterio-item">
+                    <div class="criterio-info">
+                        <div class="criterio-title">4. Ingreso correcto a la residencia (acometida)</div>
+                        <div class="criterio-desc">Pase de pared bien sellado con curva de goteo para evitar filtraciones de agua.</div>
+                    </div>
+                    <div class="criterio-select">
+                        <select name="criterio_ingreso_residencia" class="select-control" required>
+                            <option value="5">5 - Excelente</option>
+                            <option value="4">4 - Bueno</option>
+                            <option value="3">3 - Regular</option>
+                            <option value="2">2 - Deficiente</option>
+                            <option value="1">1 - Muy Deficiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="criterio-item">
+                    <div class="criterio-info">
+                        <div class="criterio-title">5. Estética dentro de la casa del cableado</div>
+                        <div class="criterio-desc">Uso de grapas/canaletas, trayectos disimulados y cableado ordenado sin curvaturas excesivas.</div>
+                    </div>
+                    <div class="criterio-select">
+                        <select name="criterio_estetica_cableado" class="select-control" required>
+                            <option value="5">5 - Excelente</option>
+                            <option value="4">4 - Bueno</option>
+                            <option value="3">3 - Regular</option>
+                            <option value="2">2 - Deficiente</option>
+                            <option value="1">1 - Muy Deficiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="criterio-item">
+                    <div class="criterio-info">
+                        <div class="criterio-title">6. Buena colocación del módem</div>
+                        <div class="criterio-desc">Ubicación central, en lugar elevado, libre de obstáculos metálicos o interferencias.</div>
+                    </div>
+                    <div class="criterio-select">
+                        <select name="criterio_colocacion_modem" class="select-control" required>
+                            <option value="5">5 - Excelente</option>
+                            <option value="4">4 - Bueno</option>
+                            <option value="3">3 - Regular</option>
+                            <option value="2">2 - Deficiente</option>
+                            <option value="1">1 - Muy Deficiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Item 7 -->
+                <div class="criterio-item">
+                    <div class="criterio-info">
+                        <div class="criterio-title">7. Funcionamiento correcto del equipo y cajas TV</div>
+                        <div class="criterio-desc">Encendido, sincronización, niveles de potencia óptica y sintonización limpia de canales.</div>
+                    </div>
+                    <div class="criterio-select">
+                        <select name="criterio_funcionamiento_equipos" class="select-control" required>
+                            <option value="5">5 - Excelente</option>
+                            <option value="4">4 - Bueno</option>
+                            <option value="3">3 - Regular</option>
+                            <option value="2">2 - Deficiente</option>
+                            <option value="1">1 - Muy Deficiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Item 8 -->
+                <div class="criterio-item">
+                    <div class="criterio-info">
+                        <div class="criterio-title">8. Explicación correcta al cliente sobre el uso de la caja TV</div>
+                        <div class="criterio-desc">Capacitación clara al cliente sobre el control remoto, guía de canales y funciones principales.</div>
+                    </div>
+                    <div class="criterio-select">
+                        <select name="criterio_explicacion_caja_tv" class="select-control" required>
+                            <option value="5">5 - Excelente</option>
+                            <option value="4">4 - Bueno</option>
+                            <option value="3">3 - Regular</option>
+                            <option value="2">2 - Deficiente</option>
+                            <option value="1">1 - Muy Deficiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Item 9 -->
+                <div class="criterio-item">
+                    <div class="criterio-info">
+                        <div class="criterio-title">9. Envío de video de uso de la caja TV si amerita</div>
+                        <div class="criterio-desc">Envío del video instructivo interactivo por WhatsApp/email al cliente si aplica.</div>
+                    </div>
+                    <div class="criterio-select">
+                        <select name="criterio_video_caja_tv" class="select-control" required>
+                            <option value="Sí">Sí - Enviado</option>
+                            <option value="No">No - No se envió</option>
+                            <option value="No amerita">No amerita (Solo Internet)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Item 10 -->
+                <div class="criterio-item">
+                    <div class="criterio-info">
+                        <div class="criterio-title">10. Buen cierre de orden con el uso correcto de las fotos</div>
+                        <div class="criterio-desc">Carga en el app del sistema de las fotos requeridas (NAP, Acometida, Módem, Niveles, Firma).</div>
+                    </div>
+                    <div class="criterio-select">
+                        <select name="criterio_cierre_fotos" class="select-control" required>
+                            <option value="5">5 - Excelente</option>
+                            <option value="4">4 - Bueno</option>
+                            <option value="3">3 - Regular</option>
+                            <option value="2">2 - Deficiente</option>
+                            <option value="1">1 - Muy Deficiente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Item 11 -->
+                <div class="criterio-item">
+                    <div class="criterio-info">
+                        <div class="criterio-title">11. Prueba de velocidad mostrada al cliente</div>
+                        <div class="criterio-desc">Speedtest presencial ejecutado frente al usuario validando los Mbps contratados.</div>
+                    </div>
+                    <div class="criterio-select">
+                        <select name="criterio_prueba_velocidad" class="select-control" required>
+                            <option value="5">5 - Excelente</option>
+                            <option value="4">4 - Bueno</option>
+                            <option value="3">3 - Regular</option>
+                            <option value="2">2 - Deficiente</option>
+                            <option value="1">1 - Muy Deficiente</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Sección 3: Tiempos y Auditoría de Demoras -->
+            <div class="form-card">
+                <div class="section-title">
+                    <span class="section-icon">⏱️</span>
+                    <span>3. Registro de Tiempos y Demoras de la Orden</span>
+                </div>
+
+                <div class="form-grid-3">
+
+                    <div class="form-group">
+                        <label for="tiempo_traslado">Tiempo de Traslado (Minutos) <span class="required">*</span></label>
+                        <input type="number" id="tiempo_traslado" name="tiempo_traslado" class="input-control" placeholder="Ej. 25" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tiempo_iniciacion">Tiempo Iniciación de Orden (Minutos) <span class="required">*</span></label>
+                        <input type="number" id="tiempo_iniciacion" name="tiempo_iniciacion" class="input-control" placeholder="Ej. 10" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tiempo_cierre">Tiempo Demorado en Cerrar (Minutos) <span class="required">*</span></label>
+                        <input type="number" id="tiempo_cierre" name="tiempo_cierre" class="input-control" placeholder="Ej. 65" min="0" required>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="coordinan_tiempos">¿Coordinan los tiempos entre reporte y llegada? <span class="required">*</span></label>
+                    <select id="coordinan_tiempos" name="coordinan_tiempos" class="select-control" required>
+                        <option value="Sí">Sí - Tiempos lógicos y justificados</option>
+                        <option value="No">No - Desfase o incoherencia en los tiempos</option>
+                    </select>
+                </div>
+
+                <!-- Live Calculated Time Summary Dashboard -->
+                <div class="live-time-dashboard">
+                    <div class="live-time-title">
+                        <span>⚡ Cálculo Dinámico de Demoras</span>
+                    </div>
+
+                    <div class="live-time-metrics">
+
+                        <div class="metric-box highlight">
+                            <div class="metric-label">Demora (Traslado + Iniciación)</div>
+                            <div class="metric-value" id="val_demora_combinada">0</div>
+                            <div class="metric-unit">minutos acum.</div>
+                        </div>
+
+                        <div class="metric-box">
+                            <div class="metric-label">Tiempo de Ejecución y Cierre</div>
+                            <div class="metric-value" id="val_cierre">0</div>
+                            <div class="metric-unit">minutos</div>
+                        </div>
+
+                        <div class="metric-box">
+                            <div class="metric-label">Tiempo Total de la Orden</div>
+                            <div class="metric-value" id="val_total_orden">0</div>
+                            <div class="metric-unit">minutos totales</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="observaciones_tiempos">Observaciones o Justificación de Demora</label>
+                    <input type="text" id="observaciones_tiempos" name="observaciones_tiempos" class="input-control" placeholder="Escriba aquí los motivos de retraso si los hubiese (Ej. Tráfico denso, falta de acceso al NAP, cliente ausente...)">
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <span>📊 Generar Evaluación y Reporte de Tiempos</span>
+            </button>
+
+        </form>
+
+    </main>
+
+    <script>
+        // Real-time recalculation of delay & total times
+        const trasladoInput = document.getElementById('tiempo_traslado');
+        const iniciacionInput = document.getElementById('tiempo_iniciacion');
+        const cierreInput = document.getElementById('tiempo_cierre');
+
+        const valDemoraCombinada = document.getElementById('val_demora_combinada');
+        const valCierre = document.getElementById('val_cierre');
+        const valTotalOrden = document.getElementById('val_total_orden');
+
+        function actualizarCalculosTiempos() {
+            const tTraslado = parseInt(trasladoInput.value) || 0;
+            const tIniciacion = parseInt(iniciacionInput.value) || 0;
+            const tCierre = parseInt(cierreInput.value) || 0;
+
+            const demoraCombinada = tTraslado + tIniciacion;
+            const totalOrden = demoraCombinada + tCierre;
+
+            valDemoraCombinada.textContent = demoraCombinada;
+            valCierre.textContent = tCierre;
+            valTotalOrden.textContent = totalOrden;
+        }
+
+        trasladoInput.addEventListener('input', actualizarCalculosTiempos);
+        iniciacionInput.addEventListener('input', actualizarCalculosTiempos);
+        cierreInput.addEventListener('input', actualizarCalculosTiempos);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Inspección - Móviles Chiriquí</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .top-bar {
+            background: #0f172a;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        .cat-badge {
+            background: #2563eb;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+        .question-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .question-text {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .opt-btn {
+            padding: 10px 4px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            color: #475569;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .opt-btn.selected-cumple {
+            background: #10b981;
+            color: white;
+            border-color: #059669;
+        }
+        .opt-btn.selected-nocumple {
+            background: #ef4444;
+            color: white;
+            border-color: #dc2626;
+        }
+        .opt-btn.selected-noaplica {
+            background: #64748b;
+            color: white;
+            border-color: #475569;
+        }
+        .photo-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .photo-thumb {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <a href="/app/" class="back-link">←</a>
+        <strong style="font-size: 1.1rem;">NUEVA INSPECCIÓN EN CAMPO</strong>
+    </div>
+
+    <main class="main-container" style="margin-top: 20px;">
+
+        <form id="inspectionForm">
+
+            <!-- Datos Principales -->
+            <div class="form-card" style="padding: 24px;">
+                <div class="section-title" style="font-size: 1.1rem;">
+                    <span>📋 1. Datos de la Inspección</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="mobileSelect">Móvil <span class="required">*</span></label>
+                    <select id="mobileSelect" class="select-control" required>
+                        <option value="">-- Seleccionar Móvil --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="techSelect">Técnico Responsable <span class="required">*</span></label>
+                    <select id="techSelect" class="select-control" required>
+                        <option value="">-- Seleccionar Técnico --</option>
+                    </select>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="orderNumber">Número de Orden <span class="required">*</span></label>
+                        <input type="text" id="orderNumber" class="input-control" placeholder="Ej. 45821" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="orderType">Tipo de Trabajo <span class="required">*</span></label>
+                        <select id="orderType" class="select-control" required>
+                            <option value="Instalación">Instalación</option>
+                            <option value="Mantenimiento">Mantenimiento</option>
+                            <option value="Avería">Avería</option>
+                            <option value="Retiro">Retiro</option>
+                            <option value="Configuración">Configuración</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checklist por Categorías -->
+            <div class="form-card" style="padding: 24px;">
+                <div class="section-title" style="font-size: 1.1rem;">
+                    <span>🛠️ 2. Checklist de Verificación</span>
+                </div>
+
+                <div id="checklistContainer">
+                    <div style="text-align: center; color: #64748b; padding: 20px;">Cargando preguntas del checklist...</div>
+                </div>
+            </div>
+
+            <!-- Fotografías -->
+            <div class="form-card" style="padding: 24px;">
+                <div class="section-title" style="font-size: 1.1rem;">
+                    <span>📸 3. Fotografías de Evidencia</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Capturar/Subir Fotografías</label>
+                    <input type="file" id="photoInput" accept="image/*" capture="environment" multiple class="input-control">
+                    <div style="font-size: 0.8rem; color: #64748b; margin-top: 5px;">* Las imágenes se comprimen automáticamente antes de subir.</div>
+                </div>
+
+                <div class="photo-preview-grid" id="photoPreviewContainer"></div>
+            </div>
+
+            <!-- Observaciones -->
+            <div class="form-card" style="padding: 24px;">
+                <div class="section-title" style="font-size: 1.1rem;">
+                    <span>📝 4. Observaciones y Acción Correctiva</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="obsInput">Observaciones Generales</label>
+                    <input type="text" id="obsInput" class="input-control" placeholder="Detalle observaciones observadas en sitio...">
+                </div>
+
+                <div class="form-group">
+                    <label for="corrInput">Acción Correctiva (Si aplica)</label>
+                    <input type="text" id="corrInput" class="input-control" placeholder="Instrucción de corrección otorgada al técnico...">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="btnSave" style="margin-bottom: 40px;">
+                <span>💾 GUARDAR INSPECCIÓN</span>
+            </button>
+
+        </form>
+
+    </main>
+
+    <script>
+        const API_BASE = "/api/v1";
+        const token = localStorage.getItem('access_token');
+        if (!token) window.location.href = '/app/login.html';
+
+        let checklistData = [];
+        let itemResponses = {}; // { q_id: { category_name, question_text, result: 'Cumple' } }
+        let selectedFiles = []; // Array de Files a subir
+
+        async function initForm() {
+            // 1. Cargar Móviles
+            const resM = await fetch(`${API_BASE}/mobiles`, { headers: { 'Authorization': `Bearer ${token}` } });
+            const mobiles = await resM.json();
+            const mSelect = document.getElementById('mobileSelect');
+            mobiles.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m.id;
+                opt.textContent = `${m.code} ${m.primary_technician ? '(' + m.primary_technician.name + ')' : ''}`;
+                mSelect.appendChild(opt);
+            });
+
+            // 2. Cargar Técnicos
+            const resT = await fetch(`${API_BASE}/technicians`, { headers: { 'Authorization': `Bearer ${token}` } });
+            const techs = await resT.json();
+            const tSelect = document.getElementById('techSelect');
+            techs.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.id;
+                opt.textContent = t.full_name;
+                tSelect.appendChild(opt);
+            });
+
+            // Auto-seleccionar técnico al cambiar de móvil
+            mSelect.addEventListener('change', () => {
+                const selM = mobiles.find(m => m.id == mSelect.value);
+                if (selM && selM.primary_technician) {
+                    tSelect.value = selM.primary_technician.id;
+                }
+            });
+
+            // 3. Cargar Checklist Template
+            const resC = await fetch(`${API_BASE}/inspections/checklist-template`, { headers: { 'Authorization': `Bearer ${token}` } });
+            checklistData = await resC.json();
+
+            renderChecklist();
+        }
+
+        function renderChecklist() {
+            const container = document.getElementById('checklistContainer');
+            container.innerHTML = '';
+
+            checklistData.forEach(cat => {
+                const catDiv = document.createElement('div');
+                catDiv.style.marginBottom = '25px';
+
+                const catBadge = document.createElement('div');
+                catBadge.className = 'cat-badge';
+                catBadge.textContent = cat.category_name;
+                catDiv.appendChild(catBadge);
+
+                cat.questions.forEach(q => {
+                    // Inicializar respuesta en "Cumple" por defecto
+                    itemResponses[q.id] = {
+                        template_id: q.id,
+                        category_name: cat.category_name,
+                        question_text: q.question_text,
+                        result: 'Cumple'
+                    };
+
+                    const qCard = document.createElement('div');
+                    qCard.className = 'question-card';
+
+                    qCard.innerHTML = `
+                        <div class="question-text">${q.question_text}</div>
+                        <div class="options-grid">
+                            <button type="button" class="opt-btn selected-cumple" id="btn_${q.id}_Cumple" onclick="setResponse(${q.id}, 'Cumple')">✓ Cumple</button>
+                            <button type="button" class="opt-btn" id="btn_${q.id}_NoCumple" onclick="setResponse(${q.id}, 'No cumple')">✗ No cumple</button>
+                            <button type="button" class="opt-btn" id="btn_${q.id}_NoAplica" onclick="setResponse(${q.id}, 'No aplica')">- N/A</button>
+                        </div>
+                    `;
+                    catDiv.appendChild(qCard);
+                });
+
+                container.appendChild(catDiv);
+            });
+        }
+
+        window.setResponse = function(qId, val) {
+            itemResponses[qId].result = val;
+            
+            const btnC = document.getElementById(`btn_${qId}_Cumple`);
+            const btnNC = document.getElementById(`btn_${qId}_NoCumple`);
+            const btnNA = document.getElementById(`btn_${qId}_NoAplica`);
+
+            btnC.className = 'opt-btn' + (val === 'Cumple' ? ' selected-cumple' : '');
+            btnNC.className = 'opt-btn' + (val === 'No cumple' ? ' selected-nocumple' : '');
+            btnNA.className = 'opt-btn' + (val === 'No aplica' ? ' selected-noaplica' : '');
+        };
+
+        // Captura de fotos con compresión en Canvas
+        document.getElementById('photoInput').addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                compressImage(file, (compressedFile) => {
+                    selectedFiles.push(compressedFile);
+                    renderPhotoPreviews();
+                });
+            });
+        });
+
+        function compressImage(file, callback) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const maxW = 1200;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > maxW) {
+                        height = Math.round((height * maxW) / width);
+                        width = maxW;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    canvas.toBlob((blob) => {
+                        const newFile = new File([blob], file.name, { type: 'image/jpeg' });
+                        callback(newFile);
+                    }, 'image/jpeg', 0.8);
+                };
+            };
+        }
+
+        function renderPhotoPreviews() {
+            const container = document.getElementById('photoPreviewContainer');
+            container.innerHTML = '';
+            selectedFiles.forEach(file => {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.className = 'photo-thumb';
+                container.appendChild(img);
+            });
+        }
+
+        // Guardar Inspección
+        document.getElementById('inspectionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btnSave = document.getElementById('btnSave');
+            btnSave.disabled = true;
+            btnSave.textContent = '⏳ GUARDANDO INSPECCIÓN...';
+
+            try {
+                const payload = {
+                    mobile_id: parseInt(document.getElementById('mobileSelect').value),
+                    technician_id: parseInt(document.getElementById('techSelect').value),
+                    order_number: document.getElementById('orderNumber').value.trim(),
+                    order_type: document.getElementById('orderType').value,
+                    observations: document.getElementById('obsInput').value.trim(),
+                    corrective_action: document.getElementById('corrInput').value.trim(),
+                    items: Object.values(itemResponses)
+                };
+
+                const resInsp = await fetch(`${API_BASE}/inspections`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const inspResult = await resInsp.json();
+                if (!resInsp.ok) throw new Error(inspResult.detail || 'Error al guardar inspección');
+
+                const inspectionId = inspResult.id;
+
+                // Subir fotos comprimidas
+                for (const photoFile of selectedFiles) {
+                    const formData = new FormData();
+                    formData.append('file', photoFile);
+                    await fetch(`${API_BASE}/inspections/${inspectionId}/photos`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` },
+                        body: formData
+                    });
+                }
+
+                alert(`¡Inspección ${inspResult.inspection_code} guardada exitosamente!\nResultado: ${inspResult.general_result}`);
+                window.location.href = '/app/';
+            } catch (err) {
+                alert('Error: ' + err.message);
+                btnSave.disabled = false;
+                btnSave.textContent = '💾 GUARDAR INSPECCIÓN';
+            }
+        });
+
+        initForm();
+    </script>
+</body>
+</html>
