@@ -10,10 +10,18 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
 
     # Base de Datos PostgreSQL de Supabase / Render
+    # En producción usar: postgresql://postgres:PASSWORD@db.PROJECT.supabase.co:5432/postgres
     DATABASE_URL: str = os.getenv(
         "DATABASE_URL",
         "sqlite:///./chiriqui_operativo.db"
     )
+
+    @property
+    def database_url_with_ssl(self) -> str:
+        url = self.DATABASE_URL
+        if url.startswith("postgresql://") and "sslmode" not in url:
+            url += "?sslmode=require"
+        return url
 
     # Supabase Credentials
     SUPABASE_URL: str = os.getenv("SUPABASE_URL", "https://vpivzxkttjsgkpxyvpvp.supabase.co")

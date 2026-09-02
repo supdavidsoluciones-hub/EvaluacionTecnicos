@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 import os
 
 from backend.app.core.config import settings
@@ -41,11 +42,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Montar carpeta estática para servir fotos cargadas y la app Web
+# Crear directorios necesarios si no existen (crítico en Render)
 os.makedirs("static/uploads", exist_ok=True)
 os.makedirs("web_frontend", exist_ok=True)
+
+# Montar archivos estáticos solo si las carpetas existen y tienen contenido
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.mount("/app", StaticFiles(directory="web_frontend", html=True), name="web_app")
+
+if os.path.isdir("web_frontend") and os.listdir("web_frontend"):
+    app.mount("/app", StaticFiles(directory="web_frontend", html=True), name="web_app")
 
 # Incluir Routers en API V1
 api_prefix = settings.API_V1_STR
@@ -59,10 +64,21 @@ app.include_router(action_plans_router, prefix=api_prefix)
 app.include_router(dashboard_router, prefix=api_prefix)
 app.include_router(reports_router, prefix=api_prefix)
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 def root():
-    return {
-        "message": "Bienvenido a la API REST del Sistema de Control Operativo de Móviles - Chiriquí",
-        "docs_url": "/docs",
-        "version": "1.0.0"
-    }
+    return """
+    <html>
+    <head><title>Control Operativo Chiriquí</title></head>
+    <body style="font-family:Arial;text-align:center;padding:50px;background:#1a1a2e;color:white;">
+        <h1>🚀 API - Sistema de Control Operativo de Móviles</h1>
+        <h2>Chiriquí - Panamá</h2>
+        <p><a href="/docs" style="color:#00d4aa;font-size:18px;">📚 Ver Documentación de la API</a></p>
+        <p><a href="/app" style="color:#00d4aa;font-size:18px;">📱 Abrir Aplicación Web</a></p>
+        <p style="color:#888;">Sistema funcionando correctamente ✅</p>
+    </body>
+    </html>
+    """
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "service": "chiriqui-control-operativo"}
