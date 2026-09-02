@@ -9,13 +9,17 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 días
     ALGORITHM: str = "HS256"
 
-    # Base de Datos: PostgreSQL por defecto, fallback a SQLite para dev local si no hay DATABASE_URL
+    # Base de Datos PostgreSQL de Supabase / Render
     DATABASE_URL: str = os.getenv(
         "DATABASE_URL",
         "sqlite:///./chiriqui_operativo.db"
     )
 
-    # Cloud Storage (Cloudflare R2 / AWS S3 / local fallback)
+    # Supabase Credentials
+    SUPABASE_URL: str = os.getenv("SUPABASE_URL", "https://vpivzxkttjsgkpxyvpvp.supabase.co")
+    SUPABASE_KEY: str = os.getenv("SUPABASE_KEY", "sb_publishable_ewGTKWdwD3HSbNkMH6qmbw_QM0Ho4KA")
+
+    # Cloud Storage
     STORAGE_BUCKET_NAME: Optional[str] = os.getenv("STORAGE_BUCKET_NAME", "chiriqui-photos")
     STORAGE_ACCESS_KEY: Optional[str] = os.getenv("STORAGE_ACCESS_KEY", "")
     STORAGE_SECRET_KEY: Optional[str] = os.getenv("STORAGE_SECRET_KEY", "")
