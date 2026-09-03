@@ -68,25 +68,19 @@ async def startup_event():
     except Exception as e:
         logger.error(f"Error en startup DB (la app seguirá funcionando): {e}")
 
-    # Crear carpetas estáticas
-    os.makedirs("static/uploads", exist_ok=True)
-    os.makedirs("web_frontend", exist_ok=True)
-
-    # Montar archivos estáticos solo si existen
-    try:
-        if not any(r.name == "static" for r in app.routes):
-            app.mount("/static", StaticFiles(directory="static"), name="static")
-    except Exception:
-        pass
-
-    try:
-        if os.path.isdir("web_frontend") and os.listdir("web_frontend"):
-            if not any(r.name == "web_app" for r in app.routes):
-                app.mount("/app", StaticFiles(directory="web_frontend", html=True), name="web_app")
-    except Exception:
-        pass
 
     logger.info("✅ Sistema de Control Operativo Chiriquí - ONLINE")
+
+# Montar archivos estáticos de forma global
+if os.path.isdir("static"):
+    app.mount("/static", StaticFiles(directory="static"), name="static")
+else:
+    os.makedirs("static/uploads", exist_ok=True)
+    app.mount("/static", StaticFiles(directory="static"), name="static")
+
+if os.path.isdir("web_frontend"):
+    app.mount("/app", StaticFiles(directory="web_frontend", html=True), name="web_app")
+
 
 
 from fastapi.responses import RedirectResponse
