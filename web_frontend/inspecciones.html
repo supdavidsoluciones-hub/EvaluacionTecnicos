@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/app/css/style.css" />
   <style>
     .insp-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
     
@@ -26,7 +26,7 @@
 <body>
   
   <nav class="navbar">
-    <button class="btn-back" onclick="window.location.href='/dashboard.html'">←</button>
+    <button class="btn-back" onclick="window.location.href='/app/dashboard.html'">←</button>
     <div class="navbar-title">📋 Lista de Inspecciones</div>
   </nav>
 
@@ -54,25 +54,25 @@
   </main>
 
   <nav class="bottom-nav">
-    <a href="/dashboard.html" class="bnav-item">
+    <a href="/app/dashboard.html" class="bnav-item">
       <span class="bnav-icon">🏠</span><span class="bnav-label">Inicio</span>
     </a>
-    <a href="/moviles.html" class="bnav-item">
+    <a href="/app/moviles.html" class="bnav-item">
       <span class="bnav-icon">🚗</span><span class="bnav-label">Móviles</span>
     </a>
-    <a href="/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
+    <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
       <span class="bnav-main">➕</span>
     </a>
-    <a href="/inspecciones.html" class="bnav-item active">
+    <a href="/app/inspecciones.html" class="bnav-item active">
       <span class="bnav-icon">📋</span><span class="bnav-label">Lista</span>
     </a>
-    <a href="/metricas.html" class="bnav-item">
+    <a href="/app/metricas.html" class="bnav-item">
       <span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span>
     </a>
   </nav>
 
   <script type="module">
-    import { requireAuth, getInspections, formatDate, scoreColor } from '/js/app.js';
+    import { requireAuth, getInspections, formatDate, scoreColor } from '/app/js/app.js';
 
     let allInspections = [];
 

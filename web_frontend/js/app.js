@@ -24,7 +24,7 @@ export function isAuthenticated() {
 
 export function requireAuth() {
   if (!isAuthenticated()) {
-    window.location.href = '/login.html';
+    window.location.href = '/app/login.html';
     throw new Error('No autenticado');
   }
 }
@@ -32,7 +32,7 @@ export function requireAuth() {
 export function logout() {
   localStorage.removeItem('cm_token');
   localStorage.removeItem('cm_user');
-  window.location.href = '/login.html';
+  window.location.href = '/app/login.html';
 }
 
 // ─────────────────────────────────────────────────────────────

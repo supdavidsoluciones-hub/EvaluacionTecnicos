@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/app/css/style.css" />
   
   <style>
     /* Estilos específicos del Dashboard */
@@ -134,11 +134,11 @@
       <div class="section">
         <h3 class="section-title">Accesos Rápidos</h3>
         <div class="quick-access-grid">
-          <a href="/inspeccion.html" class="qa-card">
+          <a href="/app/inspeccion.html" class="qa-card">
             <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">🔍</div>
             <div class="qa-label">Nueva Inspección</div>
           </a>
-          <a href="/moviles.html" class="qa-card">
+          <a href="/app/moviles.html" class="qa-card">
             <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">🚗</div>
             <div class="qa-label">Mis Móviles</div>
           </a>
@@ -146,7 +146,7 @@
             <div class="qa-icon" style="background: var(--amber-dim); color: var(--amber);">🔧</div>
             <div class="qa-label">Inventario</div>
           </a>
-          <a href="/metricas.html" class="qa-card">
+          <a href="/app/metricas.html" class="qa-card">
             <div class="qa-icon" style="background: var(--red-dim); color: var(--red);">📊</div>
             <div class="qa-label">Métricas</div>
           </a>
@@ -175,29 +175,29 @@
 
   <!-- Bottom Nav -->
   <nav class="bottom-nav">
-    <a href="/dashboard.html" class="bnav-item active">
+    <a href="/app/dashboard.html" class="bnav-item active">
       <span class="bnav-icon">🏠</span>
       <span class="bnav-label">Inicio</span>
     </a>
-    <a href="/moviles.html" class="bnav-item">
+    <a href="/app/moviles.html" class="bnav-item">
       <span class="bnav-icon">🚗</span>
       <span class="bnav-label">Móviles</span>
     </a>
-    <a href="/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
+    <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
       <span class="bnav-main">➕</span>
     </a>
-    <a href="/inspecciones.html" class="bnav-item">
+    <a href="/app/inspecciones.html" class="bnav-item">
       <span class="bnav-icon">📋</span>
       <span class="bnav-label">Lista</span>
     </a>
-    <a href="/metricas.html" class="bnav-item">
+    <a href="/app/metricas.html" class="bnav-item">
       <span class="bnav-icon">📊</span>
       <span class="bnav-label">Métricas</span>
     </a>
   </nav>
 
   <script type="module">
-    import { requireAuth, getUser, logout, getDashboard, semafBadge, formatTime } from '/js/app.js';
+    import { requireAuth, getUser, logout, getDashboard, semafBadge, formatTime } from '/app/js/app.js';
 
     document.addEventListener('DOMContentLoaded', () => {
       requireAuth();
