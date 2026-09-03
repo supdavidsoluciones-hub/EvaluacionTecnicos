@@ -355,6 +355,7 @@
 
     <!-- Form card -->
     <div class="login-form-card">
+      <div id="sessionNotice"></div>
       <h2>Iniciar Sesión</h2>
       <p class="text-sm">Acceso exclusivo para personal autorizado</p>
 
@@ -425,7 +426,7 @@
     // ── Inline import of app.js helpers ─────────────────────────
     import { isAuthenticated, login, showToast } from '/app/js/app.js';
 
-    // ── Redirect if already logged in ───────────────────────────
+    // ── Check active session notice ─────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('logout') === 'true') {
@@ -434,8 +435,16 @@
       }
 
       if (isAuthenticated()) {
-        window.location.href = '/app/dashboard.html';
-        return;
+        const sessionNotice = document.getElementById('sessionNotice');
+        if (sessionNotice) {
+          const user = getUser();
+          sessionNotice.innerHTML = `
+            <div style="background: rgba(0, 212, 170, 0.12); border: 1px solid rgba(0, 212, 170, 0.35); border-radius: 12px; padding: 14px; margin-bottom: 20px; text-align: center; color: #00d4aa; font-size: 0.85rem;">
+              <span>✅ Tienes una sesión activa como <strong>${user?.username || 'Usuario'}</strong></span><br/>
+              <a href="/app/dashboard.html" style="margin-top: 10px; display: inline-block; padding: 8px 18px; background: linear-gradient(135deg, #00d4aa, #7c3aed); color: #fff; font-weight: 700; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(0,212,170,0.3);">Ir al Dashboard ➔</a>
+            </div>
+          `;
+        }
       }
 
       const form      = document.getElementById('loginForm');
