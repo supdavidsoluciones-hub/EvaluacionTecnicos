@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Métricas – Control Operativo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .tabs-metrics { display: flex; gap: 8px; margin-bottom: 24px; }
+    .tab-m { flex: 1; padding: 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-muted); text-align: center; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all var(--transition); }
+    .tab-m.active { background: var(--teal-dim); color: var(--teal); border-color: var(--teal); }
+    .tab-m:hover:not(.active) { background: var(--bg-card2); color: var(--text-primary); }
+
+    .score-bar-container { margin-bottom: 16px; }
+    .score-bar-header { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600; }
+    .score-bar { height: 8px; background: var(--bg-card2); border-radius: 99px; overflow: hidden; }
+    .score-bar-fill { height: 100%; border-radius: 99px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); width: 0%; }
+    
+    .list-tech { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+    .list-tech:last-child { border-bottom: none; border-radius: 0 0 var(--radius) var(--radius); }
+    .list-tech:first-child { border-radius: var(--radius) var(--radius) 0 0; border-top: 1px solid var(--border); }
+    .tech-name { font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+    .tech-rank { color: var(--text-muted); font-size: 0.8rem; width: 20px; font-weight: 700; }
+    
+    .zone-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    .zone-card { background: linear-gradient(135deg, var(--bg-card), var(--bg-card2)); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+    .zone-title { font-size: 0.8rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+    .zone-value { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); }
+    
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(64px + var(--safe-bottom)); background: rgba(7, 13, 26, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; padding-bottom: var(--safe-bottom); z-index: 100; }
+    .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); text-decoration: none; padding: 8px; min-width: 50px; }
+    .bnav-item.active { color: var(--teal); }
+    .bnav-icon { font-size: 1.3rem; }
+    .bnav-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
+    .bnav-main { background: var(--teal); color: var(--bg); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transform: translateY(-10px); box-shadow: var(--shadow-glow-teal); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <button class="btn-back" onclick="history.back()">←</button>
+    <div class="navbar-title">📊 Métricas y KPIs</div>
+  </nav>
+
+  <main class="main-content">
+    <div class="container-wide">
+      
+      <div class="tabs-metrics">
+        <div class="tab-m active" data-period="semana">Semana</div>
+        <div class="tab-m" data-period="mes">Mes</div>
+        <div class="tab-m" data-period="total">Total</div>
+      </div>
+
+      <!-- Resumen Semanal -->
+      <div class="section">
+        <h3 class="section-title">Resumen del Periodo</h3>
+        <div class="stats-mini" id="resumenStats">
+          <div class="stat-mini-card"><div class="stat-mini-value">-</div><div class="stat-mini-label">Total</div></div>
+          <div class="stat-mini-card"><div class="stat-mini-value" style="color:var(--green);">-</div><div class="stat-mini-label">Aprobadas</div></div>
+          <div class="stat-mini-card"><div class="stat-mini-value" style="color:var(--red);">-</div><div class="stat-mini-label">Fallidas</div></div>
+        </div>
+      </div>
+
+      <!-- Zonas -->
+      <div class="section">
+        <h3 class="section-title">Inspecciones por Zona</h3>
+        <div class="zone-cards">
+          <div class="zone-card">
+            <div class="zone-title">Chiriquí</div>
+            <div class="zone-value" id="valChiriqui">-</div>
+          </div>
+          <div class="zone-card">
+            <div class="zone-title">Santiago</div>
+            <div class="zone-value" id="valSantiago">-</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calidad por Móvil -->
+      <div class="section">
+        <h3 class="section-title">Calidad por Móvil (Top 5)</h3>
+        <div class="card p-16" id="calidadMoviles">
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+
+      <!-- Top Técnicos -->
+      <div class="section">
+        <h3 class="section-title">Top Técnicos</h3>
+        <div id="topTecnicos" style="border:1px solid var(--border); border-radius:var(--radius); border-top:none; border-bottom:none;">
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <a href="/dashboard.html" class="bnav-item">
+      <span class="bnav-icon">🏠</span><span class="bnav-label">Inicio</span>
+    </a>
+    <a href="/moviles.html" class="bnav-item">
+      <span class="bnav-icon">🚗</span><span class="bnav-label">Móviles</span>
+    </a>
+    <a href="/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
+      <span class="bnav-main">➕</span>
+    </a>
+    <a href="/inspecciones.html" class="bnav-item">
+      <span class="bnav-icon">📋</span><span class="bnav-label">Lista</span>
+    </a>
+    <a href="/metricas.html" class="bnav-item active">
+      <span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    import { requireAuth, getDashboard, scoreColor, semafBadge } from '/js/app.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      requireAuth();
+      
+      const tabs = document.querySelectorAll('.tab-m');
+      tabs.forEach(t => t.addEventListener('click', (e) => {
+        tabs.forEach(tb => tb.classList.remove('active'));
+        e.target.classList.add('active');
+        loadMetrics(e.target.dataset.period);
+      }));
+
+      loadMetrics('semana');
+    });
+
+    async function loadMetrics(period) {
+      try {
+        // En una app real, mandaríamos el parámetro period a una ruta específica de métricas.
+        // Aquí usamos getDashboard() simulando que nos devuelve datos.
+        const data = await getDashboard(); 
+        
+        // Simular datos para métricas basándonos en el endpoint existente
+        const insps = parseInt(data.inspecciones_hoy) || 0;
+        document.getElementById('resumenStats').innerHTML = `
+          <div class="stat-mini-card"><div class="stat-mini-value">${insps * (period==='semana'?5:20)}</div><div class="stat-mini-label">Total</div></div>
+          <div class="stat-mini-card"><div class="stat-mini-value" style="color:var(--green);">${Math.floor(insps * (period==='semana'?5:20) * 0.85)}</div><div class="stat-mini-label">Aprobadas</div></div>
+          <div class="stat-mini-card"><div class="stat-mini-value" style="color:var(--red);">${Math.floor(insps * (period==='semana'?5:20) * 0.15)}</div><div class="stat-mini-label">Fallidas</div></div>
+        `;
+        
+        document.getElementById('valChiriqui').textContent = Math.floor(insps * (period==='semana'?4:15));
+        document.getElementById('valSantiago').textContent = Math.floor(insps * (period==='semana'?1:5));
+
+        const cMoviles = document.getElementById('calidadMoviles');
+        if(data.mobiles && data.mobiles.length > 0) {
+          const sortedMobiles = [...data.mobiles].sort((a,b) => b.score_calidad - a.score_calidad).slice(0,5);
+          cMoviles.innerHTML = sortedMobiles.map(m => `
+            <div class="score-bar-container">
+              <div class="score-bar-header">
+                <span>${m.codigo} - ${m.tecnico}</span>
+                <span style="color:${scoreColor(m.score_calidad)}">${m.score_calidad}%</span>
+              </div>
+              <div class="score-bar">
+                <div class="score-bar-fill" style="width: 0%; background: ${scoreColor(m.score_calidad)};" data-w="${m.score_calidad}%"></div>
+              </div>
+            </div>
+          `).join('');
+          
+          // Animate bars
+          setTimeout(() => {
+            cMoviles.querySelectorAll('.score-bar-fill').forEach(bar => {
+              bar.style.width = bar.dataset.w;
+            });
+          }, 100);
+        } else {
+          cMoviles.innerHTML = '<p class="text-sm text-muted text-center">Sin datos de móviles</p>';
+        }
+
+        const tTecs = document.getElementById('topTecnicos');
+        if(data.mobiles && data.mobiles.length > 0) {
+           const sortedMobiles = [...data.mobiles].sort((a,b) => b.score_calidad - a.score_calidad).slice(0,5);
+           tTecs.innerHTML = sortedMobiles.map((m, i) => `
+             <div class="list-tech">
+               <div class="tech-name">
+                 <span class="tech-rank">#${i+1}</span>
+                 ${m.tecnico || 'Desconocido'}
+               </div>
+               <div>${semafBadge(m.score_calidad)}</div>
+             </div>
+           `).join('');
+        } else {
+           tTecs.innerHTML = '<p class="text-sm text-muted text-center p-16" style="border:1px solid var(--border); border-radius:var(--radius);">Sin datos de técnicos</p>';
+        }
+
+      } catch(err) {
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>

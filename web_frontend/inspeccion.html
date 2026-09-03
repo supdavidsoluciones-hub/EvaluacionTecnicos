@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nueva Inspección – Control Operativo Móviles</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  
+  <style>
+    .step-progress { display: flex; align-items: center; gap: 4px; margin-bottom: 24px; }
+    .step-dot { height: 4px; border-radius: 99px; background: var(--border); transition: all 0.3s; flex: 1; }
+    .step-dot.active { background: var(--teal); }
+    .step-dot.complete { background: var(--teal); opacity: 0.5; }
+
+    .step-panel { display: none; animation: fadeSlide 0.3s ease; }
+    .step-panel.active { display: block; }
+    @keyframes fadeSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .check-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; cursor: pointer; transition: all var(--transition); -webkit-tap-highlight-color: transparent; }
+    .check-item:hover { background: var(--bg-card2); border-color: var(--border-light); }
+    .check-item.checked { background: var(--teal-dim); border-color: var(--teal); }
+    .check-item.failed { background: var(--red-dim); border-color: rgba(239,68,68,0.3); }
+    .check-text { flex: 1; font-size: 0.9rem; font-weight: 500; }
+    .check-toggle { display: flex; gap: 6px; }
+    .toggle-btn { width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all var(--transition); -webkit-tap-highlight-color: transparent; }
+    .toggle-btn.ok.active { background: rgba(16,185,129,0.2); border-color: var(--green); color: var(--green); }
+    .toggle-btn.nok.active { background: rgba(239,68,68,0.2); border-color: var(--red); color: var(--red); }
+    .toggle-btn.na.active { background: rgba(100,116,139,0.2); border-color: #64748b; color: #64748b; }
+
+    .star-rating { display: flex; gap: 4px; margin-bottom: 16px; }
+    .star { font-size: 28px; cursor: pointer; color: var(--border); transition: color 0.15s; }
+    .star.active, .star:hover { color: var(--amber); }
+
+    .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 16px; background: rgba(7, 13, 26, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; z-index: 100; padding-bottom: calc(16px + var(--safe-bottom)); }
+    .bottom-bar span { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
+    
+    .photo-slot { aspect-ratio: 1; border: 1.5px dashed var(--border); border-radius: var(--radius-sm); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; background: var(--bg-card); transition: all var(--transition); position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; }
+    .photo-slot:hover { border-color: var(--teal); background: var(--teal-dim); }
+    .photo-icon { font-size: 24px; }
+    .photo-label { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; text-align: center; }
+    .photo-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    
+    body { padding-bottom: 100px; }
+  </style>
+</head>
+<body>
+  
+  <nav class="navbar">
+    <button class="btn-back" onclick="history.back()">←</button>
+    <div class="navbar-title">Nueva Inspección</div>
+    <div class="navbar-actions"><span class="badge badge-teal" id="stepCounter">Paso 1/7</span></div>
+  </nav>
+
+  <main class="main-content">
+    <div class="container">
+      <div class="step-progress" id="progressDots">
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+
+      <form id="inspectionForm" onsubmit="return false;">
+        
+        <!-- STEP 1 -->
+        <div class="step-panel active" data-step="1">
+          <h3 class="mb-16">📋 Datos Generales</h3>
+          <div class="form-group">
+            <label class="form-label">Móvil</label>
+            <select id="selMovil" class="form-control" required>
+              <option value="" disabled selected>Seleccione...</option>
+              <optgroup label="Chiriquí">
+                <option value="M200">M200</option>
+                <option value="M201">M201</option>
+                <option value="M202">M202</option>
+                <option value="M203">M203</option>
+                <option value="M204">M204</option>
+                <option value="M205">M205</option>
+                <option value="M206">M206</option>
+              </optgroup>
+              <optgroup label="Santiago">
+                <option value="M207">M207</option>
+                <option value="M208">M208</option>
+                <option value="M209">M209</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Técnico</label>
+            <select id="selTecnico" class="form-control" required>
+              <option value="" disabled selected>Cargando técnicos...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Cliente</label>
+            <input type="text" id="inputCliente" class="form-control" placeholder="Nombre del cliente" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Número de Orden</label>
+            <input type="text" id="inputOrden" class="form-control" placeholder="Ej. 123456" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dirección / Zona</label>
+            <input type="text" id="inputDireccion" class="form-control" placeholder="Ciudad, Barrio..." required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipo de Orden</label>
+            <select id="selTipoOrden" class="form-control" required>
+              <option value="Instalación Nueva">Instalación Nueva</option>
+              <option value="Avería">Avería</option>
+              <option value="Garantía">Garantía</option>
+              <option value="Verificación">Verificación</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-panel" data-step="2">
+          <h3 class="mb-16">🚗 Estado del Vehículo</h3>
+          <label class="form-label">Limpieza Exterior</label>
+          <div class="star-rating" id="ratingExterior" data-val="0">
+            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+          </div>
+          
+          <label class="form-label">Limpieza Interior</label>
+          <div class="star-rating" id="ratingInterior" data-val="0">
+            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+          </div>
+
+          <label class="form-label mt-16">Presentación del Técnico</label>
+          <div id="checksVehiculo"></div>
+          
+          <div class="form-group mt-16">
+            <label class="form-label">Observaciones</label>
+            <textarea id="obsVehiculo" class="form-control" placeholder="Detalles sobre el vehículo..."></textarea>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-panel" data-step="3">
+          <h3 class="mb-16">🔧 Verificación de Herramientas</h3>
+          <p class="text-sm mb-16">Verifica el inventario básico del vehículo</p>
+          <div id="checksHerramientas"></div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step-panel" data-step="4">
+          <h3 class="mb-16">🦺 Seguridad</h3>
+          <div id="checksSeguridad"></div>
+          <div class="form-group mt-16">
+            <label class="form-label">Observaciones Seguridad</label>
+            <textarea id="obsSeguridad" class="form-control" placeholder="..."></textarea>
+          </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="step-panel" data-step="5">
+          <h3 class="mb-16">⚡ Inspección Técnica</h3>
+          <div id="checksTecnica"></div>
+          <div class="form-group mt-16">
+            <label class="form-label">Observaciones Técnicas</label>
+            <textarea id="obsTecnica" class="form-control" placeholder="..."></textarea>
+          </div>
+        </div>
+
+        <!-- STEP 6 -->
+        <div class="step-panel" data-step="6">
+          <h3 class="mb-16">👤 Atención al Cliente</h3>
+          <label class="form-label">Calificación General Atención</label>
+          <div class="star-rating" id="ratingAtencion" data-val="0">
+            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+          </div>
+          
+          <div id="checksCliente"></div>
+          
+          <div class="form-group mt-16">
+            <label class="form-label">Nombre de quien recibe</label>
+            <input type="text" id="nombreFirmante" class="form-control" placeholder="Nombre completo">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Comentarios Adicionales</label>
+            <textarea id="obsCliente" class="form-control" placeholder="..."></textarea>
+          </div>
+        </div>
+
+        <!-- STEP 7 -->
+        <div class="step-panel" data-step="7">
+          <h3 class="mb-16">📸 Evidencia Fotográfica</h3>
+          <div class="photo-grid mb-20" id="photoGrid">
+            <!-- Fotos generadas por JS -->
+          </div>
+          
+          <div class="divider"></div>
+          <h3 class="mb-16">📊 Resumen</h3>
+          <div id="resumenInspeccion" class="card card-teal text-center mb-16">
+            Calculando puntaje...
+          </div>
+          
+          <button type="button" class="btn btn-primary btn-block btn-lg" id="btnSubmit">✅ Enviar Inspección</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <div class="bottom-bar">
+    <button class="btn btn-secondary" id="btnPrev" disabled>← Anterior</button>
+    <span id="lblStep">Paso 1 de 7</span>
+    <button class="btn btn-primary" id="btnNext">Siguiente →</button>
+  </div>
+
+  <script type="module">
+    import { requireAuth, getTechnicians, apiRequest, showToast, compressImage } from '/js/app.js';
+
+    let currentStep = 1;
+    const totalSteps = 7;
+    const answers = {};
+    const photos = {}; // key: file
+
+    // Checklists data
+    const lists = {
+      vehiculo: ['Uniforme limpio y completo', 'Identificación visible', 'Vehículo identificado/rotulado'],
+      herramientas: ['Escalera', 'Pelacables', 'Crimpeadora', 'Multímetro', 'Tester de fibra (OTDR/VFL)', 'Fusionadora', 'Taladro/Brocas', 'Cinta métrica', 'Cable UTP/Fibra (stock)', 'Conectores (stock)'],
+      seguridad: ['Conos colocados correctamente', 'Señalización adecuada', 'Casco utilizado (si aplica)', 'Guantes utilizados', 'Lentes de seguridad', 'Trabajo seguro en alturas (si aplica)'],
+      tecnica: ['ACOMETIDA: Correctamente instalada y fijada', 'CONECTORES FTTH: Bien elaborados y limpios', 'ONU Y EQUIPOS: Correctamente instalados y cableado organizado', 'EERO/WIFI: Configuración y aprovisionamiento correcto', 'TELEVISIÓN/TELEFONÍA: Servicio funcionando (si aplica)'],
+      cliente: ['Técnico explicó servicios', 'Respondió dudas', 'Cliente satisfecho']
+    };
+    
+    const photoTypes = [
+      { id: 'foto_fachada', label: 'Fachada' },
+      { id: 'foto_acometida', label: 'Acometida' },
+      { id: 'foto_equipos', label: 'Equipos/ONU' },
+      { id: 'foto_vehiculo', label: 'Vehículo' }
+    ];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      requireAuth();
+      
+      // Init Stars
+      document.querySelectorAll('.star-rating').forEach(container => {
+        container.querySelectorAll('.star').forEach(star => {
+          star.addEventListener('click', () => {
+            const val = parseInt(star.dataset.v);
+            container.dataset.val = val;
+            container.querySelectorAll('.star').forEach(s => {
+              s.classList.toggle('active', parseInt(s.dataset.v) <= val);
+            });
+          });
+        });
+      });
+
+      // Render Checks
+      const renderChecks = (containerId, items, category) => {
+        const container = document.getElementById(containerId);
+        container.innerHTML = items.map((item, idx) => {
+          const id = `${category}_${idx}`;
+          return `
+            <div class="check-item" data-id="${id}">
+              <div class="check-text">${item}</div>
+              <div class="check-toggle">
+                <button type="button" class="toggle-btn ok" onclick="setCheck('${id}', 'ok', this)">✓</button>
+                <button type="button" class="toggle-btn nok" onclick="setCheck('${id}', 'nok', this)">✗</button>
+                <button type="button" class="toggle-btn na" onclick="setCheck('${id}', 'na', this)">-</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      };
+
+      window.setCheck = (id, val, btn) => {
+        answers[id] = val;
+        const parent = btn.closest('.check-toggle');
+        parent.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const item = btn.closest('.check-item');
+        item.classList.remove('checked', 'failed');
+        if (val === 'ok') item.classList.add('checked');
+        if (val === 'nok') item.classList.add('failed');
+      };
+
+      renderChecks('checksVehiculo', lists.vehiculo, 'veh');
+      renderChecks('checksHerramientas', lists.herramientas, 'herr');
+      renderChecks('checksSeguridad', lists.seguridad, 'seg');
+      renderChecks('checksTecnica', lists.tecnica, 'tec');
+      renderChecks('checksCliente', lists.cliente, 'cli');
+
+      // Render Photo Slots
+      const grid = document.getElementById('photoGrid');
+      grid.innerHTML = photoTypes.map(pt => `
+        <label class="photo-slot" id="slot_${pt.id}">
+          <div class="photo-icon">📷</div>
+          <div class="photo-label">${pt.label}</div>
+          <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handlePhoto(this, '${pt.id}')">
+        </label>
+      `).join('');
+
+      window.handlePhoto = async (input, id) => {
+        if (!input.files || input.files.length === 0) return;
+        const file = input.files[0];
+        try {
+          const blob = await compressImage(file, 800, 0.75);
+          photos[id] = blob;
+          const url = URL.createObjectURL(blob);
+          const slot = document.getElementById(`slot_${id}`);
+          let img = slot.querySelector('img');
+          if (!img) {
+            img = document.createElement('img');
+            slot.appendChild(img);
+          }
+          img.src = url;
+        } catch(e) {
+          showToast('Error procesando foto', 'error');
+        }
+      };
+
+      // Navigation
+      document.getElementById('btnNext').addEventListener('click', () => {
+        if (currentStep < totalSteps) {
+          currentStep++;
+          updateUI();
+        }
+      });
+      document.getElementById('btnPrev').addEventListener('click', () => {
+        if (currentStep > 1) {
+          currentStep--;
+          updateUI();
+        }
+      });
+
+      function calculateScore() {
+        let total = 0, ok = 0;
+        Object.values(answers).forEach(v => {
+          if (v === 'ok' || v === 'nok') {
+            total++;
+            if (v === 'ok') ok++;
+          }
+        });
+        const ratingExt = parseInt(document.getElementById('ratingExterior').dataset.val) || 0;
+        const ratingInt = parseInt(document.getElementById('ratingInterior').dataset.val) || 0;
+        const ratingAte = parseInt(document.getElementById('ratingAtencion').dataset.val) || 0;
+        
+        let score = 100;
+        if (total > 0) score = Math.round((ok / total) * 100);
+        
+        document.getElementById('resumenInspeccion').innerHTML = `
+          <div style="font-size: 2rem; font-weight: 800;">${score}%</div>
+          <div class="text-sm">Puntaje Estimado</div>
+          <div class="text-xs mt-8">Respuestas válidas: ${total}</div>
+        `;
+        return score;
+      }
+
+      function updateUI() {
+        document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+        document.querySelector(`.step-panel[data-step="${currentStep}"]`).classList.add('active');
+        
+        document.querySelectorAll('.step-dot').forEach((d, i) => {
+          d.className = 'step-dot';
+          if (i + 1 < currentStep) d.classList.add('complete');
+          if (i + 1 === currentStep) d.classList.add('active');
+        });
+
+        document.getElementById('stepCounter').textContent = `Paso ${currentStep}/7`;
+        document.getElementById('lblStep').textContent = `Paso ${currentStep} de 7`;
+        
+        document.getElementById('btnPrev').disabled = currentStep === 1;
+        document.getElementById('btnNext').style.display = currentStep === totalSteps ? 'none' : 'block';
+        
+        if (currentStep === totalSteps) calculateScore();
+      }
+
+      // Load Techs
+      try {
+        const data = await getTechnicians();
+        const sel = document.getElementById('selTecnico');
+        sel.innerHTML = '<option value="" disabled selected>Seleccione técnico...</option>' + 
+          (data || []).map(t => `<option value="${t.id}">${t.nombre}</option>`).join('');
+      } catch(e) {}
+
+      // Submit
+      document.getElementById('btnSubmit').addEventListener('click', async () => {
+        const movil = document.getElementById('selMovil').value;
+        const tech = document.getElementById('selTecnico').value;
+        const order = document.getElementById('inputOrden').value;
+        
+        if (!movil || !tech || !order) {
+          showToast('Complete los datos generales del paso 1', 'error');
+          return;
+        }
+
+        const btn = document.getElementById('btnSubmit');
+        btn.disabled = true;
+        btn.textContent = 'Enviando...';
+
+        try {
+          const fd = new FormData();
+          fd.append('movil_codigo', movil);
+          fd.append('tecnico_id', tech);
+          fd.append('numero_orden', order);
+          fd.append('cliente', document.getElementById('inputCliente').value);
+          fd.append('score', calculateScore());
+          fd.append('respuestas', JSON.stringify(answers));
+          
+          for (const [id, blob] of Object.entries(photos)) {
+            fd.append('fotos', blob, `${id}.jpg`);
+          }
+
+          await apiRequest('POST', '/inspections', fd, true);
+          showToast('Inspección guardada con éxito', 'success');
+          setTimeout(() => window.location.href = '/inspecciones.html', 1500);
+        } catch(e) {
+          showToast(e.message, 'error');
+          btn.disabled = false;
+          btn.textContent = '✅ Enviar Inspección';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

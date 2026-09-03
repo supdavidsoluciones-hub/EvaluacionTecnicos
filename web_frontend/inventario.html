@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventario – Control Operativo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .inv-header { padding: 16px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .inv-info h3 { font-size: 1.1rem; margin-bottom: 4px; }
+    .inv-info p { font-size: 0.8rem; color: var(--text-muted); }
+    .inv-status { text-align: right; }
+
+    .tool-list { margin-top: 16px; }
+    .tool-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+    .tool-row:last-child { border-bottom: none; }
+    .tool-name { flex: 1; font-size: 0.9rem; font-weight: 500; }
+    .tool-qty { display: flex; align-items: center; gap: 12px; }
+    .qty-btn { width: 32px; height: 32px; border-radius: var(--radius-sm); background: var(--bg-card2); border: 1px solid var(--border); color: var(--text-primary); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
+    .qty-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .qty-value { width: 24px; text-align: center; font-weight: 700; font-size: 1rem; }
+
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(64px + var(--safe-bottom)); background: rgba(7, 13, 26, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; padding-bottom: var(--safe-bottom); z-index: 100; }
+    .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); text-decoration: none; padding: 8px; min-width: 50px; }
+    .bnav-item.active { color: var(--teal); }
+    .bnav-icon { font-size: 1.3rem; }
+    .bnav-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
+    .bnav-main { background: var(--teal); color: var(--bg); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transform: translateY(-10px); box-shadow: var(--shadow-glow-teal); }
+  </style>
+</head>
+<body>
+  
+  <nav class="navbar">
+    <button class="btn-back" onclick="history.back()">←</button>
+    <div class="navbar-title">🔧 Inventario Móvil</div>
+    <div class="navbar-actions">
+      <button class="btn btn-sm btn-primary" id="btnSaveInv">Guardar</button>
+    </div>
+  </nav>
+
+  <main class="main-content" style="padding-top: var(--navbar-h); padding-bottom: 100px;">
+    <div class="inv-header">
+      <div class="inv-info">
+        <h3 id="invTitle">Cargando...</h3>
+        <p id="invSub">Seleccione un móvil para ver su inventario</p>
+      </div>
+      <div class="inv-status" id="invStatus">
+        <span class="badge badge-neutral">...</span>
+      </div>
+    </div>
+
+    <div class="container-wide">
+      
+      <div class="form-group mt-16" style="padding: 0 16px;">
+        <label class="form-label">Seleccionar Móvil</label>
+        <select id="selMovilInv" class="form-control">
+          <option value="" disabled selected>Seleccione...</option>
+        </select>
+      </div>
+
+      <div class="section mt-16">
+        <h3 class="section-title" style="padding: 0 16px;">Herramientas Asignadas</h3>
+        <div class="tool-list" id="toolList">
+          <!-- Tools render here -->
+          <p class="text-sm text-muted text-center py-4">Seleccione un móvil para cargar su inventario.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="/dashboard.html" class="bnav-item">
+      <span class="bnav-icon">🏠</span><span class="bnav-label">Inicio</span>
+    </a>
+    <a href="/moviles.html" class="bnav-item">
+      <span class="bnav-icon">🚗</span><span class="bnav-label">Móviles</span>
+    </a>
+    <a href="/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
+      <span class="bnav-main">➕</span>
+    </a>
+    <a href="/inspecciones.html" class="bnav-item">
+      <span class="bnav-icon">📋</span><span class="bnav-label">Lista</span>
+    </a>
+    <a href="/metricas.html" class="bnav-item">
+      <span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    import { requireAuth, getMobiles, showToast } from '/js/app.js';
+
+    const tools = [
+      'Escalera de extensión', 'Escalera de tijera', 'Pelacables', 'Crimpeadora',
+      'Multímetro', 'OTDR', 'VFL (Láser)', 'Fusionadora', 'Taladro',
+      'Cinta métrica', 'Casco de seguridad', 'Arnés', 'Conos (kit)'
+    ];
+
+    let inventory = {};
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      requireAuth();
+      
+      const sel = document.getElementById('selMovilInv');
+      
+      try {
+        const mobiles = await getMobiles();
+        sel.innerHTML = '<option value="" disabled selected>Seleccione...</option>' +
+          mobiles.map(m => `<option value="${m.codigo}">${m.codigo} - ${m.tecnico?.nombre || 'Sin tec.'}</option>`).join('');
+      } catch(e) {}
+
+      // If URL param ?movil=M208
+      const urlParams = new URLSearchParams(window.location.search);
+      const mParam = urlParams.get('movil');
+      if (mParam) {
+        setTimeout(() => {
+          sel.value = mParam;
+          sel.dispatchEvent(new Event('change'));
+        }, 500);
+      }
+
+      sel.addEventListener('change', (e) => {
+        const codigo = e.target.value;
+        document.getElementById('invTitle').textContent = `Móvil ${codigo}`;
+        document.getElementById('invSub').textContent = `Inventario actual de herramientas`;
+        document.getElementById('invStatus').innerHTML = `<span class="badge badge-teal">Activo</span>`;
+        
+        renderTools(codigo);
+      });
+
+      document.getElementById('btnSaveInv').addEventListener('click', () => {
+        if(!sel.value) return showToast('Seleccione un móvil primero', 'error');
+        // Aquí iría el fetch POST /api/v1/inventory
+        showToast('Inventario guardado correctamente', 'success');
+      });
+    });
+
+    function renderTools(movilCode) {
+      // Dummy logic
+      tools.forEach(t => { if(inventory[t] === undefined) inventory[t] = 1; });
+      if(inventory['Conos (kit)'] === 1) inventory['Conos (kit)'] = 4;
+
+      window.updateQty = (tool, delta) => {
+        let val = inventory[tool] + delta;
+        if(val < 0) val = 0;
+        inventory[tool] = val;
+        document.getElementById(`qty_${tool}`).textContent = val;
+      };
+
+      const list = document.getElementById('toolList');
+      list.innerHTML = tools.map(t => `
+        <div class="tool-row">
+          <div class="tool-name">${t}</div>
+          <div class="tool-qty">
+            <button class="qty-btn" onclick="updateQty('${t}', -1)">-</button>
+            <div class="qty-value" id="qty_${t}">${inventory[t]}</div>
+            <button class="qty-btn" onclick="updateQty('${t}', 1)">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

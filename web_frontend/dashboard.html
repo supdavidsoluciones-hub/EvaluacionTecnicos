@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – Control Operativo Móviles</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="/css/style.css" />
+  
+  <style>
+    /* Estilos específicos del Dashboard */
+    .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--accent-color, var(--teal));
+    }
+    .metric-card.accent-teal { --accent-color: var(--teal); }
+    .metric-card.accent-purple { --accent-color: var(--purple-light); }
+    .metric-card.accent-amber { --accent-color: var(--amber); }
+    .metric-card.accent-red { --accent-color: var(--red); }
+    
+    .metric-icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .metric-value { font-size: 1.6rem; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+    .metric-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    
+    .section-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+    
+    .vehicle-card { display: flex; align-items: center; gap: 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 8px; }
+    .vehicle-icon { font-size: 1.5rem; }
+    .vehicle-info { flex: 1; }
+    .vehicle-code { font-weight: 700; color: var(--text-primary); }
+    .vehicle-detail { font-size: 0.75rem; color: var(--text-secondary); }
+    
+    .list-item { display: flex; align-items: center; gap: 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 8px; }
+    .li-icon { font-size: 1.2rem; }
+    .li-content { flex: 1; }
+    .li-title { font-weight: 600; font-size: 0.85rem; }
+    .li-sub { font-size: 0.75rem; color: var(--text-muted); }
+    .li-right { text-align: right; }
+    .li-date { font-size: 0.7rem; color: var(--text-muted); }
+    
+    .quick-access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .qa-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 8px;
+      color: var(--text-primary); text-decoration: none; transition: all var(--transition);
+    }
+    .qa-card:hover { background: var(--bg-card2); border-color: var(--teal); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+    .qa-icon {
+      width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+      background: linear-gradient(135deg, var(--teal-dim), var(--purple-dim));
+    }
+    .qa-label { font-size: 0.8rem; font-weight: 600; }
+    
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: calc(64px + var(--safe-bottom));
+      background: rgba(7, 13, 26, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-around; padding-bottom: var(--safe-bottom);
+      z-index: 100;
+    }
+    .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); text-decoration: none; padding: 8px; min-width: 50px; }
+    .bnav-item.active { color: var(--teal); }
+    .bnav-icon { font-size: 1.3rem; }
+    .bnav-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
+    .bnav-main { 
+      background: var(--teal); color: var(--bg); border-radius: 50%; width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transform: translateY(-10px); box-shadow: var(--shadow-glow-teal);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo-icon" style="width: 32px; height: 32px; font-size: 1rem; background: linear-gradient(135deg, var(--teal), var(--purple)); border-radius: 8px; display: flex; align-items: center; justify-content: center;">🚗</div>
+    <div class="navbar-title">
+      <div style="line-height:1.1;">
+        <span style="display:block; font-size: 0.8rem; font-weight: 700;">Control Operativo</span>
+        <span style="display:block; font-size: 0.65rem; color: var(--text-muted);">de las Móviles</span>
+      </div>
+    </div>
+    <div class="navbar-actions">
+      <span id="userGreeting" style="font-size: 0.8rem; font-weight: 600;"></span>
+      <button id="btnLogout" class="btn btn-sm btn-secondary">Salir</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container-wide">
+      
+      <div class="section" style="animation: fadeUp 0.4s ease;">
+        <h2 id="userWelcome">Bienvenido</h2>
+        <p>Resumen operativo del día</p>
+      </div>
+      
+      <!-- Metrics Grid -->
+      <div class="metric-grid">
+        <div class="metric-card accent-teal">
+          <div class="metric-icon">📋</div>
+          <div class="metric-value" id="metOrdenesHoy">-</div>
+          <div class="metric-label">Órdenes Hoy</div>
+        </div>
+        <div class="metric-card accent-purple">
+          <div class="metric-icon">🔍</div>
+          <div class="metric-value" id="metInspecciones">-</div>
+          <div class="metric-label">Inspecciones</div>
+        </div>
+        <div class="metric-card accent-amber">
+          <div class="metric-icon">⚠️</div>
+          <div class="metric-value" id="metGarantias">-</div>
+          <div class="metric-label">Garantías %</div>
+        </div>
+        <div class="metric-card accent-red">
+          <div class="metric-icon">⭐</div>
+          <div class="metric-value" id="metCalidad">-</div>
+          <div class="metric-label">Calidad Prom.</div>
+        </div>
+      </div>
+      
+      <!-- Quick Access -->
+      <div class="section">
+        <h3 class="section-title">Accesos Rápidos</h3>
+        <div class="quick-access-grid">
+          <a href="/inspeccion.html" class="qa-card">
+            <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">🔍</div>
+            <div class="qa-label">Nueva Inspección</div>
+          </a>
+          <a href="/moviles.html" class="qa-card">
+            <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">🚗</div>
+            <div class="qa-label">Mis Móviles</div>
+          </a>
+          <a href="/inventario.html" class="qa-card">
+            <div class="qa-icon" style="background: var(--amber-dim); color: var(--amber);">🔧</div>
+            <div class="qa-label">Inventario</div>
+          </a>
+          <a href="/metricas.html" class="qa-card">
+            <div class="qa-icon" style="background: var(--red-dim); color: var(--red);">📊</div>
+            <div class="qa-label">Métricas</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Semáforo de Móviles -->
+      <div class="section">
+        <h3 class="section-title">Estado en Tiempo Real (Semáforo)</h3>
+        <div id="mobilesSemaforo">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+
+      <!-- Actividad Reciente -->
+      <div class="section">
+        <h3 class="section-title">Actividad Reciente</h3>
+        <div id="actividadReciente">
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <a href="/dashboard.html" class="bnav-item active">
+      <span class="bnav-icon">🏠</span>
+      <span class="bnav-label">Inicio</span>
+    </a>
+    <a href="/moviles.html" class="bnav-item">
+      <span class="bnav-icon">🚗</span>
+      <span class="bnav-label">Móviles</span>
+    </a>
+    <a href="/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
+      <span class="bnav-main">➕</span>
+    </a>
+    <a href="/inspecciones.html" class="bnav-item">
+      <span class="bnav-icon">📋</span>
+      <span class="bnav-label">Lista</span>
+    </a>
+    <a href="/metricas.html" class="bnav-item">
+      <span class="bnav-icon">📊</span>
+      <span class="bnav-label">Métricas</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    import { requireAuth, getUser, logout, getDashboard, semafBadge, formatTime } from '/js/app.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      requireAuth();
+      const user = getUser();
+      
+      if (user) {
+        document.getElementById('userGreeting').textContent = user.username;
+        document.getElementById('userWelcome').textContent = `Hola, ${user.username}`;
+      }
+
+      document.getElementById('btnLogout').addEventListener('click', logout);
+
+      loadDashboard();
+    });
+
+    async function loadDashboard() {
+      try {
+        const data = await getDashboard();
+        
+        // Update Metrics (assuming dummy or real API structure)
+        document.getElementById('metOrdenesHoy').textContent = data.ordenes_hoy ?? '0';
+        document.getElementById('metInspecciones').textContent = data.inspecciones_hoy ?? '0';
+        document.getElementById('metGarantias').textContent = (data.garantias_pct ?? '0') + '%';
+        document.getElementById('metCalidad').textContent = (data.calidad_promedio ?? '0');
+
+        // Render Semaphore
+        const semaforoDiv = document.getElementById('mobilesSemaforo');
+        if (data.mobiles && data.mobiles.length > 0) {
+          semaforoDiv.innerHTML = data.mobiles.map(m => `
+            <div class="vehicle-card" onclick="window.location.href='/moviles.html?id=${m.id}'" style="cursor:pointer;">
+              <div class="vehicle-icon">🚐</div>
+              <div class="vehicle-info">
+                <div class="vehicle-code">${m.codigo}</div>
+                <div class="vehicle-detail">${m.tecnico || 'Sin asignar'}</div>
+              </div>
+              <div class="vehicle-status">
+                ${semafBadge(m.score_calidad)}
+              </div>
+            </div>
+          `).join('');
+        } else {
+          semaforoDiv.innerHTML = '<p class="text-muted text-sm text-center py-4">No hay móviles registrados.</p>';
+        }
+
+        // Render Recent Activity
+        const actividadDiv = document.getElementById('actividadReciente');
+        if (data.actividad && data.actividad.length > 0) {
+          actividadDiv.innerHTML = data.actividad.map(a => `
+            <div class="list-item">
+              <div class="li-icon">📝</div>
+              <div class="li-content">
+                <div class="li-title">${a.tipo} - ${a.movil_codigo}</div>
+                <div class="li-sub">${a.descripcion}</div>
+              </div>
+              <div class="li-right">
+                <div class="li-date">${formatTime(a.fecha)}</div>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          actividadDiv.innerHTML = '<p class="text-muted text-sm text-center py-4">No hay actividad reciente.</p>';
+        }
+
+      } catch (err) {
+        console.error("Dashboard error:", err);
+        document.getElementById('mobilesSemaforo').innerHTML = '<p class="text-red text-sm">Error cargando datos.</p>';
+        document.getElementById('actividadReciente').innerHTML = '<p class="text-red text-sm">Error cargando datos.</p>';
+      }
+    }
+  </script>
+</body>
+</html>

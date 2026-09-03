@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inspecciones – Control Operativo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .insp-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+    
+    .filter-bar { display: flex; gap: 8px; margin-bottom: 16px; }
+    .filter-input { flex: 1; padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); outline: none; }
+    .filter-input:focus { border-color: var(--teal); }
+
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(64px + var(--safe-bottom)); background: rgba(7, 13, 26, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; padding-bottom: var(--safe-bottom); z-index: 100; }
+    .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); text-decoration: none; padding: 8px; min-width: 50px; }
+    .bnav-item.active { color: var(--teal); }
+    .bnav-icon { font-size: 1.3rem; }
+    .bnav-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
+    .bnav-main { background: var(--teal); color: var(--bg); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transform: translateY(-10px); box-shadow: var(--shadow-glow-teal); }
+  </style>
+</head>
+<body>
+  
+  <nav class="navbar">
+    <button class="btn-back" onclick="window.location.href='/dashboard.html'">←</button>
+    <div class="navbar-title">📋 Lista de Inspecciones</div>
+  </nav>
+
+  <main class="main-content">
+    <div class="container-wide">
+      
+      <div class="filter-bar">
+        <input type="text" id="searchInput" class="filter-input" placeholder="Buscar por móvil, técnico u orden...">
+      </div>
+      
+      <div class="chips-row mb-16">
+        <div class="chip active" data-filter="all">Todas</div>
+        <div class="chip" data-filter="green">Óptimas</div>
+        <div class="chip" data-filter="amber">Regulares</div>
+        <div class="chip" data-filter="red">Críticas</div>
+      </div>
+
+      <div class="insp-list" id="listaInspecciones">
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="/dashboard.html" class="bnav-item">
+      <span class="bnav-icon">🏠</span><span class="bnav-label">Inicio</span>
+    </a>
+    <a href="/moviles.html" class="bnav-item">
+      <span class="bnav-icon">🚗</span><span class="bnav-label">Móviles</span>
+    </a>
+    <a href="/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
+      <span class="bnav-main">➕</span>
+    </a>
+    <a href="/inspecciones.html" class="bnav-item active">
+      <span class="bnav-icon">📋</span><span class="bnav-label">Lista</span>
+    </a>
+    <a href="/metricas.html" class="bnav-item">
+      <span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    import { requireAuth, getInspections, formatDate, scoreColor } from '/js/app.js';
+
+    let allInspections = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      requireAuth();
+      
+      const chips = document.querySelectorAll('.chip');
+      chips.forEach(c => c.addEventListener('click', (e) => {
+        chips.forEach(ch => ch.classList.remove('active'));
+        e.target.classList.add('active');
+        applyFilters();
+      }));
+
+      document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+      try {
+        allInspections = await getInspections();
+        applyFilters();
+      } catch(e) {
+        document.getElementById('listaInspecciones').innerHTML = `<p class="text-red text-center py-4">Error cargando inspecciones</p>`;
+      }
+    });
+
+    function applyFilters() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const activeFilter = document.querySelector('.chip.active').dataset.filter;
+      
+      let filtered = allInspections;
+      
+      if(search) {
+        filtered = filtered.filter(i => 
+          (i.movil_codigo && i.movil_codigo.toLowerCase().includes(search)) ||
+          (i.numero_orden && i.numero_orden.toLowerCase().includes(search)) ||
+          (i.tecnico_nombre && i.tecnico_nombre.toLowerCase().includes(search)) ||
+          (i.cliente && i.cliente.toLowerCase().includes(search))
+        );
+      }
+      
+      if(activeFilter === 'green') filtered = filtered.filter(i => i.score >= 85);
+      if(activeFilter === 'amber') filtered = filtered.filter(i => i.score >= 65 && i.score < 85);
+      if(activeFilter === 'red')   filtered = filtered.filter(i => i.score < 65);
+
+      renderList(filtered);
+    }
+
+    function renderList(list) {
+      const container = document.getElementById('listaInspecciones');
+      
+      if(!list || list.length === 0) {
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-title">No hay resultados</div><div class="empty-state-desc">Intenta cambiar los filtros de búsqueda.</div></div>`;
+        return;
+      }
+
+      container.innerHTML = list.map(i => `
+        <div class="insp-card">
+          <div class="insp-card-left">
+            <div class="insp-mobile-badge">${i.movil_codigo}</div>
+          </div>
+          <div class="insp-card-center">
+            <div class="insp-client-name">Orden: ${i.numero_orden} - ${i.cliente}</div>
+            <div class="insp-tech-name">${i.tecnico_nombre || 'Desconocido'}</div>
+            <div class="insp-date">${formatDate(i.fecha)}</div>
+          </div>
+          <div class="insp-card-right">
+            <div class="insp-score-value" style="color: ${scoreColor(i.score)}">${i.score}%</div>
+            <div class="insp-arrow">›</div>
+          </div>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

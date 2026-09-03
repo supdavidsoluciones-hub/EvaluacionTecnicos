@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Móviles – Control Operativo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .vehicle-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .vehicle-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all var(--transition); }
+    .vehicle-card:hover { background: var(--bg-card2); border-color: var(--border-light); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+    .vehicle-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); background: var(--bg-card2); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .vehicle-info { flex: 1; min-width: 0; }
+    .vehicle-code { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .vehicle-detail { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .vehicle-status { text-align: right; display: flex; align-items: center; gap: 8px; }
+    
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(64px + var(--safe-bottom)); background: rgba(7, 13, 26, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; padding-bottom: var(--safe-bottom); z-index: 100; }
+    .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); text-decoration: none; padding: 8px; min-width: 50px; }
+    .bnav-item.active { color: var(--teal); }
+    .bnav-icon { font-size: 1.3rem; }
+    .bnav-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
+    .bnav-main { background: var(--teal); color: var(--bg); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transform: translateY(-10px); box-shadow: var(--shadow-glow-teal); }
+  </style>
+</head>
+<body>
+  
+  <nav class="navbar">
+    <button class="btn-back" onclick="window.location.href='/dashboard.html'">←</button>
+    <div class="navbar-title">🚗 Móviles</div>
+    <div class="navbar-actions">
+      <button class="btn btn-sm btn-primary" id="btnAddMovil">+ Nueva</button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="container-wide">
+      
+      <div class="chips-row mb-16">
+        <div class="chip active" data-zone="all">Todos</div>
+        <div class="chip" data-zone="chiriqui">Chiriquí</div>
+        <div class="chip" data-zone="santiago">Santiago</div>
+      </div>
+
+      <div class="vehicle-list" id="listaMoviles">
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="/dashboard.html" class="bnav-item">
+      <span class="bnav-icon">🏠</span><span class="bnav-label">Inicio</span>
+    </a>
+    <a href="/moviles.html" class="bnav-item active">
+      <span class="bnav-icon">🚗</span><span class="bnav-label">Móviles</span>
+    </a>
+    <a href="/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
+      <span class="bnav-main">➕</span>
+    </a>
+    <a href="/inspecciones.html" class="bnav-item">
+      <span class="bnav-icon">📋</span><span class="bnav-label">Lista</span>
+    </a>
+    <a href="/metricas.html" class="bnav-item">
+      <span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    import { requireAuth, getMobiles, semafBadge } from '/js/app.js';
+
+    let mobilesData = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      requireAuth();
+      
+      const chips = document.querySelectorAll('.chip');
+      chips.forEach(c => c.addEventListener('click', (e) => {
+        chips.forEach(ch => ch.classList.remove('active'));
+        e.target.classList.add('active');
+        renderMobiles(e.target.dataset.zone);
+      }));
+
+      try {
+        mobilesData = await getMobiles();
+        renderMobiles('all');
+      } catch(e) {
+        document.getElementById('listaMoviles').innerHTML = `<p class="text-red text-center py-4">Error cargando móviles</p>`;
+      }
+    });
+
+    function renderMobiles(zone) {
+      const list = document.getElementById('listaMoviles');
+      
+      let filtered = mobilesData;
+      if(zone === 'chiriqui') filtered = mobilesData.filter(m => m.zona === 'Chiriquí' || parseInt(m.codigo.substring(1)) <= 206);
+      if(zone === 'santiago') filtered = mobilesData.filter(m => m.zona === 'Santiago' || parseInt(m.codigo.substring(1)) >= 207);
+
+      if(!filtered || filtered.length === 0) {
+        list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🚐</div><div class="empty-state-title">No hay móviles</div><div class="empty-state-desc">No se encontraron móviles registrados.</div></div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(m => `
+        <div class="vehicle-card" onclick="window.location.href='/inventario.html?movil=${m.codigo}'">
+          <div class="vehicle-icon">🚐</div>
+          <div class="vehicle-info">
+            <div class="vehicle-code">${m.codigo} <span class="badge badge-neutral">${m.placa || 'N/A'}</span></div>
+            <div class="vehicle-detail">${m.tecnico?.nombre || 'Técnico sin asignar'}</div>
+          </div>
+          <div class="vehicle-status">
+            ${semafBadge(m.score_calidad)}
+            <span class="text-muted" style="font-size:1.2rem;">›</span>
+          </div>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>
