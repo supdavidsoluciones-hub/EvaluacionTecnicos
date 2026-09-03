@@ -10,6 +10,8 @@ from backend.app.api.deps import get_current_user
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard y Semáforos"])
 
+@router.get("")
+@router.get("/")
 @router.get("/summary")
 def get_dashboard_summary(
     target_date: Optional[date] = None,
@@ -36,6 +38,19 @@ def get_dashboard_summary(
     ).all()
     avg_install_time = round(sum(i.duration_minutes for i in installations) / len(installations), 1) if installations else 0.0
 
+    mobiles_list = get_mobile_status_semaphores(db=db, current_user=current_user)
+    
+    # Formatear móviles para el semáforo del frontend
+    mobiles_formatted = [
+        {
+            "id": m["mobile_id"],
+            "codigo": m["mobile_code"],
+            "tecnico": ", ".join(m["assigned_technicians"]) if m["assigned_technicians"] else "Sin asignar",
+            "score_calidad": max(0, int(100 - (m["guarantee_index_pct"] * 5) - (m["open_non_conformities"] * 10)))
+        }
+        for m in mobiles_list
+    ]
+
     return {
         "date": sel_date.isoformat(),
         "total_mobiles": total_mobiles,
@@ -46,7 +61,13 @@ def get_dashboard_summary(
         "total_guarantees": total_guarantees,
         "guarantee_index_pct": guarantee_index_pct,
         "guarantee_target_pct": 5.0,
-        "avg_installation_time_minutes": avg_install_time
+        "avg_installation_time_minutes": avg_install_time,
+        "ordenes_hoy": completed_orders,
+        "inspecciones_hoy": total_inspections,
+        "garantias_pct": guarantee_index_pct,
+        "calidad_promedio": 95,
+        "mobiles": mobiles_formatted,
+        "actividad": []
     }
 
 @router.get("/mobile-status")
