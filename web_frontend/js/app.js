@@ -70,15 +70,17 @@ export async function apiRequest(method, endpoint, body = null, isFormData = fal
 // ─────────────────────────────────────────────────────────────
 
 export async function login(username, password) {
-  const params = new URLSearchParams({ username, password });
   const res = await fetch(`${API_BASE}/auth/login`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: params,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password }),
   });
   let data;
   try { data = await res.json(); } catch { data = {}; }
-  if (!res.ok) throw new Error(data.detail || 'Credenciales incorrectas');
+  if (!res.ok) {
+    const errorMsg = Array.isArray(data.detail) ? 'Datos incorrectos' : (data.detail || 'Credenciales incorrectas');
+    throw new Error(errorMsg);
+  }
   return data;
 }
 
