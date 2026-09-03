@@ -16,3 +16,7 @@ services:
         value: https://vpivzxkttjsgkpxyvpvp.supabase.co
       - key: SUPABASE_KEY
         value: sb_publishable_ewGTKWdwD3HSbNkMH6qmbw_QM0Ho4KA
+      - key: CLOUDINARY_CLOUD_NAME
+        value: dgb8eri7
+      - key: CLOUDINARY_UPLOAD_PRESET
+        value: chiriqui_fotos
