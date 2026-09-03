@@ -32,12 +32,16 @@ def init_db(db: Session):
         db.add(admin_user)
         db.commit()
 
-    # 3. Crear Móviles M200 a M206
-    default_mobiles = ["M200", "M201", "M202", "M203", "M204", "M205", "M206"]
-    for code in default_mobiles:
+    # 3. Crear Móviles M200 a M206 (Chiriquí) y M207 a M209 (Santiago)
+    default_mobiles = [
+        ("M200", "Chiriquí"), ("M201", "Chiriquí"), ("M202", "Chiriquí"),
+        ("M203", "Chiriquí"), ("M204", "Chiriquí"), ("M205", "Chiriquí"), ("M206", "Chiriquí"),
+        ("M207", "Santiago"), ("M208", "Santiago"), ("M209", "Santiago")
+    ]
+    for code, location in default_mobiles:
         m = db.query(Mobile).filter(Mobile.code == code).first()
         if not m:
-            db.add(Mobile(code=code, status="activa", notes=f"Móvil {code} asignada a Chiriquí"))
+            db.add(Mobile(code=code, status="activa", notes=f"Móvil {code} asignada a {location}"))
     db.commit()
 
     # 4. Crear Categorías y Preguntas por Defecto de Inspección
