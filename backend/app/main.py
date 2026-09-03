@@ -89,35 +89,11 @@ async def startup_event():
     logger.info("✅ Sistema de Control Operativo Chiriquí - ONLINE")
 
 
-@app.get("/", response_class=HTMLResponse)
+from fastapi.responses import RedirectResponse
+
+@app.get("/", include_in_schema=False)
 def root():
-    return """
-    <html>
-    <head>
-        <title>Control Operativo Chiriquí</title>
-        <meta charset="utf-8">
-        <style>
-            body { font-family: Arial, sans-serif; text-align: center; padding: 60px;
-                   background: #1a1a2e; color: white; margin: 0; }
-            h1 { color: #00d4aa; font-size: 2em; }
-            h2 { color: #aaa; font-size: 1.2em; }
-            .btn { display: inline-block; margin: 10px; padding: 14px 28px;
-                   background: #00d4aa; color: #1a1a2e; text-decoration: none;
-                   border-radius: 8px; font-weight: bold; font-size: 16px; }
-            .btn:hover { background: #00b894; }
-            .status { margin-top: 30px; color: #55efc4; font-size: 14px; }
-        </style>
-    </head>
-    <body>
-        <h1>🚀 Control Operativo de Móviles</h1>
-        <h2>Chiriquí – Panamá</h2>
-        <br>
-        <a href="/docs" class="btn">📚 Documentación API</a>
-        <a href="/app" class="btn">📱 Aplicación Web</a>
-        <p class="status">✅ Servidor funcionando correctamente</p>
-    </body>
-    </html>
-    """
+    return RedirectResponse(url="/app/login.html")
 
 @app.get("/health")
 def health_check():
