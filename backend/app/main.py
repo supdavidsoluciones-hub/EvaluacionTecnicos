@@ -83,12 +83,15 @@ if os.path.isdir("web_frontend"):
 
 
 
-from fastapi.responses import RedirectResponse
-
 @app.get("/", include_in_schema=False)
 def root():
     return RedirectResponse(url="/app/login.html")
 
+@app.get("/{page_name}.html", include_in_schema=False)
+def redirect_html(page_name: str):
+    return RedirectResponse(url=f"/app/{page_name}.html")
+
 @app.get("/health")
 def health_check():
     return {"status": "ok", "service": "chiriqui-control-operativo", "version": "1.0.0"}
+
