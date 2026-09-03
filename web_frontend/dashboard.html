@@ -142,7 +142,7 @@
             <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">🚗</div>
             <div class="qa-label">Mis Móviles</div>
           </a>
-          <a href="/inventario.html" class="qa-card">
+          <a href="/app/inventario.html" class="qa-card">
             <div class="qa-icon" style="background: var(--amber-dim); color: var(--amber);">🔧</div>
             <div class="qa-label">Inventario</div>
           </a>
@@ -227,7 +227,7 @@
         const semaforoDiv = document.getElementById('mobilesSemaforo');
         if (data.mobiles && data.mobiles.length > 0) {
           semaforoDiv.innerHTML = data.mobiles.map(m => `
-            <div class="vehicle-card" onclick="window.location.href='/moviles.html?id=${m.id}'" style="cursor:pointer;">
+            <div class="vehicle-card" onclick="window.location.href='/app/moviles.html?id=${m.id}'" style="cursor:pointer;">
               <div class="vehicle-icon">🚐</div>
               <div class="vehicle-info">
                 <div class="vehicle-code">${m.codigo}</div>
