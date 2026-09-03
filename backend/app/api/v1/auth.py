@@ -9,37 +9,31 @@ from backend.app.api.deps import get_current_user, get_current_admin_user
 
 router = APIRouter(prefix="/auth", tags=["Autenticación"])
 
-@router.post("/login")
+@router.post("/login", response_model=Token)
 def login(login_data: LoginRequest, db: Session = Depends(get_db)):
-    try:
-        user = db.query(User).filter(User.username == login_data.username).first()
-        if not user or not verify_password(login_data.password, user.password_hash):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Usuario o contraseña incorrectos"
-            )
-        if not user.is_active:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Usuario inactivo"
-            )
-        
-        access_token = create_access_token(subject=user.username)
-        return {
-            "access_token": access_token,
-            "token_type": "bearer",
-            "user_info": {
-                "id": user.id,
-                "username": user.username,
-                "full_name": user.full_name,
-                "role": user.role.name
-            }
+    user = db.query(User).filter(User.username == login_data.username).first()
+    if not user or not verify_password(login_data.password, user.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Usuario o contraseña incorrectos"
+        )
+    if not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Usuario inactivo"
+        )
+    
+    access_token = create_access_token(subject=user.username)
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user_info": {
+            "id": user.id,
+            "username": user.username,
+            "full_name": user.full_name,
+            "role": user.role.name
         }
-    except HTTPException:
-        raise
-    except Exception as e:
-        import traceback
-        return {"error_debug": str(e), "traceback": traceback.format_exc()}
+    }
 
     
 
