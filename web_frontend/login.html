@@ -427,6 +427,12 @@
 
     // ── Redirect if already logged in ───────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('logout') === 'true') {
+        localStorage.removeItem('cm_token');
+        localStorage.removeItem('cm_user');
+      }
+
       if (isAuthenticated()) {
         window.location.href = '/app/dashboard.html';
         return;
