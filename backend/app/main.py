@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 import os
 import logging
 
@@ -80,15 +80,26 @@ else:
 
 if os.path.isdir("web_frontend"):
     app.mount("/app", StaticFiles(directory="web_frontend", html=True), name="web_app")
-
+    if os.path.isdir("web_frontend/css"):
+        app.mount("/css", StaticFiles(directory="web_frontend/css"), name="css_assets")
+    if os.path.isdir("web_frontend/js"):
+        app.mount("/js", StaticFiles(directory="web_frontend/js"), name="js_assets")
+    if os.path.isdir("web_frontend/img"):
+        app.mount("/img", StaticFiles(directory="web_frontend/img"), name="img_assets")
 
 
 @app.get("/", include_in_schema=False)
 def root():
+    login_path = os.path.join("web_frontend", "login.html")
+    if os.path.exists(login_path):
+        return FileResponse(login_path)
     return RedirectResponse(url="/app/login.html")
 
 @app.get("/{page_name}.html", include_in_schema=False)
 def redirect_html(page_name: str):
+    target_path = os.path.join("web_frontend", f"{page_name}.html")
+    if os.path.exists(target_path):
+        return FileResponse(target_path)
     return RedirectResponse(url=f"/app/{page_name}.html")
 
 @app.get("/health")
