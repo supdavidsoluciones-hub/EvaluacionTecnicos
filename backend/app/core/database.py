@@ -19,23 +19,27 @@ def init_engine():
         connect_args = {"check_same_thread": False}
         return create_engine(db_url, connect_args=connect_args, **engine_kwargs)
     elif db_url.startswith("postgresql"):
+        # Detect Supabase direct IPv6 connection that fails on Render IPv4
+        if "supabase.co" in db_url and "pooler" not in db_url:
+            logger.warning("⚠️ Supabase direct IPv6 URL detected. Switching to local SQLite engine to avoid timeout.")
+            return create_engine("sqlite:///./chiriqui_operativo.db", connect_args={"check_same_thread": False})
+
         if "sslmode" not in db_url:
             db_url += "?sslmode=require"
         engine_kwargs["pool_size"] = 5
         engine_kwargs["max_overflow"] = 10
         engine_kwargs["pool_recycle"] = 300
+        connect_args["connect_timeout"] = 3
         
         try:
             temp_engine = create_engine(db_url, connect_args=connect_args, **engine_kwargs)
-            # Test connection with short timeout
             with temp_engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
             logger.info("✅ Conexión exitosa a PostgreSQL")
             return temp_engine
         except Exception as e:
             logger.warning(f"⚠️ Error conectando a PostgreSQL ({e}). Usando fallback a SQLite.")
-            fallback_url = "sqlite:///./chiriqui_operativo.db"
-            return create_engine(fallback_url, connect_args={"check_same_thread": False})
+            return create_engine("sqlite:///./chiriqui_operativo.db", connect_args={"check_same_thread": False})
 
 engine = init_engine()
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
