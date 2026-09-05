@@ -36,13 +36,35 @@ class UserResponse(BaseModel):
 # Mobile Schemas
 class MobileCreate(BaseModel):
     code: str
+    vehicle_model: Optional[str] = "Chevrolet P900"
+    plate: Optional[str] = None
+    zone: Optional[str] = None
+    color: Optional[str] = "blanco"
     status: Optional[str] = "activa"
+    cleanliness_status: Optional[str] = "Limpio"
+    damage_status: Optional[str] = "Sin daños"
+    notes: Optional[str] = None
+
+class MobileUpdate(BaseModel):
+    vehicle_model: Optional[str] = None
+    plate: Optional[str] = None
+    zone: Optional[str] = None
+    color: Optional[str] = None
+    status: Optional[str] = None
+    cleanliness_status: Optional[str] = None
+    damage_status: Optional[str] = None
     notes: Optional[str] = None
 
 class MobileResponse(BaseModel):
     id: int
     code: str
+    vehicle_model: Optional[str] = None
+    plate: Optional[str] = None
+    zone: Optional[str] = None
+    color: Optional[str] = None
     status: str
+    cleanliness_status: str
+    damage_status: str
     notes: Optional[str] = None
     created_at: datetime
 

@@ -35,7 +35,13 @@ class Mobile(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     code = Column(String(20), unique=True, index=True, nullable=False)  # 'M200', 'M201', etc.
+    vehicle_model = Column(String(60), default="Chevrolet P900", nullable=True)  # Chevrolet P900
+    plate = Column(String(20), nullable=True)   # Placa del vehículo
+    zone = Column(String(40), nullable=True)    # 'Chiriquí' o 'Santiago'
+    color = Column(String(30), default="blanco", nullable=True)
     status = Column(String(30), default="activa")  # 'activa', 'mantenimiento', 'inactiva'
+    cleanliness_status = Column(String(50), default="Limpio")
+    damage_status = Column(String(50), default="Sin daños")
     notes = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -45,6 +51,7 @@ class Mobile(Base):
     inspections = relationship("Inspection", back_populates="mobile")
     guarantees = relationship("Guarantee", back_populates="mobile")
     action_plans = relationship("ActionPlan", back_populates="mobile")
+    inventory = relationship("VehicleInventory", back_populates="mobile", cascade="all, delete-orphan")
 
 
 class Technician(Base):
@@ -258,3 +265,22 @@ class ActionPlanEvidence(Base):
     uploaded_at = Column(DateTime, default=datetime.utcnow)
 
     action_plan = relationship("ActionPlan", back_populates="evidences")
+
+
+class VehicleInventory(Base):
+    """Inventario de herramientas por vehículo."""
+    __tablename__ = "vehicle_inventory"
+
+    id = Column(Integer, primary_key=True, index=True)
+    mobile_id = Column(Integer, ForeignKey("mobiles.id"), nullable=False)
+    tool_name = Column(String(120), nullable=False)       # Nombre de la herramienta
+    category = Column(String(60), nullable=True)          # 'Herramienta', 'EPP', 'Stock', 'Seguridad'
+    quantity_required = Column(Integer, default=1)        # Cantidad mínima requerida
+    quantity_current = Column(Integer, default=0)         # Cantidad actual disponible
+    status = Column(String(20), default="ok")             # 'ok', 'faltante', 'danado'
+    serial_number = Column(String(80), nullable=True)     # Para equipos como fusionadora, OTDR
+    notes = Column(Text, nullable=True)
+    last_verified = Column(DateTime, nullable=True)       # Última vez verificada
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    mobile = relationship("Mobile", back_populates="inventory")

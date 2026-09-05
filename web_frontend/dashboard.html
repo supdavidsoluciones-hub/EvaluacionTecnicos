@@ -136,21 +136,31 @@
       <div class="section">
         <h3 class="section-title">Accesos Rápidos</h3>
         <div class="quick-access-grid">
-          <a href="/app/inspeccion.html" class="qa-card">
+          <a href="/app/inspeccion.html" class="qa-card" id="qa-inspeccion">
             <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">🔍</div>
             <div class="qa-label">Nueva Inspección</div>
           </a>
-          <a href="/app/moviles.html" class="qa-card">
-            <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">🚗</div>
+          <a href="/app/moviles.html" class="qa-card" id="qa-moviles">
+            <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">
+              <svg viewBox="0 0 200 80" style="width:28px;height:12px" aria-hidden="true">
+                <rect x="10" y="30" width="160" height="35" rx="6" fill="url(#dg1)"/>
+                <rect x="20" y="15" width="90" height="25" rx="5" fill="url(#dg1)"/>
+                <circle cx="45" cy="67" r="9" fill="#0b1224" stroke="#7c3aed" stroke-width="2"/>
+                <circle cx="45" cy="67" r="4" fill="#7c3aed"/>
+                <circle cx="145" cy="67" r="9" fill="#0b1224" stroke="#7c3aed" stroke-width="2"/>
+                <circle cx="145" cy="67" r="4" fill="#7c3aed"/>
+                <defs><linearGradient id="dg1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7c3aed" stop-opacity="0.9"/><stop offset="100%" stop-color="#00d4aa" stop-opacity="0.8"/></linearGradient></defs>
+              </svg>
+            </div>
             <div class="qa-label">Mis Móviles</div>
           </a>
-          <a href="/app/inventario.html" class="qa-card">
-            <div class="qa-icon" style="background: var(--amber-dim); color: var(--amber);">🔧</div>
-            <div class="qa-label">Inventario</div>
-          </a>
-          <a href="/app/metricas.html" class="qa-card">
-            <div class="qa-icon" style="background: var(--red-dim); color: var(--red);">📊</div>
+          <a href="/app/metricas.html" class="qa-card" id="qa-metricas">
+            <div class="qa-icon" style="background: var(--amber-dim); color: var(--amber);">📊</div>
             <div class="qa-label">Métricas</div>
+          </a>
+          <a href="javascript:void(0)" class="qa-card" id="qa-config" onclick="toggleConfig()">
+            <div class="qa-icon" style="background: rgba(99,102,241,0.15); color: #818cf8;">⚙️</div>
+            <div class="qa-label">Configuración</div>
           </a>
         </div>
       </div>
@@ -169,6 +179,33 @@
         <h3 class="section-title">Actividad Reciente</h3>
         <div id="actividadReciente">
           <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+
+
+      <!-- Sección Configuración -->
+      <div class="section" id="configSection" style="display: none; animation: fadeUp 0.3s ease; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+        <h2 style="margin-bottom: 16px;">⚙️ Configuración y Administración</h2>
+        
+        <div class="quick-access-grid" style="margin-bottom: 24px;">
+          <button class="qa-card" onclick="openAddMobileModal()" style="border: 1px dashed var(--teal);">
+            <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">🚐</div>
+            <div class="qa-label">+ Nueva Móvil</div>
+          </button>
+          <button class="qa-card" onclick="openAddTechModal()" style="border: 1px dashed var(--purple-light);">
+            <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">👤</div>
+            <div class="qa-label">+ Nuevo Técnico</div>
+          </button>
+        </div>
+
+        <h3 class="section-title">👥 Técnicos del Sistema (Técnico 1 y Técnico 2)</h3>
+        <div id="techConfigList" style="margin-bottom: 24px; display: grid; gap: 8px;">
+          <p class="text-muted text-sm">Cargando técnicos...</p>
+        </div>
+        
+        <h3 class="section-title">🚐 Móviles Registradas</h3>
+        <div id="mobileConfigList" style="display: grid; gap: 8px;">
+          <p class="text-muted text-sm">Cargando móviles...</p>
         </div>
       </div>
 
@@ -198,8 +235,129 @@
     </a>
   </nav>
 
+
+  <!-- Modals Config -->
+  <style>
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal-sheet { background: var(--bg-card); border-radius: 20px 20px 0 0; width: 100%; max-width: 480px; padding: 24px; max-height: 85vh; overflow-y: auto; }
+    .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
+    .modal-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+    .config-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; }
+  </style>
+
+  <!-- Add Mobile Modal -->
+  <div class="modal-overlay" id="addMobileModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🚐 Agregar Nueva Móvil</div>
+      <div class="form-group"><label>Código* (ej: M210)</label><input id="addCode" class="form-control" type="text" placeholder="M210" /></div>
+      <div class="form-group"><label>Placa</label><input id="addPlate" class="form-control" type="text" placeholder="AB-1234" /></div>
+      <button class="btn btn-primary btn-full" onclick="saveAddMobile()">Agregar Móvil</button>
+      <button class="btn btn-secondary btn-full" onclick="closeModal('addMobileModal')" style="margin-top:8px;">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- Add Tech Modal -->
+  <div class="modal-overlay" id="addTechModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">👤 Agregar Técnico</div>
+      <div class="form-group"><label>Nombre Completo*</label><input id="techName" class="form-control" type="text" /></div>
+      <button class="btn btn-primary btn-full" onclick="saveAddTech()">Agregar Técnico</button>
+      <button class="btn btn-secondary btn-full" onclick="closeModal('addTechModal')" style="margin-top:8px;">Cancelar</button>
+    </div>
+  </div>
+
   <script type="module">
     import { requireAuth, getUser, logout, getDashboard, semafBadge, formatTime } from '/app/js/app.js';
+
+    
+    // Config Logic
+    window.toggleConfig = function() {
+      const section = document.getElementById('configSection');
+      section.style.display = section.style.display === 'none' ? 'block' : 'none';
+      if (section.style.display === 'block') {
+        loadConfigData();
+        section.scrollIntoView({behavior: 'smooth'});
+      }
+    };
+
+    window.openAddMobileModal = () => document.getElementById('addMobileModal').classList.add('open');
+    window.openAddTechModal = () => document.getElementById('addTechModal').classList.add('open');
+    window.closeModal = (id) => document.getElementById(id).classList.remove('open');
+
+    window.saveAddMobile = async () => {
+      const code = document.getElementById('addCode').value.trim().toUpperCase();
+      if (!code) return alert('Código requerido');
+      try {
+        const res = await fetch('/api/v1/mobiles', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token'), 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, plate: document.getElementById('addPlate').value })
+        });
+        if (!res.ok) throw new Error('Error agregando móvil');
+        closeModal('addMobileModal');
+        loadConfigData();
+        loadDashboard(); // reload main dash
+      } catch (e) { alert(e.message); }
+    };
+
+    window.saveAddTech = async () => {
+      const name = document.getElementById('techName').value.trim();
+      if (!name) return alert('Nombre requerido');
+      try {
+        const res = await fetch('/api/v1/technicians', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token'), 'Content-Type': 'application/json' },
+          body: JSON.stringify({ full_name: name })
+        });
+        if (!res.ok) throw new Error('Error agregando técnico');
+        closeModal('addTechModal');
+        loadConfigData();
+      } catch (e) { alert(e.message); }
+    };
+
+    window.deleteMobile = async (id, code) => {
+      if (!confirm(`¿Estás seguro de eliminar la móvil ${code}?`)) return;
+      try {
+        const res = await fetch(`/api/v1/mobiles/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token') }
+        });
+        if (!res.ok) throw new Error('No se pudo eliminar');
+        loadConfigData();
+        loadDashboard();
+      } catch (e) { alert(e.message); }
+    };
+
+    async function loadConfigData() {
+      try {
+        const [mobRes, techRes] = await Promise.all([
+          fetch('/api/v1/mobiles', { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token') } }),
+          fetch('/api/v1/technicians', { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token') } })
+        ]);
+        const mobiles = await mobRes.json();
+        const techs = await techRes.json();
+        
+        document.getElementById('mobileConfigList').innerHTML = mobiles.map(m => `
+          <div class="config-card">
+            <div><strong>${m.code}</strong> <span class="text-muted text-sm">${m.plate || 'Sin placa'}</span></div>
+            <button class="btn btn-sm" style="background:var(--red);color:#fff;" onclick="deleteMobile(${m.id}, '${m.code}')">Eliminar</button>
+          </div>
+        `).join('');
+
+        document.getElementById('techConfigList').innerHTML = techs.map(t => `
+          <div class="config-card">
+            <div>👤 <strong>${t.full_name}</strong></div>
+            <span class="badge badge-verde">${t.status}</span>
+          </div>
+        `).join('');
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
 
     document.addEventListener('DOMContentLoaded', () => {
       requireAuth();
@@ -225,21 +383,38 @@
         document.getElementById('metGarantias').textContent = (data.garantias_pct ?? '0') + '%';
         document.getElementById('metCalidad').textContent = (data.calidad_promedio ?? '0');
 
-        // Render Semaphore
+        // Render Semaphore – Chevrolet P900 cards
         const semaforoDiv = document.getElementById('mobilesSemaforo');
         if (data.mobiles && data.mobiles.length > 0) {
-          semaforoDiv.innerHTML = data.mobiles.map(m => `
-            <div class="vehicle-card" onclick="window.location.href='/app/moviles.html?id=${m.id}'" style="cursor:pointer;">
-              <div class="vehicle-icon">🚐</div>
+          semaforoDiv.innerHTML = data.mobiles.map(m => {
+            const score = m.score_calidad || 100;
+            const sem = score >= 85 ? {cls:'badge-verde', label:'OPTIMO'} : score >= 65 ? {cls:'badge-amarillo', label:'REGULAR'} : {cls:'badge-rojo', label:'CRITICO'};
+            const statusColors = {activa:'#00d4aa', mantenimiento:'#f59e0b', inactiva:'#ef4444'};
+            const sc = statusColors[m.status] || '#00d4aa';
+            return `
+            <div class="vehicle-card" onclick="window.location.href='/app/movil_detalle.html?id=${m.id}'" style="cursor:pointer; border-left: 3px solid ${sc};">
+              <div style="flex-shrink:0;">
+                <svg viewBox="0 0 200 80" style="width:56px;height:24px" aria-label="Chevrolet P900">
+                  <rect x="10" y="28" width="160" height="37" rx="6" fill="url(#sg${m.id})"/>
+                  <rect x="20" y="14" width="88" height="24" rx="5" fill="url(#sg${m.id})"/>
+                  <rect x="24" y="18" width="33" height="14" rx="2" fill="rgba(0,212,170,0.25)" stroke="#00d4aa" stroke-width="1"/>
+                  <rect x="62" y="18" width="33" height="14" rx="2" fill="rgba(0,212,170,0.25)" stroke="#00d4aa" stroke-width="1"/>
+                  <circle cx="44" cy="66" r="10" fill="#0d1526" stroke="${sc}" stroke-width="2"/>
+                  <circle cx="44" cy="66" r="5" fill="${sc}"/>
+                  <circle cx="145" cy="66" r="10" fill="#0d1526" stroke="${sc}" stroke-width="2"/>
+                  <circle cx="145" cy="66" r="5" fill="${sc}"/>
+                  <defs><linearGradient id="sg${m.id}" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="${sc}" stop-opacity="0.8"/><stop offset="100%" stop-color="#7c3aed" stop-opacity="0.9"/></linearGradient></defs>
+                </svg>
+              </div>
               <div class="vehicle-info">
-                <div class="vehicle-code">${m.codigo}</div>
-                <div class="vehicle-detail">${m.tecnico || 'Sin asignar'}</div>
+                <div class="vehicle-code">${m.code || m.codigo} <span style="font-size:0.68rem;color:var(--text-muted);font-weight:400;">${m.vehicle_model||'Chevrolet P900'}</span></div>
+                <div class="vehicle-detail">${m.zone ? m.zone + ' • ' : ''}${m.primary_technician?.name || 'Sin t\u00e9cnico asignado'}</div>
               </div>
               <div class="vehicle-status">
-                ${semafBadge(m.score_calidad)}
+                <span class="badge ${sem.cls}">${sem.label}</span>
               </div>
-            </div>
-          `).join('');
+            </div>`;
+          }).join('');
         } else {
           semaforoDiv.innerHTML = '<p class="text-muted text-sm text-center py-4">No hay móviles registrados.</p>';
         }

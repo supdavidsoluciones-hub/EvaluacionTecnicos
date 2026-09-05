@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Perfil detallado de móvil Chevrolet P900 – Control Operativo de las Móviles" />
+  <title>Perfil de Móvil – Control Operativo</title>
+  <link rel="icon" type="image/png" href="/app/img/logo.png" />
+  <link rel="apple-touch-icon" href="/app/img/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/app/css/style.css" />
+  <style>
+    .hero-card {
+      background: linear-gradient(135deg, rgba(0,212,170,0.08) 0%, rgba(124,58,237,0.12) 100%);
+      border: 1px solid rgba(0,212,170,0.25);
+      border-radius: 18px; padding: 20px; margin-bottom: 20px;
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .hero-van svg { filter: drop-shadow(0 4px 12px rgba(0,212,170,0.4)); }
+    .hero-info { flex: 1; }
+    .hero-code { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); line-height: 1; }
+    .hero-model { font-size: 0.85rem; color: var(--teal); font-weight: 600; margin: 4px 0; }
+    .hero-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .tabs { display: flex; gap: 4px; background: var(--bg-card); border-radius: 12px; padding: 4px; margin-bottom: 16px; overflow-x: auto; }
+    .tab-btn { flex: 1; min-width: 80px; padding: 8px 12px; border: none; background: transparent; color: var(--text-muted); font-size: 0.78rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .tab-btn.active { background: linear-gradient(135deg, var(--teal), var(--purple-light)); color: #fff; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .tech-card { display: flex; align-items: center; gap: 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+    .tech-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--teal-dim), var(--purple-dim)); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .tech-info { flex: 1; }
+    .tech-name { font-weight: 700; font-size: 0.9rem; }
+    .tech-role { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .inv-summary { display: flex; gap: 12px; margin-bottom: 14px; }
+    .inv-stat { flex: 1; background: var(--bg-card); border-radius: 10px; padding: 10px; text-align: center; border: 1px solid var(--border); }
+    .inv-stat-value { font-size: 1.3rem; font-weight: 800; }
+    .inv-stat-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; }
+    .inv-filters { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 12px; padding-bottom: 4px; }
+    .filter-btn { flex-shrink: 0; padding: 5px 12px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-muted); font-size: 0.75rem; font-weight: 600; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
+    .filter-btn.active { border-color: var(--teal); color: var(--teal); background: var(--teal-dim); }
+    .inv-row { display: flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+    .inv-icon { font-size: 1rem; flex-shrink: 0; }
+    .inv-info { flex: 1; }
+    .inv-name { font-size: 0.85rem; font-weight: 600; }
+    .inv-cat { font-size: 0.68rem; color: var(--text-muted); }
+    .inv-qty { font-size: 0.78rem; font-weight: 700; margin-right: 8px; }
+    .insp-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+    .insp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+    .insp-code { font-weight: 700; font-size: 0.85rem; }
+    .insp-date { font-size: 0.72rem; color: var(--text-muted); }
+    .insp-detail { font-size: 0.78rem; color: var(--text-secondary); }
+    .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+    .stat-value { font-size: 1.8rem; font-weight: 800; }
+    .stat-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-top: 4px; }
+    .quality-bar-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .quality-bar-track { background: rgba(255,255,255,0.06); border-radius: 20px; height: 12px; overflow: hidden; margin-top: 8px; }
+    .quality-bar-fill { height: 100%; border-radius: 20px; transition: width 1s ease; }
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal-sheet { background: var(--bg-card); border-radius: 20px 20px 0 0; width: 100%; max-width: 480px; padding: 24px; max-height: 85vh; overflow-y: auto; }
+    .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
+    .modal-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+    /* badge colors for inv categories */
+    .cat-herramienta { color: var(--teal); }
+    .cat-epp { color: var(--purple-light); }
+    .cat-stock { color: var(--amber); }
+    .cat-seguridad { color: var(--red); }
+    .cat-documentos { color: var(--text-muted); }
+    .cat-electrico  { color: #facc15; }
+    .cat-fibra      { color: #f87171; }
+    .cat-escalera   { color: #818cf8; }
+    .cat-telecom    { color: #34d399; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <button onclick="history.back()" class="btn btn-sm btn-secondary" style="padding: 6px 10px;" aria-label="Volver">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="navbar-title" style="flex:1; margin: 0 10px;">
+      <span style="font-weight: 700; font-size: 0.95rem;">Perfil de Móvil</span>
+    </div>
+    <span id="navMobileCode" class="badge badge-verde" style="font-size: 0.85rem;"></span>
+  </nav>
+
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Hero Card -->
+      <div class="hero-card" id="heroCard">
+        <div class="hero-van" id="heroVan">
+          <svg viewBox="0 0 200 80" style="width:110px;height:44px" aria-label="Chevrolet P900">
+            <rect x="10" y="28" width="160" height="37" rx="6" fill="url(#hg)"/>
+            <rect x="20" y="14" width="88" height="24" rx="5" fill="url(#hg)"/>
+            <rect x="24" y="18" width="33" height="14" rx="2" fill="rgba(0,212,170,0.25)" stroke="#00d4aa" stroke-width="1"/>
+            <rect x="62" y="18" width="33" height="14" rx="2" fill="rgba(0,212,170,0.25)" stroke="#00d4aa" stroke-width="1"/>
+            <circle cx="44" cy="66" r="10" fill="#0d1526" stroke="#00d4aa" stroke-width="2"/>
+            <circle cx="44" cy="66" r="5" fill="#00d4aa"/>
+            <circle cx="145" cy="66" r="10" fill="#0d1526" stroke="#00d4aa" stroke-width="2"/>
+            <circle cx="145" cy="66" r="5" fill="#00d4aa"/>
+            <defs><linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#00d4aa" stop-opacity="0.8"/><stop offset="100%" stop-color="#7c3aed" stop-opacity="0.9"/></linearGradient></defs>
+          </svg>
+        </div>
+        <div class="hero-info">
+          <div class="hero-code" id="heroCode">—</div>
+          <div class="hero-model" id="heroModel">Chevrolet P900</div>
+          <div id="heroPlate" style="font-size:0.8rem; color: var(--text-secondary);"></div>
+          <div class="hero-badges">
+            <span id="heroStatus" class="badge"></span>
+            <span id="heroZone" class="badge" style="background: rgba(99,102,241,0.15); color: #818cf8;"></span>
+          </div>
+        </div>
+        <button onclick="openEditModal()" class="btn btn-sm btn-secondary" title="Editar móvil" style="flex-shrink:0;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+      </div>
+
+      
+      <!-- Vehicle Status -->
+      <div class="hero-card" style="margin-top:-10px; padding: 12px 20px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size:0.85rem; font-weight:700; color:var(--text-primary); margin-bottom: 4px;">🚗 Estatus del Vehículo</div>
+        <div style="display:flex; justify-content: space-between; font-size: 0.8rem;">
+          <span style="color:var(--text-muted);">Limpieza:</span>
+          <span id="vCleanStatus" style="font-weight: 600;">—</span>
+        </div>
+        <div style="display:flex; justify-content: space-between; font-size: 0.8rem;">
+          <span style="color:var(--text-muted);">Daños/Golpes:</span>
+          <span id="vDamageStatus" style="font-weight: 600;">—</span>
+        </div>
+        <button onclick="openEditModal()" class="btn btn-sm btn-secondary" style="margin-top:8px; align-self: flex-start;">Actualizar Estatus</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('tecnicos')" id="tab-tecnicos">👥 Técnicos</button>
+        <button class="tab-btn" onclick="switchTab('inventario')" id="tab-inventario">🔧 Inventario</button>
+        <button class="tab-btn" onclick="switchTab('inspecciones')" id="tab-inspecciones">📋 Inspecciones</button>
+        <button class="tab-btn" onclick="switchTab('estadisticas')" id="tab-estadisticas">📊 Stats</button>
+      </div>
+
+      <!-- TAB: Técnicos -->
+      <div class="tab-panel active" id="panel-tecnicos">
+        <div id="techniciansList">
+          <div class="skeleton skeleton-card"></div>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="openTechModal()" style="margin-top: 12px;">
+          👥 Asignar / Cambiar Técnicos
+        </button>
+      </div>
+
+      <!-- TAB: Inventario -->
+      <div class="tab-panel" id="panel-inventario">
+        <div class="inv-summary" id="invSummary">
+          <div class="inv-stat"><div class="inv-stat-value" id="invTotal">—</div><div class="inv-stat-label">Total</div></div>
+          <div class="inv-stat"><div class="inv-stat-value" style="color:var(--teal)" id="invOk">—</div><div class="inv-stat-label">OK</div></div>
+          <div class="inv-stat"><div class="inv-stat-value" style="color:var(--red)" id="invIssues">—</div><div class="inv-stat-label">Problemas</div></div>
+        </div>
+        <div class="inv-filters">
+          <button class="filter-btn active" onclick="filterInventory('todos')" id="f-todos">Todos</button>
+          <button class="filter-btn" onclick="filterInventory('Herramienta')" id="f-Herramienta">🔧 Herramienta</button>
+          <button class="filter-btn" onclick="filterInventory('Eléctrico')" id="f-Eléctrico">⚡ Eléctrico</button>
+          <button class="filter-btn" onclick="filterInventory('Fibra Óptica')" id="f-FibraÓptica">🔴 Fibra Ópt.</button>
+          <button class="filter-btn" onclick="filterInventory('EPP')" id="f-EPP">🦺 EPP</button>
+          <button class="filter-btn" onclick="filterInventory('Seguridad')" id="f-Seguridad">🚧 Seguridad</button>
+          <button class="filter-btn" onclick="filterInventory('Escalera')" id="f-Escalera">🪜 Escalera</button>
+          <button class="filter-btn" onclick="filterInventory('Telecom')" id="f-Telecom">📡 Telecom</button>
+        </div>
+        <div id="inventoryList">
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+
+      <!-- TAB: Inspecciones -->
+      <div class="tab-panel" id="panel-inspecciones">
+        <div id="inspectionsList">
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+
+      <!-- TAB: Estadísticas -->
+      <div class="tab-panel" id="panel-estadisticas">
+        <div class="stat-row">
+          <div class="stat-card"><div class="stat-value accent-teal" id="statOrders">—</div><div class="stat-label">Órdenes</div></div>
+          <div class="stat-card"><div class="stat-value accent-purple" id="statInspections">—</div><div class="stat-label">Inspecciones</div></div>
+        </div>
+        <div class="quality-bar-wrap">
+          <div style="display:flex; justify-content: space-between; align-items: center;">
+            <span style="font-size:0.85rem; font-weight: 600;">Índice de Calidad</span>
+            <span id="statQuality" style="font-size: 1.2rem; font-weight: 800;">—%</span>
+          </div>
+          <div class="quality-bar-track">
+            <div class="quality-bar-fill" id="qualityBar" style="width:0%; background: var(--teal);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height: 84px;"></div>
+    </div>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <a href="/app/dashboard.html" class="bnav-item"><span class="bnav-icon">🏠</span><span class="bnav-label">Inicio</span></a>
+    <a href="/app/moviles.html" class="bnav-item active"><span class="bnav-icon">🚐</span><span class="bnav-label">Móviles</span></a>
+    <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;"><span class="bnav-main">➕</span></a>
+    <a href="/app/inspecciones.html" class="bnav-item"><span class="bnav-icon">📋</span><span class="bnav-label">Lista</span></a>
+    <a href="/app/metricas.html" class="bnav-item"><span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span></a>
+  </nav>
+
+  <!-- Modal: Edit Mobile -->
+  <div class="modal-overlay" id="editMobileModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">✏️ Editar Móvil</div>
+      <div class="form-group"><label>Placa</label><input id="editPlate" class="form-control" type="text" placeholder="Ej: AB-1234" /></div>
+      <div class="form-group"><label>Zona</label>
+        <select id="editZone" class="form-control">
+          <option value="Chiriquí">Chiriquí</option>
+          <option value="Santiago">Santiago</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Color</label><input id="editColor" class="form-control" type="text" placeholder="Ej: blanco" /></div>
+      <div class="form-group"><label>Estado</label>
+        <select id="editStatus" class="form-control">
+          <option value="activa">✅ Activa</option>
+          <option value="mantenimiento">🔧 Mantenimiento</option>
+          <option value="inactiva">❌ Inactiva</option>
+        </select>
+      </div>
+      
+      <div class="form-group"><label>Limpieza</label>
+        <select id="editCleanliness" class="form-control">
+          <option value="Limpio">Limpio</option>
+          <option value="Sucio">Sucio</option>
+          <option value="Requiere lavado profundo">Requiere lavado profundo</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Daños/Golpes</label>
+        <select id="editDamage" class="form-control">
+          <option value="Sin daños">Sin daños</option>
+          <option value="Rayones leves">Rayones leves</option>
+          <option value="Golpe visible">Golpe visible</option>
+          <option value="Daño mayor">Daño mayor</option>
+        </select>
+      </div>
+
+      <div class="form-group"><label>Notas</label><textarea id="editNotes" class="form-control" rows="3" placeholder="Observaciones adicionales..."></textarea></div>
+      <button class="btn btn-primary btn-full" onclick="saveMobileEdit()">Guardar Cambios</button>
+      <button class="btn btn-secondary btn-full" onclick="closeModal('editMobileModal')" style="margin-top:8px;">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- Modal: Assign Technicians -->
+  <div class="modal-overlay" id="techModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">👥 Asignar Técnicos</div>
+      <div class="form-group"><label>Técnico 1</label>
+        <select id="selPrimaryTech" class="form-control"><option value="">— Sin técnico —</option></select>
+      </div>
+      <div class="form-group"><label>Técnico 2</label>
+        <select id="selSecondaryTech" class="form-control"><option value="">— Ninguno —</option></select>
+      </div>
+      
+      <div class="form-group"><label>Limpieza</label>
+        <select id="editCleanliness" class="form-control">
+          <option value="Limpio">Limpio</option>
+          <option value="Sucio">Sucio</option>
+          <option value="Requiere lavado profundo">Requiere lavado profundo</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Daños/Golpes</label>
+        <select id="editDamage" class="form-control">
+          <option value="Sin daños">Sin daños</option>
+          <option value="Rayones leves">Rayones leves</option>
+          <option value="Golpe visible">Golpe visible</option>
+          <option value="Daño mayor">Daño mayor</option>
+        </select>
+      </div>
+
+      <div class="form-group"><label>Notas</label><input id="assignNotes" class="form-control" type="text" placeholder="Ej: Asignación de turno mañana" /></div>
+      <button class="btn btn-primary btn-full" onclick="saveAssignTechnicians()">Asignar</button>
+      <button class="btn btn-secondary btn-full" onclick="closeModal('techModal')" style="margin-top:8px;">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- Modal: Edit Inventory Item -->
+  <div class="modal-overlay" id="inventoryEditModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title" id="invEditTitle">🔧 Actualizar Herramienta</div>
+      <input type="hidden" id="invEditId" />
+      <div class="form-group"><label>Cantidad Actual</label><input id="invEditQty" class="form-control" type="number" min="0" /></div>
+      <div class="form-group"><label>Estado</label>
+        <select id="invEditStatus" class="form-control">
+          <option value="ok">✅ OK</option>
+          <option value="faltante">⚠️ Faltante</option>
+          <option value="danado">❌ Dañado</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Número de Serie / Modelo</label><input id="invEditSerial" class="form-control" type="text" placeholder="(opcional)" /></div>
+      
+      <div class="form-group"><label>Limpieza</label>
+        <select id="editCleanliness" class="form-control">
+          <option value="Limpio">Limpio</option>
+          <option value="Sucio">Sucio</option>
+          <option value="Requiere lavado profundo">Requiere lavado profundo</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Daños/Golpes</label>
+        <select id="editDamage" class="form-control">
+          <option value="Sin daños">Sin daños</option>
+          <option value="Rayones leves">Rayones leves</option>
+          <option value="Golpe visible">Golpe visible</option>
+          <option value="Daño mayor">Daño mayor</option>
+        </select>
+      </div>
+
+      <div class="form-group"><label>Notas</label><input id="invEditNotes" class="form-control" type="text" placeholder="(opcional)" /></div>
+      <button class="btn btn-primary btn-full" onclick="saveInventoryItem()">Guardar</button>
+      <button class="btn btn-secondary btn-full" onclick="closeModal('inventoryEditModal')" style="margin-top:8px;">Cancelar</button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = '/api/v1';
+    const token = () => localStorage.getItem('cm_token');
+
+    // Auth guard
+    if (!token()) window.location.href = '/app/login.html';
+
+    const params = new URLSearchParams(window.location.search);
+    const mobileId = params.get('id');
+    if (!mobileId) window.location.href = '/app/moviles.html';
+
+    let profileData = null;
+    let allInventory = [];
+    let allTechnicians = [];
+
+    // ── Tab switching ─────────────────────────────────────────────────────────
+    function switchTab(name) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      document.getElementById('panel-' + name).classList.add('active');
+    }
+
+    // ── Modal helpers ─────────────────────────────────────────────────────────
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+
+    // ── Load profile data ─────────────────────────────────────────────────────
+    async function loadProfile() {
+      try {
+        const res = await fetch(`${API_BASE}/mobiles/${mobileId}/profile`, { headers: { 'Authorization': 'Bearer ' + token() } });
+        if (res.status === 401) { window.location.href = '/app/login.html'; return; }
+        if (!res.ok) throw new Error('Error ' + res.status);
+        profileData = await res.json();
+        renderHero(profileData);
+        renderTechnicians(profileData.technicians);
+        allInventory = profileData.inventory;
+        renderInventory(allInventory);
+        renderInspections(profileData.recent_inspections);
+        renderStats(profileData.stats);
+      } catch(e) {
+        showToast('Error cargando perfil: ' + e.message, 'error');
+      }
+    }
+
+    // ── Render Hero ───────────────────────────────────────────────────────────
+    function renderHero(d) {
+      document.getElementById('heroCode').textContent = d.code;
+      document.getElementById('navMobileCode').textContent = d.code;
+      document.getElementById('heroModel').textContent = d.vehicle_model || 'Chevrolet P900';
+      document.getElementById('heroPlate').textContent = d.plate ? '🪪 Placa: ' + d.plate : '';
+      document.title = d.code + ' – Control Operativo';
+
+      document.getElementById('vCleanStatus').textContent = d.cleanliness_status || 'Limpio';
+      document.getElementById('vDamageStatus').textContent = d.damage_status || 'Sin daños';
+
+      const statusMap = { activa: ['badge-verde','✅ Activa'], mantenimiento: ['badge-amarillo','🔧 Mantenimiento'], inactiva: ['badge-rojo','❌ Inactiva'] };
+      const [cls, label] = statusMap[d.status] || ['badge-verde', d.status];
+      const heroStatus = document.getElementById('heroStatus');
+      heroStatus.className = 'badge ' + cls;
+      heroStatus.textContent = label;
+      const heroZone = document.getElementById('heroZone');
+      heroZone.textContent = d.zone || '';
+      heroZone.style.display = d.zone ? '' : 'none';
+      // Update van color via stroke
+      const sc = { activa: '#00d4aa', mantenimiento: '#f59e0b', inactiva: '#ef4444' }[d.status] || '#00d4aa';
+      document.querySelectorAll('#heroVan circle').forEach(c => { c.setAttribute('stroke', sc); });
+      document.querySelectorAll('#heroVan stop:last-child').forEach(s => s.setAttribute('stop-color', sc.replace('00d4aa','7c3aed')));
+    }
+
+    // ── Render Technicians ────────────────────────────────────────────────────
+    function renderTechnicians(techs) {
+      const div = document.getElementById('techniciansList');
+      if (!techs || techs.length === 0) {
+        div.innerHTML = '<div style="text-align:center; padding: 24px; color: var(--text-muted); font-size:0.85rem;">⚠️ No hay técnicos asignados a esta móvil.<br><br>Usa el botón de abajo para asignar técnicos.</div>';
+        return;
+      }
+      div.innerHTML = techs.map(t => `
+        <div class="tech-card">
+          <div class="tech-avatar">${t.role === 'principal' ? '👤' : '👥'}</div>
+          <div class="tech-info">
+            <div class="tech-name">${t.name}</div>
+            <div class="tech-role">${t.role === 'principal' ? '⭐ Técnico 1' : '🔹 Técnico 2'}</div>
+            <div style="font-size:0.72rem; color: var(--text-muted); margin-top:2px;">Desde: ${t.since ? new Date(t.since).toLocaleDateString('es-PA') : '—'}</div>
+          </div>
+          <span class="badge ${t.status === 'activo' ? 'badge-verde' : 'badge-rojo'}">${t.status}</span>
+        </div>`).join('');
+    }
+
+    // ── Render Inventory ──────────────────────────────────────────────────────
+    function filterInventory(cat) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.getElementById('f-' + cat);
+      if (btn) btn.classList.add('active');
+      const filtered = cat === 'todos' ? allInventory : allInventory.filter(i => i.category === cat);
+      renderInventory(filtered);
+    }
+
+    const catIcons = {
+      Herramienta: '🔧', EPP: '🦺', Stock: '📦', Seguridad: '🚧', Documentos: '📄',
+      'Eléctrico': '⚡', 'Fibra Óptica': '🔴', Escalera: '🪜', Telecom: '📡'
+    };
+    const catCls = {
+      Herramienta: 'cat-herramienta', EPP: 'cat-epp', Stock: 'cat-stock',
+      Seguridad: 'cat-seguridad', Documentos: 'cat-documentos',
+      'Eléctrico': 'cat-electrico', 'Fibra Óptica': 'cat-fibra', Escalera: 'cat-escalera', Telecom: 'cat-telecom'
+    };
+    const statusBadge = s => s === 'ok' ? '<span class="badge badge-verde">OK</span>' : s === 'faltante' ? '<span class="badge badge-amarillo">FALTANTE</span>' : '<span class="badge badge-rojo">DAÑADO</span>';
+
+    function renderInventory(items) {
+      const div = document.getElementById('inventoryList');
+      document.getElementById('invTotal').textContent = allInventory.length;
+      document.getElementById('invOk').textContent = allInventory.filter(i => i.status === 'ok').length;
+      document.getElementById('invIssues').textContent = allInventory.filter(i => i.status !== 'ok').length;
+
+      if (!items || items.length === 0) {
+        div.innerHTML = '<p style="text-align:center; color: var(--text-muted); padding: 24px; font-size:0.85rem;">No hay herramientas registradas en esta categoría.</p>';
+        return;
+      }
+      
+      // Group items by category
+      const grouped = {};
+      items.forEach(i => {
+        if (!grouped[i.category]) grouped[i.category] = [];
+        grouped[i.category].push(i);
+      });
+      
+      let html = '';
+      // Default category order
+      const catOrder = ['Herramienta', 'Eléctrico', 'Fibra Óptica', 'EPP', 'Seguridad', 'Escalera', 'Telecom', 'Stock', 'Documentos'];
+      const categories = Object.keys(grouped).sort((a, b) => {
+        let idxA = catOrder.indexOf(a);
+        let idxB = catOrder.indexOf(b);
+        if (idxA === -1) idxA = 99;
+        if (idxB === -1) idxB = 99;
+        return idxA - idxB;
+      });
+
+      for (const cat of categories) {
+        const catItems = grouped[cat];
+        html += `<div style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:16px 0 8px; letter-spacing:0.05em; display:flex; align-items:center; gap:6px;">
+          <span>${catIcons[cat] || '📦'}</span> <span class="${catCls[cat] || ''}">${cat}</span>
+        </div>`;
+        html += catItems.map(i => `
+        <div class="inv-row" style="border-left: 4px solid ${i.status === 'ok' ? 'var(--teal)' : i.status === 'faltante' ? 'var(--amber)' : 'var(--red)'}; background: ${i.status === 'ok' ? 'var(--bg-card)' : 'rgba(239, 68, 68, 0.05)'};">
+          <div class="inv-info">
+            <div class="inv-name">${i.tool_name}</div>
+            ${i.serial_number ? `<div style="font-size:0.68rem; color:var(--text-muted);">S/N: ${i.serial_number}</div>` : ''}
+          </div>
+          <div style="text-align:right; flex-shrink:0;">
+            <div class="inv-qty">${i.quantity_current}/${i.quantity_required}</div>
+            ${statusBadge(i.status)}
+          </div>
+          <button onclick="openInvEdit(${i.id}, '${i.tool_name}', ${i.quantity_current}, '${i.status}', '${i.serial_number||''}', '${i.notes||''}')" class="btn btn-sm btn-secondary" style="padding:4px 8px; margin-left:6px; flex-shrink:0;">✏️</button>
+        </div>`).join('');
+      }
+      
+      div.innerHTML = html;
+    }
+
+    // ── Render Inspections ────────────────────────────────────────────────────
+    function renderInspections(inspections) {
+      const div = document.getElementById('inspectionsList');
+      if (!inspections || inspections.length === 0) {
+        div.innerHTML = '<div style="text-align:center; padding: 32px; color: var(--text-muted); font-size:0.85rem;">📋 No hay inspecciones registradas para esta móvil.</div>';
+        return;
+      }
+      const resultMap = { 'Cumple': 'badge-verde', 'Cumple parcialmente': 'badge-amarillo', 'No cumple': 'badge-rojo' };
+      div.innerHTML = inspections.map(i => `
+        <div class="insp-card">
+          <div class="insp-header">
+            <div>
+              <div class="insp-code">${i.code}</div>
+              <div class="insp-date">${new Date(i.date).toLocaleDateString('es-PA')}</div>
+            </div>
+            <span class="badge ${resultMap[i.result] || 'badge-verde'}">${i.result}</span>
+          </div>
+          <div class="insp-detail">📦 ${i.order_type} · #${i.order_number}</div>
+          <div class="insp-detail" style="margin-top:4px;">👤 ${i.technician}</div>
+        </div>`).join('');
+    }
+
+    // ── Render Stats ──────────────────────────────────────────────────────────
+    function renderStats(stats) {
+      if (!stats) return;
+      document.getElementById('statOrders').textContent = stats.total_orders;
+      document.getElementById('statInspections').textContent = stats.total_inspections;
+      const q = stats.quality_score || 0;
+      document.getElementById('statQuality').textContent = q + '%';
+      const bar = document.getElementById('qualityBar');
+      const color = q >= 85 ? 'var(--teal)' : q >= 65 ? 'var(--amber)' : 'var(--red)';
+      bar.style.background = color;
+      document.getElementById('statQuality').style.color = color;
+      setTimeout(() => bar.style.width = q + '%', 100);
+    }
+
+    // ── Edit Mobile Modal ─────────────────────────────────────────────────────
+    function openEditModal() {
+      if (!profileData) return;
+      document.getElementById('editPlate').value = profileData.plate || '';
+      document.getElementById('editZone').value = profileData.zone || 'Chiriquí';
+      
+      document.getElementById('editColor').value = profileData.color || 'blanco';
+      document.getElementById('editCleanliness').value = profileData.cleanliness_status || 'Limpio';
+      document.getElementById('editDamage').value = profileData.damage_status || 'Sin daños';
+
+      document.getElementById('editStatus').value = profileData.status || 'activa';
+      document.getElementById('editNotes').value = profileData.notes || '';
+      openModal('editMobileModal');
+    }
+
+    async function saveMobileEdit() {
+      const body = {
+        plate: document.getElementById('editPlate').value,
+        zone: document.getElementById('editZone').value,
+        
+        color: document.getElementById('editColor').value,
+        cleanliness_status: document.getElementById('editCleanliness').value,
+        damage_status: document.getElementById('editDamage').value,
+
+        status: document.getElementById('editStatus').value,
+        notes: document.getElementById('editNotes').value,
+      };
+      try {
+        const res = await fetch(`${API_BASE}/mobiles/${mobileId}`, { method: 'PUT', headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (!res.ok) throw new Error('Error ' + res.status);
+        showToast('✅ Móvil actualizada correctamente');
+        closeModal('editMobileModal');
+        loadProfile();
+      } catch(e) { showToast('Error: ' + e.message, 'error'); }
+    }
+
+    // ── Assign Technicians Modal ──────────────────────────────────────────────
+    async function openTechModal() {
+      try {
+        const res = await fetch(`${API_BASE}/technicians`, { headers: { 'Authorization': 'Bearer ' + token() } });
+        allTechnicians = await res.json();
+        const opt1 = document.getElementById('selPrimaryTech');
+        const opt2 = document.getElementById('selSecondaryTech');
+        const opts = allTechnicians.map(t => `<option value="${t.id}">${t.full_name}${t.current_mobile_id ? ' (asignado)' : ''}</option>`).join('');
+        opt1.innerHTML = '<option value="">— Sin técnico —</option>' + opts;
+        opt2.innerHTML = '<option value="">— Ninguno —</option>' + opts;
+        // Pre-select current technicians
+        if (profileData?.technicians) {
+          const primary = profileData.technicians.find(t => t.role === 'principal');
+          const secondary = profileData.technicians.find(t => t.role === 'auxiliar');
+          if (primary) opt1.value = primary.id;
+          if (secondary) opt2.value = secondary.id;
+        }
+        openModal('techModal');
+      } catch(e) { showToast('Error cargando técnicos: ' + e.message, 'error'); }
+    }
+
+    async function saveAssignTechnicians() {
+      const primaryId = parseInt(document.getElementById('selPrimaryTech').value);
+      if (!primaryId) { showToast('Selecciona al menos un técnico principal', 'error'); return; }
+      const body = {
+        primary_technician_id: primaryId,
+        secondary_technician_id: parseInt(document.getElementById('selSecondaryTech').value) || null,
+        notes: document.getElementById('assignNotes').value,
+      };
+      try {
+        const res = await fetch(`${API_BASE}/mobiles/${mobileId}/assign-technicians`, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (!res.ok) throw new Error('Error ' + res.status);
+        showToast('✅ Técnicos asignados correctamente');
+        closeModal('techModal');
+        loadProfile();
+      } catch(e) { showToast('Error: ' + e.message, 'error'); }
+    }
+
+    // ── Inventory Edit Modal ──────────────────────────────────────────────────
+    function openInvEdit(id, name, qty, status, serial, notes) {
+      document.getElementById('invEditTitle').textContent = '🔧 ' + name;
+      document.getElementById('invEditId').value = id;
+      document.getElementById('invEditQty').value = qty;
+      document.getElementById('invEditStatus').value = status;
+      document.getElementById('invEditSerial').value = serial;
+      document.getElementById('invEditNotes').value = notes;
+      openModal('inventoryEditModal');
+    }
+
+    async function saveInventoryItem() {
+      const itemId = document.getElementById('invEditId').value;
+      const body = {
+        quantity_current: parseInt(document.getElementById('invEditQty').value),
+        status: document.getElementById('invEditStatus').value,
+        serial_number: document.getElementById('invEditSerial').value,
+        notes: document.getElementById('invEditNotes').value,
+      };
+      try {
+        const res = await fetch(`${API_BASE}/mobiles/${mobileId}/inventory/${itemId}`, { method: 'PUT', headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (!res.ok) throw new Error('Error ' + res.status);
+        showToast('✅ Inventario actualizado');
+        closeModal('inventoryEditModal');
+        loadProfile();
+      } catch(e) { showToast('Error: ' + e.message, 'error'); }
+    }
+
+    // ── Toast notification ────────────────────────────────────────────────────
+    function showToast(msg, type = 'success') {
+      const t = document.createElement('div');
+      t.className = 'toast show';
+      t.textContent = msg;
+      t.style.cssText = `position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:${type==='error'?'var(--red)':'var(--teal)'};color:#fff;padding:10px 18px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:9999;max-width:90vw;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.4);`;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3000);
+    }
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', loadProfile);
+  </script>
+</body>
+</html>
