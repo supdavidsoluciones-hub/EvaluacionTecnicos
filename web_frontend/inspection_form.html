@@ -122,21 +122,39 @@
 
                 <div class="form-grid-2">
                     <div class="form-group">
+                        <label for="clientName">Nombre del Cliente</label>
+                        <input type="text" id="clientName" class="input-control" placeholder="Ej. Juan Pérez">
+                    </div>
+                    <div class="form-group">
+                        <label for="contractNumber">Número de Contrato</label>
+                        <input type="text" id="contractNumber" class="input-control" placeholder="Ej. CT-12345">
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
                         <label for="orderNumber">Número de Orden <span class="required">*</span></label>
                         <input type="text" id="orderNumber" class="input-control" placeholder="Ej. 45821" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="orderType">Tipo de Trabajo <span class="required">*</span></label>
+                        <label for="orderType">Tipo de Orden <span class="required">*</span></label>
                         <select id="orderType" class="select-control" required>
-                            <option value="Instalación">Instalación</option>
-                            <option value="Mantenimiento">Mantenimiento</option>
-                            <option value="Avería">Avería</option>
-                            <option value="Retiro">Retiro</option>
-                            <option value="Configuración">Configuración</option>
-                            <option value="Otro">Otro</option>
+                            <option value="Solo Internet">Solo Internet</option>
+                            <option value="Duo">Duo</option>
+                            <option value="Tripack">Tripack</option>
                         </select>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="vehicleStatus">Estatus del Vehículo (Opcional)</label>
+                    <select id="vehicleStatus" class="select-control">
+                        <option value="">-- Seleccionar Estatus --</option>
+                        <option value="Limpio y Óptimo">Limpio y Óptimo</option>
+                        <option value="Sucio">Sucio</option>
+                        <option value="Golpeado / Chocado">Golpeado / Chocado</option>
+                        <option value="Requiere Mantenimiento">Requiere Mantenimiento</option>
+                    </select>
                 </div>
             </div>
 
@@ -228,6 +246,8 @@
                 const selM = mobiles.find(m => m.id == mSelect.value);
                 if (selM && selM.primary_technician) {
                     tSelect.value = selM.primary_technician.id;
+                } else {
+                    tSelect.value = "";
                 }
             });
 
@@ -354,6 +374,9 @@
                 const payload = {
                     mobile_id: parseInt(document.getElementById('mobileSelect').value),
                     technician_id: parseInt(document.getElementById('techSelect').value),
+                    client_name: document.getElementById('clientName').value.trim() || null,
+                    contract_number: document.getElementById('contractNumber').value.trim() || null,
+                    vehicle_status: document.getElementById('vehicleStatus').value || null,
                     order_number: document.getElementById('orderNumber').value.trim(),
                     order_type: document.getElementById('orderType').value,
                     observations: document.getElementById('obsInput').value.trim(),

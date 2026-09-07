@@ -60,78 +60,24 @@ def init_db(db: Session):
     # 4. Crear Categorías y Preguntas por Defecto de Inspección
     checklist_structure = [
         {
-            "category": ("SEGURIDAD", "SEG"),
+            "category": ("CALIDAD DE INSTALACIÓN", "CAL_INST"),
             "questions": [
-                "¿Utiliza conos de seguridad?",
-                "¿Existe señalización adecuada?",
-                "¿El técnico trabaja de forma segura?",
-                "¿Utiliza correctamente los equipos de protección (EPP)?"
+                "¿Cumplió con las normas de instalación?",
+                "¿Utilizó rutas adecuadas de instalación?",
+                "¿Realizó las configuraciones adecuadas dentro del módem, cajas de TV y extensores?",
+                "¿Explicó el wifi y la caja de TV?",
+                "¿Conectó al cliente al wifi y explicó las bondades?",
+                "Si lleva eero, ¿realizó la configuración adecuada y explicó las bondades del mismo?",
+                "¿Realizó bien el cableado de fibra?",
+                "¿Realizó el recorrido bien en NAP?",
+                "¿Tomó foto de todo?"
             ]
         },
         {
-            "category": ("ACOMETIDA", "ACO"),
+            "category": ("SEGURIDAD Y LIMPIEZA", "SEG_LIM"),
             "questions": [
-                "¿La acometida está correctamente instalada?",
-                "¿Está correctamente fijada?",
-                "¿La instalación presenta buena terminación?",
-                "¿Se respetan las normas de instalación?"
-            ]
-        },
-        {
-            "category": ("CONECTORES FTTH", "FTTH"),
-            "questions": [
-                "¿Conector correctamente elaborado?",
-                "¿Terminación limpia?",
-                "¿Sin daños visibles?",
-                "¿Correcta instalación en ONU/NAP?"
-            ]
-        },
-        {
-            "category": ("ONU Y EQUIPOS", "ONU"),
-            "questions": [
-                "ONU correctamente instalada",
-                "Cableado correctamente organizado",
-                "Equipos correctamente ubicados",
-                "Configuración correcta",
-                "Aprovisionamiento correcto"
-            ]
-        },
-        {
-            "category": ("EERO / WIFI", "WIFI"),
-            "questions": [
-                "Configuración correcta",
-                "Aprovisionamiento correcto",
-                "Equipos correctamente instalados",
-                "Uso de cable de red cuando corresponde",
-                "Cliente orientado sobre administración de la red"
-            ]
-        },
-        {
-            "category": ("TELEVISIÓN", "TV"),
-            "questions": [
-                "Configuración correcta",
-                "Equipos correctamente instalados",
-                "Cableado correcto",
-                "Cliente orientado sobre funcionamiento"
-            ]
-        },
-        {
-            "category": ("TELEFONÍA", "TEL"),
-            "questions": [
-                "Servicio funcionando",
-                "Configuración correcta",
-                "Cliente orientado"
-            ]
-        },
-        {
-            "category": ("ATENCIÓN AL CLIENTE", "CLI"),
-            "questions": [
-                "Técnico explicó correctamente los servicios",
-                "Explicó funcionamiento de Internet",
-                "Explicó funcionamiento de TV",
-                "Explicó funcionamiento de telefonía",
-                "Explicó funcionamiento de eero/WiFi",
-                "Respondió las dudas del cliente"
+                "¿Utilizó los equipos de seguridad adecuadamente (conos, casco y arnés)?",
+                "¿Limpieza en el área de trabajo?"
             ]
         }
     ]

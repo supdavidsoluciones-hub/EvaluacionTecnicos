@@ -53,18 +53,35 @@ app.include_router(reports_router, prefix=api_prefix)
 @app.on_event("startup")
 async def startup_event():
     """Inicializa la base de datos al arrancar. Nunca crashea el servidor."""
+    from sqlalchemy import text
     try:
         logger.info("Iniciando conexión a base de datos...")
         Base.metadata.create_all(bind=engine)
-        logger.info("Tablas creadas/verificadas correctamente.")
-
+        
+        db = SessionLocal()
+        # Agregar nuevas columnas si no existen
+        columns = [
+            ("client_name", "VARCHAR(100)"),
+            ("contract_number", "VARCHAR(50)"),
+            ("vehicle_status", "VARCHAR(50)"),
+            ("vehicle_accidents", "BOOLEAN DEFAULT FALSE")
+        ]
+        for col_name, col_type in columns:
+            try:
+                db.execute(text(f"ALTER TABLE inspections ADD COLUMN {col_name} {col_type}"))
+                db.commit()
+                logger.info(f"Added column {col_name} to inspections")
+            except Exception:
+                db.rollback()
+                pass
+        
         from backend.app.core.init_db import init_db
-        db_session = SessionLocal()
         try:
-            init_db(db_session)
+            init_db(db)
             logger.info("Datos iniciales cargados correctamente.")
         finally:
-            db_session.close()
+            db.close()
+            
     except Exception as e:
         logger.error(f"Error en startup DB (la app seguirá funcionando): {e}")
 

@@ -146,6 +146,10 @@ class InspectionCreate(BaseModel):
     technician_id: int
     order_number: str
     order_type: str
+    client_name: Optional[str] = None
+    contract_number: Optional[str] = None
+    vehicle_status: Optional[str] = None
+    vehicle_accidents: Optional[bool] = False
     general_result: Optional[str] = "Cumple"
     observations: Optional[str] = None
     corrective_action: Optional[str] = None
@@ -159,6 +163,10 @@ class InspectionResponse(BaseModel):
     technician_id: int
     order_number: str
     order_type: str
+    client_name: Optional[str] = None
+    contract_number: Optional[str] = None
+    vehicle_status: Optional[str] = None
+    vehicle_accidents: Optional[bool] = False
     general_result: str
     observations: Optional[str] = None
     corrective_action: Optional[str] = None

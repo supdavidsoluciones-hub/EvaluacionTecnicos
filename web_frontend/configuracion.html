@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Configuración - Control Operativo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/app/css/style.css?v=3">
+</head>
+<body>
+  <div class="top-bar">
+    <a href="/app/dashboard.html" class="back-link">←</a>
+    <strong style="font-size: 1.1rem;">CONFIGURACIÓN</strong>
+  </div>
+  <main class="main-container" style="margin-top: 20px;">
+      <div class="section" id="configSection" style="animation: fadeUp 0.3s ease; padding-bottom: 80px;">
+        <h2 style="margin-bottom: 16px;">⚙️ Administración</h2>
+        
+        <div class="quick-access-grid" style="margin-bottom: 24px;">
+          <button class="qa-card" onclick="alert('Pronto: Nueva Móvil')" style="border: 1px dashed var(--teal);">
+            <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">🚐</div>
+            <div class="qa-label">+ Nueva Móvil</div>
+          </button>
+          <button class="qa-card" onclick="alert('Pronto: Nuevo Técnico')" style="border: 1px dashed var(--purple-light);">
+            <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">👤</div>
+            <div class="qa-label">+ Nuevo Técnico</div>
+          </button>
+        </div>
+
+        <h3 class="section-title">👥 Técnicos del Sistema</h3>
+        <div id="techConfigList" style="margin-bottom: 24px; display: grid; gap: 8px;">
+          <p class="text-muted text-sm">Cargando técnicos...</p>
+        </div>
+        
+        <h3 class="section-title">🚐 Móviles Registradas</h3>
+        <div id="mobileConfigList" style="display: grid; gap: 8px;">
+          <p class="text-muted text-sm">Cargando móviles...</p>
+        </div>
+      </div>
+  </main>
+  
+  <script type="module">
+    import { isAuthenticated, getTechnicians, getMobiles } from '/app/js/app.js';
+    if (!isAuthenticated()) window.location.replace('/app/login.html');
+
+    async function loadConfig() {
+      try {
+        const [techs, mobiles] = await Promise.all([getTechnicians(), getMobiles()]);
+        
+        const tList = document.getElementById('techConfigList');
+        tList.innerHTML = techs.map(t => `<div class="config-card" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; justify-content: space-between;">
+            <div>
+              <strong style="display:block; color: var(--text-main);">${t.full_name}</strong>
+              <small style="color: var(--text-muted);">${t.status}</small>
+            </div>
+            <button class="btn btn-sm btn-outline">Editar</button>
+          </div>`).join('') || '<p>No hay técnicos.</p>';
+
+        const mList = document.getElementById('mobileConfigList');
+        mList.innerHTML = mobiles.map(m => `<div class="config-card" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; justify-content: space-between;">
+            <div>
+              <strong style="display:block; color: var(--text-main);">${m.code} - ${m.zone || 'Sin zona'}</strong>
+              <small style="color: var(--text-muted);">${m.plate || 'Sin placa'} | ${m.status}</small>
+            </div>
+            <button class="btn btn-sm btn-outline">Editar</button>
+          </div>`).join('') || '<p>No hay móviles.</p>';
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadConfig);
+  </script>
+</body>
+</html>

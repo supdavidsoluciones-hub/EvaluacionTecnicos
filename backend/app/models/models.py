@@ -154,6 +154,12 @@ class Inspection(Base):
     order_number = Column(String(50), nullable=False)
     order_type = Column(String(50), nullable=False)
     
+    # Nuevos campos solicitados
+    client_name = Column(String(100), nullable=True)
+    contract_number = Column(String(50), nullable=True)
+    vehicle_status = Column(String(50), nullable=True)
+    vehicle_accidents = Column(Boolean, default=False)
+    
     general_result = Column(String(30), default="Cumple")  # 'Cumple', 'Cumple parcialmente', 'No cumple'
     observations = Column(Text, nullable=True)
     corrective_action = Column(Text, nullable=True)
