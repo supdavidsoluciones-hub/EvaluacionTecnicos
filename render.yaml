@@ -4,13 +4,19 @@ services:
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT --workers 1
     envVars:
+      - key: PYTHONPATH
+        value: .
+      - key: SECRET_KEY
+        value: chiriqui_secret_key_super_segura_2026
       - key: DATABASE_URL
         value: postgresql://postgres:bZIqGZes2ZuNMXZ6@db.vpivzxkttjsgkpxyvpvp.supabase.co:5432/postgres
+      - key: SUPABASE_URL
+        value: https://vpivzxkttjsgkpxyvpvp.supabase.co
+      - key: SUPABASE_KEY
+        value: sb_publishable_ewGTKWdwD3HSbNkMH6qmbw_QM0Ho4KA
       - key: CLOUDINARY_CLOUD_NAME
         value: dgb8eri7
       - key: CLOUDINARY_UPLOAD_PRESET
         value: chiriqui_fotos
-      - key: FLASK_ENV
-        value: production
