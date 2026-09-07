@@ -297,28 +297,21 @@
   </div><!-- /.login-box -->
 
   <script type="module">
-    // ── Inline import of app.js helpers ─────────────────────────
-    import { isAuthenticated, login, showToast } from '/app/js/app.js';
+    import { isAuthenticated, login, getUser } from '/app/js/app.js';
 
-    // ── Check active session notice ─────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
+
+      // Limpiar tokens viejos/inválidos al cargar la página de login
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('logout') === 'true') {
         localStorage.removeItem('cm_token');
         localStorage.removeItem('cm_user');
       }
 
+      // Si ya tiene sesión activa, ir directo al dashboard
       if (isAuthenticated()) {
-        const sessionNotice = document.getElementById('sessionNotice');
-        if (sessionNotice) {
-          const user = getUser();
-          sessionNotice.innerHTML = `
-            <div style="background: rgba(0, 212, 170, 0.12); border: 1px solid rgba(0, 212, 170, 0.35); border-radius: 12px; padding: 14px; margin-bottom: 20px; text-align: center; color: #00d4aa; font-size: 0.85rem;">
-              <span>✅ Tienes una sesión activa como <strong>${user?.username || 'Usuario'}</strong></span><br/>
-              <a href="/app/dashboard.html" style="margin-top: 10px; display: inline-block; padding: 8px 18px; background: linear-gradient(135deg, #00d4aa, #7c3aed); color: #fff; font-weight: 700; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(0,212,170,0.3);">Ir al Dashboard ➔</a>
-            </div>
-          `;
-        }
+        window.location.replace('/app/dashboard.html');
+        return;
       }
 
       const form      = document.getElementById('loginForm');
@@ -329,33 +322,29 @@
       const iconEye   = document.getElementById('iconEye');
       const iconOff   = document.getElementById('iconEyeOff');
 
-      // ── Toggle password visibility ─────────────────────────────
+      // Toggle mostrar/ocultar contraseña
       toggleBtn.addEventListener('click', () => {
         const isHidden = pwdInput.type === 'password';
         pwdInput.type = isHidden ? 'text' : 'password';
-        iconEye.style.display = isHidden ? 'none'  : '';
-        iconOff.style.display = isHidden ? ''      : 'none';
+        iconEye.style.display = isHidden ? 'none' : '';
+        iconOff.style.display = isHidden ? '' : 'none';
         toggleBtn.setAttribute('aria-pressed', String(isHidden));
       });
 
-      // ── Helpers ────────────────────────────────────────────────
       function showError(msg) {
         errorMsg.textContent = msg;
         errorMsg.classList.add('visible');
-        // Reset animation
         errorMsg.style.animation = 'none';
-        void errorMsg.offsetHeight;          // reflow
+        void errorMsg.offsetHeight;
         errorMsg.style.animation = '';
       }
-      function hideError() {
-        errorMsg.classList.remove('visible');
-      }
+      function hideError() { errorMsg.classList.remove('visible'); }
       function setLoading(on) {
         btnLogin.disabled = on;
         btnLogin.classList.toggle('loading', on);
       }
 
-      // ── Form submit ────────────────────────────────────────────
+      // Envío del formulario
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         hideError();
@@ -373,12 +362,11 @@
         try {
           const data = await login(username, password);
 
-          // El backend devuelve user_info (no user)
+          // El backend devuelve user_info
           const userInfo = data.user_info ?? data.user ?? { username };
           localStorage.setItem('cm_token', data.access_token);
           localStorage.setItem('cm_user', JSON.stringify(userInfo));
 
-          // Redirigir inmediatamente al dashboard
           window.location.replace('/app/dashboard.html');
 
         } catch (err) {
