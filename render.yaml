@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: calidad-tec
+    name: chiriqui-control-operativo
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
@@ -12,9 +12,5 @@ services:
         value: dgb8eri7
       - key: CLOUDINARY_UPLOAD_PRESET
         value: chiriqui_fotos
-      - key: CLOUDINARY_API_KEY
-        sync: false
-      - key: CLOUDINARY_API_SECRET
-        sync: false
       - key: FLASK_ENV
         value: production
