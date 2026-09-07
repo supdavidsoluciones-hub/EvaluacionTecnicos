@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard – Control Operativo Móviles</title>
+  <title>Dashboard â€“ Control Operativo MÃ³viles</title>
   <link rel="icon" type="image/png" href="/app/img/logo.png" />
   <link rel="apple-touch-icon" href="/app/img/logo.png" />
   
@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="/app/css/style.css?v=2" />
   
   <style>
-    /* Estilos específicos del Dashboard */
+    /* Estilos especÃ­ficos del Dashboard */
     .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
     .metric-card {
       background: var(--bg-card);
@@ -90,7 +90,7 @@
     <div class="navbar-title">
       <div style="line-height:1.1;">
         <span style="display:block; font-size: 0.85rem; font-weight: 700;">Control Operativo</span>
-        <span style="display:block; font-size: 0.68rem; color: var(--teal);">Chiriquí & Santiago</span>
+        <span style="display:block; font-size: 0.68rem; color: var(--teal);">ChiriquÃ­ & Santiago</span>
       </div>
     </div>
     <div class="navbar-actions">
@@ -105,28 +105,28 @@
       
       <div class="section" style="animation: fadeUp 0.4s ease;">
         <h2 id="userWelcome">Bienvenido</h2>
-        <p>Resumen operativo del día</p>
+        <p>Resumen operativo del dÃ­a</p>
       </div>
       
       <!-- Metrics Grid -->
       <div class="metric-grid">
         <div class="metric-card accent-teal">
-          <div class="metric-icon">📋</div>
+          <div class="metric-icon">ðŸ“‹</div>
           <div class="metric-value" id="metOrdenesHoy">-</div>
-          <div class="metric-label">Órdenes Hoy</div>
+          <div class="metric-label">Ã“rdenes Hoy</div>
         </div>
         <div class="metric-card accent-purple">
-          <div class="metric-icon">🔍</div>
+          <div class="metric-icon">ðŸ”</div>
           <div class="metric-value" id="metInspecciones">-</div>
           <div class="metric-label">Inspecciones</div>
         </div>
         <div class="metric-card accent-amber">
-          <div class="metric-icon">⚠️</div>
+          <div class="metric-icon">âš ï¸</div>
           <div class="metric-value" id="metGarantias">-</div>
-          <div class="metric-label">Garantías %</div>
+          <div class="metric-label">GarantÃ­as %</div>
         </div>
         <div class="metric-card accent-red">
-          <div class="metric-icon">⭐</div>
+          <div class="metric-icon">â­</div>
           <div class="metric-value" id="metCalidad">-</div>
           <div class="metric-label">Calidad Prom.</div>
         </div>
@@ -134,35 +134,26 @@
       
       <!-- Quick Access -->
       <div class="section">
-        <h3 class="section-title">Accesos Rápidos</h3>
+        <h3 class="section-title">Accesos RÃ¡pidos</h3>
         <div class="quick-access-grid">
           <a href="/app/inspeccion.html" class="qa-card" id="qa-inspeccion">
-            <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">🔍</div>
-            <div class="qa-label">Nueva Inspección</div>
+            <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">ðŸ”</div>
+            <div class="qa-label">Nueva InspecciÃ³n</div>
           </a>
           <a href="/app/moviles.html" class="qa-card" id="qa-moviles">
             <div class="qa-icon" style="background: var(--bg); padding: 5px;">
-              <img src="/app/img/van.jpg" alt="Móvil" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;" />
+              <img src="/app/img/van.jpg" alt="MÃ³vil" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;" />
             </div>
-            <div class="qa-label">Mis Móviles</div>
+            <div class="qa-label">Mis MÃ³viles</div>
           </a>
           <a href="/app/metricas.html" class="qa-card" id="qa-metricas">
-            <div class="qa-icon" style="background: var(--amber-dim); color: var(--amber);">📊</div>
-            <div class="qa-label">Métricas</div>
+            <div class="qa-icon" style="background: var(--amber-dim); color: var(--amber);">ðŸ“Š</div>
+            <div class="qa-label">MÃ©tricas</div>
           </a>
           <a href="/app/configuracion.html" class="qa-card" id="qa-config">
-            <div class="qa-icon" style="background: rgba(99,102,241,0.15); color: #818cf8;">⚙️</div>
-            <div class="qa-label">Configuración</div>
+            <div class="qa-icon" style="background: rgba(99,102,241,0.15); color: #818cf8;">âš™ï¸ </div>
+            <div class="qa-label">ConfiguraciÃ³n</div>
           </a>
-        </div>
-      </div>
-
-      <!-- Semáforo de Móviles -->
-      <div class="section">
-        <h3 class="section-title">Estado en Tiempo Real (Semáforo)</h3>
-        <div id="mobilesSemaforo">
-          <div class="skeleton skeleton-card"></div>
-          <div class="skeleton skeleton-card"></div>
         </div>
       </div>
 
@@ -175,29 +166,29 @@
       </div>
 
 
-      <!-- Sección Configuración -->
+      <!-- SecciÃ³n ConfiguraciÃ³n -->
       <div class="section" id="configSection" style="display: none; animation: fadeUp 0.3s ease; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
-        <h2 style="margin-bottom: 16px;">⚙️ Configuración y Administración</h2>
+        <h2 style="margin-bottom: 16px;">âš™ï¸ ConfiguraciÃ³n y AdministraciÃ³n</h2>
         
         <div class="quick-access-grid" style="margin-bottom: 24px;">
           <button class="qa-card" onclick="openAddMobileModal()" style="border: 1px dashed var(--teal);">
-            <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">🚐</div>
-            <div class="qa-label">+ Nueva Móvil</div>
+            <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">ðŸš</div>
+            <div class="qa-label">+ Nueva MÃ³vil</div>
           </button>
           <button class="qa-card" onclick="openAddTechModal()" style="border: 1px dashed var(--purple-light);">
-            <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">👤</div>
-            <div class="qa-label">+ Nuevo Técnico</div>
+            <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">ðŸ‘¤</div>
+            <div class="qa-label">+ Nuevo TÃ©cnico</div>
           </button>
         </div>
 
-        <h3 class="section-title">👥 Técnicos del Sistema (Técnico 1 y Técnico 2)</h3>
+        <h3 class="section-title">ðŸ‘¥ TÃ©cnicos del Sistema (TÃ©cnico 1 y TÃ©cnico 2)</h3>
         <div id="techConfigList" style="margin-bottom: 24px; display: grid; gap: 8px;">
-          <p class="text-muted text-sm">Cargando técnicos...</p>
+          <p class="text-muted text-sm">Cargando tÃ©cnicos...</p>
         </div>
         
-        <h3 class="section-title">🚐 Móviles Registradas</h3>
+        <h3 class="section-title">ðŸš MÃ³viles Registradas</h3>
         <div id="mobileConfigList" style="display: grid; gap: 8px;">
-          <p class="text-muted text-sm">Cargando móviles...</p>
+          <p class="text-muted text-sm">Cargando mÃ³viles...</p>
         </div>
       </div>
 
@@ -207,23 +198,23 @@
   <!-- Bottom Nav -->
   <nav class="bottom-nav">
     <a href="/app/dashboard.html" class="bnav-item active">
-      <span class="bnav-icon">🏠</span>
+      <span class="bnav-icon">ðŸ </span>
       <span class="bnav-label">Inicio</span>
     </a>
     <a href="/app/moviles.html" class="bnav-item">
-      <span class="bnav-icon">🚗</span>
-      <span class="bnav-label">Móviles</span>
+      <span class="bnav-icon">ðŸš—</span>
+      <span class="bnav-label">MÃ³viles</span>
     </a>
     <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
-      <span class="bnav-main">➕</span>
+      <span class="bnav-main">âž•</span>
     </a>
     <a href="/app/inspecciones.html" class="bnav-item">
-      <span class="bnav-icon">📋</span>
+      <span class="bnav-icon">ðŸ“‹</span>
       <span class="bnav-label">Lista</span>
     </a>
     <a href="/app/metricas.html" class="bnav-item">
-      <span class="bnav-icon">📊</span>
-      <span class="bnav-label">Métricas</span>
+      <span class="bnav-icon">ðŸ“Š</span>
+      <span class="bnav-label">MÃ©tricas</span>
     </a>
   </nav>
 
@@ -242,10 +233,10 @@
   <div class="modal-overlay" id="addMobileModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">🚐 Agregar Nueva Móvil</div>
-      <div class="form-group"><label>Código* (ej: M210)</label><input id="addCode" class="form-control" type="text" placeholder="M210" /></div>
+      <div class="modal-title">ðŸš Agregar Nueva MÃ³vil</div>
+      <div class="form-group"><label>CÃ³digo* (ej: M210)</label><input id="addCode" class="form-control" type="text" placeholder="M210" /></div>
       <div class="form-group"><label>Placa</label><input id="addPlate" class="form-control" type="text" placeholder="AB-1234" /></div>
-      <button class="btn btn-primary btn-full" onclick="saveAddMobile()">Agregar Móvil</button>
+      <button class="btn btn-primary btn-full" onclick="saveAddMobile()">Agregar MÃ³vil</button>
       <button class="btn btn-secondary btn-full" onclick="closeModal('addMobileModal')" style="margin-top:8px;">Cancelar</button>
     </div>
   </div>
@@ -254,9 +245,9 @@
   <div class="modal-overlay" id="addTechModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">👤 Agregar Técnico</div>
+      <div class="modal-title">ðŸ‘¤ Agregar TÃ©cnico</div>
       <div class="form-group"><label>Nombre Completo*</label><input id="techName" class="form-control" type="text" /></div>
-      <button class="btn btn-primary btn-full" onclick="saveAddTech()">Agregar Técnico</button>
+      <button class="btn btn-primary btn-full" onclick="saveAddTech()">Agregar TÃ©cnico</button>
       <button class="btn btn-secondary btn-full" onclick="closeModal('addTechModal')" style="margin-top:8px;">Cancelar</button>
     </div>
   </div>
@@ -281,14 +272,14 @@
 
     window.saveAddMobile = async () => {
       const code = document.getElementById('addCode').value.trim().toUpperCase();
-      if (!code) return alert('Código requerido');
+      if (!code) return alert('CÃ³digo requerido');
       try {
         const res = await fetch('/api/v1/mobiles', {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token'), 'Content-Type': 'application/json' },
           body: JSON.stringify({ code, plate: document.getElementById('addPlate').value })
         });
-        if (!res.ok) throw new Error('Error agregando móvil');
+        if (!res.ok) throw new Error('Error agregando mÃ³vil');
         closeModal('addMobileModal');
         loadConfigData();
         loadDashboard(); // reload main dash
@@ -304,14 +295,14 @@
           headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token'), 'Content-Type': 'application/json' },
           body: JSON.stringify({ full_name: name })
         });
-        if (!res.ok) throw new Error('Error agregando técnico');
+        if (!res.ok) throw new Error('Error agregando tÃ©cnico');
         closeModal('addTechModal');
         loadConfigData();
       } catch (e) { alert(e.message); }
     };
 
     window.deleteMobile = async (id, code) => {
-      if (!confirm(`¿Estás seguro de eliminar la móvil ${code}?`)) return;
+      if (!confirm(`Â¿EstÃ¡s seguro de eliminar la mÃ³vil ${code}?`)) return;
       try {
         const res = await fetch(`/api/v1/mobiles/${id}`, {
           method: 'DELETE',
@@ -341,7 +332,7 @@
 
         document.getElementById('techConfigList').innerHTML = techs.map(t => `
           <div class="config-card">
-            <div>👤 <strong>${t.full_name}</strong></div>
+            <div>ðŸ‘¤ <strong>${t.full_name}</strong></div>
             <span class="badge badge-verde">${t.status}</span>
           </div>
         `).join('');
@@ -375,7 +366,7 @@
         document.getElementById('metGarantias').textContent = (data.garantias_pct ?? '0') + '%';
         document.getElementById('metCalidad').textContent = (data.calidad_promedio ?? '0');
 
-        // Render Semaphore – Chevrolet P900 cards
+        // Render Semaphore â€“ Chevrolet P900 cards
         const semaforoDiv = document.getElementById('mobilesSemaforo');
         if (data.mobiles && data.mobiles.length > 0) {
           semaforoDiv.innerHTML = data.mobiles.map(m => {
@@ -400,7 +391,7 @@
               </div>
               <div class="vehicle-info">
                 <div class="vehicle-code">${m.code || m.codigo} <span style="font-size:0.68rem;color:var(--text-muted);font-weight:400;">${m.vehicle_model||'Chevrolet P900'}</span></div>
-                <div class="vehicle-detail">${m.zone ? m.zone + ' • ' : ''}${m.primary_technician?.name || 'Sin t\u00e9cnico asignado'}</div>
+                <div class="vehicle-detail">${m.zone ? m.zone + ' â€¢ ' : ''}${m.primary_technician?.name || 'Sin t\u00e9cnico asignado'}</div>
               </div>
               <div class="vehicle-status">
                 <span class="badge ${sem.cls}">${sem.label}</span>
@@ -408,7 +399,7 @@
             </div>`;
           }).join('');
         } else {
-          semaforoDiv.innerHTML = '<p class="text-muted text-sm text-center py-4">No hay móviles registrados.</p>';
+          semaforoDiv.innerHTML = '<p class="text-muted text-sm text-center py-4">No hay mÃ³viles registrados.</p>';
         }
 
         // Render Recent Activity
@@ -416,7 +407,7 @@
         if (data.actividad && data.actividad.length > 0) {
           actividadDiv.innerHTML = data.actividad.map(a => `
             <div class="list-item">
-              <div class="li-icon">📝</div>
+              <div class="li-icon">ðŸ“</div>
               <div class="li-content">
                 <div class="li-title">${a.tipo} - ${a.movil_codigo}</div>
                 <div class="li-sub">${a.descripcion}</div>

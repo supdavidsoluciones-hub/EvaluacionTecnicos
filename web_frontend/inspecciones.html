@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inspecciones – Control Operativo</title>
+  <title>Inspecciones â€“ Control Operativo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -26,22 +26,22 @@
 <body>
   
   <nav class="navbar">
-    <button class="btn-back" onclick="window.location.href='/app/dashboard.html'">←</button>
-    <div class="navbar-title">📋 Lista de Inspecciones</div>
+    <button class="btn-back" onclick="window.location.href='/app/dashboard.html'">â†</button>
+    <div class="navbar-title">ðŸ“‹ Lista de Inspecciones</div>
   </nav>
 
   <main class="main-content">
     <div class="container-wide">
       
       <div class="filter-bar">
-        <input type="text" id="searchInput" class="filter-input" placeholder="Buscar por móvil, técnico u orden...">
+        <input type="text" id="searchInput" class="filter-input" placeholder="Buscar por mÃ³vil, tÃ©cnico u orden...">
       </div>
       
       <div class="chips-row mb-16">
         <div class="chip active" data-filter="all">Todas</div>
-        <div class="chip" data-filter="green">Óptimas</div>
+        <div class="chip" data-filter="green">Ã“ptimas</div>
         <div class="chip" data-filter="amber">Regulares</div>
-        <div class="chip" data-filter="red">Críticas</div>
+        <div class="chip" data-filter="red">CrÃ­ticas</div>
       </div>
 
       <div class="insp-list" id="listaInspecciones">
@@ -55,19 +55,19 @@
 
   <nav class="bottom-nav">
     <a href="/app/dashboard.html" class="bnav-item">
-      <span class="bnav-icon">🏠</span><span class="bnav-label">Inicio</span>
+      <span class="bnav-icon">ðŸ </span><span class="bnav-label">Inicio</span>
     </a>
     <a href="/app/moviles.html" class="bnav-item">
-      <span class="bnav-icon">🚗</span><span class="bnav-label">Móviles</span>
+      <span class="bnav-icon">ðŸš—</span><span class="bnav-label">MÃ³viles</span>
     </a>
     <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
-      <span class="bnav-main">➕</span>
+      <span class="bnav-main">âž•</span>
     </a>
     <a href="/app/inspecciones.html" class="bnav-item active">
-      <span class="bnav-icon">📋</span><span class="bnav-label">Lista</span>
+      <span class="bnav-icon">ðŸ“‹</span><span class="bnav-label">Lista</span>
     </a>
     <a href="/app/metricas.html" class="bnav-item">
-      <span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span>
+      <span class="bnav-icon">ðŸ“Š</span><span class="bnav-label">MÃ©tricas</span>
     </a>
   </nav>
 
@@ -122,7 +122,7 @@
       const container = document.getElementById('listaInspecciones');
       
       if(!list || list.length === 0) {
-        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-title">No hay resultados</div><div class="empty-state-desc">Intenta cambiar los filtros de búsqueda.</div></div>`;
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">ðŸ“­</div><div class="empty-state-title">No hay resultados</div><div class="empty-state-desc">Intenta cambiar los filtros de bÃºsqueda.</div></div>`;
         return;
       }
 
@@ -138,7 +138,7 @@
           </div>
           <div class="insp-card-right">
             <div class="insp-score-value" style="color: ${scoreColor(i.score)}">${i.score}%</div>
-            <div class="insp-arrow">›</div>
+            <div class="insp-arrow">â€º</div>
           </div>
         </div>
       `).join('');

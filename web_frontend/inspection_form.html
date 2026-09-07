@@ -1,10 +1,427 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nueva Inspección - Móviles Chiriquí</title>
-    <link rel="stylesheet" href="/static/css/style.css?v=2">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva Inspección - Control Operativo</title>
+  <link rel="stylesheet" href="/app/css/style.css?v=3">
+  <style>
+    .sec-badge {
+      background: var(--navy, #1A2B4A);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 5px 12px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+    .question-card {
+      background: #F7F9FB;
+      border: 1px solid #D4DAE3;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+    .question-text {
+      font-weight: 600;
+      font-size: 0.93rem;
+      color: #2D3342;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .options-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+    .opt-btn {
+      padding: 9px 4px;
+      border: 1.5px solid #D4DAE3;
+      border-radius: 8px;
+      background: #fff;
+      color: #4A5568;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .opt-btn.sel-c  { background: #4A7C6F; color: #fff; border-color: #3a6258; }
+    .opt-btn.sel-nc { background: #8B3A3A; color: #fff; border-color: #722e2e; }
+    .opt-btn.sel-na { background: #6B7A8F; color: #fff; border-color: #556070; }
+    .photo-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 10px; }
+    .photo-wrap { position: relative; }
+    .photo-thumb { width:100%; height:80px; object-fit:cover; border-radius:8px; border:1px solid #D4DAE3; }
+    .photo-del {
+      position: absolute; top: 3px; right: 3px;
+      background: rgba(139,58,58,0.85); color: #fff;
+      border: none; border-radius: 50%; width: 20px; height: 20px;
+      font-size: 0.7rem; cursor: pointer;
+    }
+    .veh-btn {
+      border: 2px solid #D4DAE3; border-radius: 10px; padding: 10px 6px;
+      background: #fff; cursor: pointer; text-align: center;
+      font-weight: 700; font-size: 0.82rem; color: #2D3342; transition: all 0.15s;
+      width: 100%;
+    }
+    .veh-btn.active-ok     { background: #4A7C6F; color: #fff; border-color: #3a6258; }
+    .veh-btn.active-warn   { background: #8F6B1A; color: #fff; border-color: #7a5a12; }
+    .veh-btn.active-danger { background: #8B3A3A; color: #fff; border-color: #722e2e; }
+    .acc-toggle {
+      width: 50px; height: 28px; border-radius: 14px; background: #D4DAE3;
+      position: relative; cursor: pointer; transition: background 0.2s;
+      border: none; flex-shrink: 0;
+    }
+    .acc-toggle.on { background: #8B3A3A; }
+    .acc-toggle::after {
+      content: ''; position: absolute; top: 4px; left: 4px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #fff; transition: left 0.2s;
+    }
+    .acc-toggle.on::after { left: 26px; }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a href="/app/dashboard.html" class="back-link">←</a>
+    <strong style="font-size:1.05rem;">NUEVA INSPECCIÓN</strong>
+  </div>
+
+  <main class="main-container" style="margin-top:16px; padding-bottom:60px;">
+    <form id="inspectionForm">
+
+      <!-- 1. DATOS GENERALES -->
+      <div class="form-card" style="padding:20px; margin-bottom:14px;">
+        <div class="sec-badge">📋 1. DATOS GENERALES</div>
+
+        <div class="form-group">
+          <label>Móvil <span class="required">*</span></label>
+          <select id="mobileSelect" class="select-control" required>
+            <option value="">-- Seleccionar Móvil --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Técnico Responsable <span class="required">*</span></label>
+          <select id="techSelect" class="select-control" required>
+            <option value="">-- Seleccione una móvil primero --</option>
+          </select>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Nombre del Cliente</label>
+            <input type="text" id="clientName" class="input-control" placeholder="Ej. Juan Pérez">
+          </div>
+          <div class="form-group">
+            <label>Número de Contrato</label>
+            <input type="text" id="contractNumber" class="input-control" placeholder="Ej. CT-12345">
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Número de Orden <span class="required">*</span></label>
+            <input type="text" id="orderNumber" class="input-control" placeholder="Ej. 45821" required>
+          </div>
+          <div class="form-group">
+            <label>Tipo de Orden <span class="required">*</span></label>
+            <select id="orderType" class="select-control" required>
+              <option value="Solo Internet">Solo Internet</option>
+              <option value="Duo">Duo</option>
+              <option value="Tripack">Tripack</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. CHECKLIST DE CALIDAD -->
+      <div class="form-card" style="padding:20px; margin-bottom:14px;">
+        <div class="sec-badge">🔧 2. CALIDAD DE INSTALACIÓN</div>
+        <div id="checklistContainer"></div>
+      </div>
+
+      <!-- 3. FOTOS DE EVIDENCIA -->
+      <div class="form-card" style="padding:20px; margin-bottom:14px;">
+        <div class="sec-badge">📸 3. FOTOS DE EVIDENCIA</div>
+        <div class="form-group">
+          <label>Capturar / Subir Fotos</label>
+          <input type="file" id="photoInput" accept="image/*" capture="environment" multiple class="input-control">
+          <small style="color:#6B7A8F; font-size:0.78rem;">Las imágenes se comprimen automáticamente.</small>
+        </div>
+        <div class="photo-grid" id="photoGrid"></div>
+      </div>
+
+      <!-- 4. ESTADO DEL VEHÍCULO -->
+      <div class="form-card" style="padding:20px; margin-bottom:14px;">
+        <div class="sec-badge">🚐 4. ESTADO DEL VEHÍCULO</div>
+
+        <label style="font-weight:600; display:block; margin-bottom:10px; color:#2D3342;">Condición actual:</label>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px;">
+          <button type="button" class="veh-btn" onclick="setVeh('Limpio y Óptimo','active-ok',this)">✅ Limpio y Óptimo</button>
+          <button type="button" class="veh-btn" onclick="setVeh('Sucio','active-warn',this)">🧹 Sucio</button>
+          <button type="button" class="veh-btn" onclick="setVeh('Golpeado / Chocado','active-danger',this)">⚠️ Golpeado</button>
+          <button type="button" class="veh-btn" onclick="setVeh('Requiere Mantenimiento','active-warn',this)">🔧 Requiere Mantenimiento</button>
+        </div>
+        <input type="hidden" id="vehicleStatus" value="">
+
+        <div style="display:flex; align-items:center; gap:12px; padding:12px; background:#FDF0F0; border-radius:10px; border:1px solid #E8CACA; margin-bottom:14px;">
+          <span style="font-weight:600; color:#2D3342; flex:1;">¿Accidente reportado?</span>
+          <button type="button" id="accBtn" class="acc-toggle" onclick="toggleAcc()"></button>
+          <span id="accLabel" style="font-weight:700; color:#8B3A3A; display:none; font-size:0.85rem;">SÍ — ACCIDENTE</span>
+        </div>
+        <input type="hidden" id="vehicleAccident" value="false">
+
+        <div class="form-group">
+          <label>Fotos del vehículo</label>
+          <input type="file" id="vehPhotoInput" accept="image/*" capture="environment" multiple class="input-control">
+          <small style="color:#6B7A8F; font-size:0.78rem;">Documenta el estado actual con fotos.</small>
+        </div>
+        <div class="photo-grid" id="vehPhotoGrid"></div>
+
+        <div class="form-group" style="margin-top:12px;">
+          <label>Descripción del estado / accidente</label>
+          <textarea id="vehicleNotes" class="input-control" rows="3" placeholder="Describe el estado del vehículo o detalles del accidente..." style="resize:vertical;"></textarea>
+        </div>
+      </div>
+
+      <!-- 5. OBSERVACIONES -->
+      <div class="form-card" style="padding:20px; margin-bottom:14px;">
+        <div class="sec-badge">📝 5. OBSERVACIONES</div>
+        <div class="form-group">
+          <label>Observaciones generales</label>
+          <textarea id="obsInput" class="input-control" rows="3" placeholder="Observaciones del supervisor en sitio..." style="resize:vertical;"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Acción correctiva (si aplica)</label>
+          <textarea id="corrInput" class="input-control" rows="2" placeholder="Instrucción de corrección dada al técnico..." style="resize:vertical;"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" id="btnSave"
+        style="width:100%; padding:16px; font-size:1rem; font-weight:800; margin-bottom:30px; border-radius:12px; background: var(--navy,#1A2B4A); color:#fff; border:none; cursor:pointer; letter-spacing:0.05em;">
+        💾 GUARDAR INSPECCIÓN
+      </button>
+    </form>
+  </main>
+
+  <script>
+    const API_BASE = '/api/v1';
+    const token = localStorage.getItem('cm_token');
+    if (!token) window.location.replace('/app/login.html');
+
+    const CHECKLIST = [
+      '¿Cumplió con las normas de instalación?',
+      '¿Utilizó rutas adecuadas de instalación?',
+      '¿Realizó las configuraciones adecuadas dentro del módem, cajas de TV y extensores?',
+      '¿Explicó el WiFi y la caja de TV al cliente?',
+      '¿Conectó al cliente al WiFi y explicó las bondades del servicio?',
+      'Si lleva Eero: ¿Realizó la configuración adecuada del Eero?',
+      'Si lleva Eero: ¿Explicó las bondades del Eero al cliente?',
+      '¿Realizó bien el cableado de fibra?',
+      '¿Realizó el recorrido correcto en NAP?',
+      '¿Utilizó los equipos de seguridad adecuadamente? (conos, casco y arnés)',
+      '¿Dejó limpia el área de trabajo?'
+    ];
+
+    let responses = {};
+    let inspPhotos = [];
+    let vehPhotos  = [];
+    let allMobiles = [];
+    let allTechs   = [];
+
+    // ── Checklist ──────────────────────────────────────────────
+    (function buildChecklist() {
+      const c = document.getElementById('checklistContainer');
+      CHECKLIST.forEach((txt, i) => {
+        const qid = 'q' + i;
+        responses[qid] = { question_text: txt, result: 'Cumple', category_name: 'Calidad de Instalación' };
+        c.insertAdjacentHTML('beforeend', `
+          <div class="question-card">
+            <div class="question-text">${txt}</div>
+            <div class="options-grid">
+              <button type="button" class="opt-btn sel-c"  id="${qid}_c"  onclick="ans('${qid}','Cumple')">✔ Cumple</button>
+              <button type="button" class="opt-btn"        id="${qid}_nc" onclick="ans('${qid}','No cumple')">✖ No cumple</button>
+              <button type="button" class="opt-btn"        id="${qid}_na" onclick="ans('${qid}','No aplica')">— N/A</button>
+            </div>
+          </div>`);
+      });
+    })();
+
+    window.ans = function(qid, val) {
+      responses[qid].result = val;
+      document.getElementById(qid+'_c').className  = 'opt-btn' + (val==='Cumple'    ? ' sel-c'  : '');
+      document.getElementById(qid+'_nc').className = 'opt-btn' + (val==='No cumple' ? ' sel-nc' : '');
+      document.getElementById(qid+'_na').className = 'opt-btn' + (val==='No aplica' ? ' sel-na' : '');
+    };
+
+    // ── Vehículo ───────────────────────────────────────────────
+    window.setVeh = function(val, cls, btn) {
+      document.getElementById('vehicleStatus').value = val;
+      document.querySelectorAll('.veh-btn').forEach(b => b.className='veh-btn');
+      btn.className = 'veh-btn ' + cls;
+    };
+    window.toggleAcc = function() {
+      const on = document.getElementById('accBtn').classList.toggle('on');
+      document.getElementById('vehicleAccident').value = on ? 'true' : 'false';
+      document.getElementById('accLabel').style.display = on ? '' : 'none';
+    };
+
+    // ── Fotos ──────────────────────────────────────────────────
+    function compress(file) {
+      return new Promise(resolve => {
+        const r = new FileReader(); r.readAsDataURL(file);
+        r.onload = e => {
+          const img = new Image(); img.src = e.target.result;
+          img.onload = () => {
+            let {width:w, height:h} = img;
+            if (w>1200){h=Math.round(h*1200/w);w=1200;}
+            const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+            cv.getContext('2d').drawImage(img,0,0,w,h);
+            cv.toBlob(b=>resolve(new File([b],file.name,{type:'image/jpeg'})),'image/jpeg',0.8);
+          };
+        };
+      });
+    }
+
+    function renderPhotos(arr, gridId) {
+      const g = document.getElementById(gridId);
+      g.innerHTML = '';
+      arr.forEach((f,i) => {
+        const w = document.createElement('div'); w.className='photo-wrap';
+        w.innerHTML=`<img src="${URL.createObjectURL(f)}" class="photo-thumb">
+          <button type="button" class="photo-del" onclick="delPhoto(${i},'${gridId}')">✕</button>`;
+        g.appendChild(w);
+      });
+    }
+
+    window.delPhoto = function(i, gid) {
+      if(gid==='photoGrid'){inspPhotos.splice(i,1);renderPhotos(inspPhotos,'photoGrid');}
+      else{vehPhotos.splice(i,1);renderPhotos(vehPhotos,'vehPhotoGrid');}
+    };
+
+    document.getElementById('photoInput').addEventListener('change', async e=>{
+      for(const f of e.target.files) inspPhotos.push(await compress(f));
+      renderPhotos(inspPhotos,'photoGrid'); e.target.value='';
+    });
+    document.getElementById('vehPhotoInput').addEventListener('change', async e=>{
+      for(const f of e.target.files) vehPhotos.push(await compress(f));
+      renderPhotos(vehPhotos,'vehPhotoGrid'); e.target.value='';
+    });
+
+    // ── Cargar datos ───────────────────────────────────────────
+    async function init() {
+      try {
+        const [rm,rt] = await Promise.all([
+          fetch(`${API_BASE}/mobiles`,{headers:{'Authorization':`Bearer ${token}`}}),
+          fetch(`${API_BASE}/technicians`,{headers:{'Authorization':`Bearer ${token}`}})
+        ]);
+        if(!rm.ok||!rt.ok) throw new Error('Error autenticación');
+        allMobiles = await rm.json();
+        allTechs   = await rt.json();
+
+        const ms = document.getElementById('mobileSelect');
+        allMobiles.forEach(m=>{
+          const o=document.createElement('option');
+          o.value=m.id; o.textContent=`${m.code} — ${m.zone||''}`;
+          o.dataset.pid=m.primary_technician?m.primary_technician.id:'';
+          o.dataset.sid=m.secondary_technician?m.secondary_technician.id:'';
+          ms.appendChild(o);
+        });
+
+        ms.addEventListener('change', ()=>{
+          const opt=ms.options[ms.selectedIndex];
+          loadTechs(opt.dataset.pid, opt.dataset.sid);
+        });
+      } catch(err) {
+        console.error(err);
+        if(err.message.includes('autenticación')) window.location.replace('/app/login.html');
+      }
+    }
+
+    function loadTechs(pid, sid) {
+      const ts = document.getElementById('techSelect');
+      ts.innerHTML = '';
+      const assigned = allTechs.filter(t=>String(t.id)===String(pid)||String(t.id)===String(sid));
+      const others   = allTechs.filter(t=>String(t.id)!==String(pid)&&String(t.id)!==String(sid));
+      if(assigned.length){
+        const g=document.createElement('optgroup'); g.label='★ Técnicos de esta móvil';
+        assigned.forEach(t=>{
+          const o=document.createElement('option'); o.value=t.id;
+          o.textContent=t.full_name+(String(t.id)===String(pid)?' (Principal)':' (Auxiliar)');
+          g.appendChild(o);
+        });
+        ts.appendChild(g);
+        ts.value=pid||'';
+      }
+      if(others.length){
+        const g2=document.createElement('optgroup'); g2.label='Otros técnicos';
+        others.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.full_name;g2.appendChild(o);});
+        ts.appendChild(g2);
+      }
+      if(!assigned.length&&!others.length){
+        ts.innerHTML='<option value="">No hay técnicos registrados</option>';
+      }
+    }
+
+    // ── Guardar ────────────────────────────────────────────────
+    document.getElementById('inspectionForm').addEventListener('submit', async e=>{
+      e.preventDefault();
+      const btn = document.getElementById('btnSave');
+      const mobId = document.getElementById('mobileSelect').value;
+      const techId = document.getElementById('techSelect').value;
+      if(!mobId||!techId){alert('Selecciona una móvil y un técnico.');return;}
+      btn.disabled=true; btn.textContent='⏳ Guardando...';
+      try {
+        const payload = {
+          mobile_id:      parseInt(mobId),
+          technician_id:  parseInt(techId),
+          client_name:    document.getElementById('clientName').value.trim()||null,
+          contract_number:document.getElementById('contractNumber').value.trim()||null,
+          vehicle_status: document.getElementById('vehicleStatus').value||null,
+          vehicle_accidents: document.getElementById('vehicleAccident').value==='true',
+          order_number:   document.getElementById('orderNumber').value.trim(),
+          order_type:     document.getElementById('orderType').value,
+          observations:   document.getElementById('obsInput').value.trim()||null,
+          corrective_action: document.getElementById('corrInput').value.trim()||null,
+          items: Object.values(responses).map(r=>({
+            question_text: r.question_text,
+            result:        r.result,
+            category_name: r.category_name,
+            template_id:   null
+          }))
+        };
+        const res = await fetch(`${API_BASE}/inspections`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.detail||'Error al guardar');
+        const id = data.id;
+
+        // Fotos de inspección
+        for(const f of inspPhotos){
+          const fd=new FormData();fd.append('file',f);fd.append('photo_type','inspeccion');
+          await fetch(`${API_BASE}/inspections/${id}/photos`,{method:'POST',headers:{'Authorization':`Bearer ${token}`},body:fd});
+        }
+        // Fotos de vehículo
+        for(const f of vehPhotos){
+          const fd=new FormData();fd.append('file',f);fd.append('photo_type','vehiculo');
+          await fetch(`${API_BASE}/inspections/${id}/photos`,{method:'POST',headers:{'Authorization':`Bearer ${token}`},body:fd});
+        }
+
+        alert(`✅ Inspección ${data.inspection_code} guardada correctamente.\nResultado: ${data.general_result}`);
+        window.location.replace('/app/dashboard.html');
+      } catch(err) {
+        alert('❌ ' + err.message);
+        btn.disabled=false; btn.textContent='💾 GUARDAR INSPECCIÓN';
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>
+
     <style>
         .top-bar {
             background: #0f172a;
@@ -92,8 +509,8 @@
 <body>
 
     <div class="top-bar">
-        <a href="/app/" class="back-link">←</a>
-        <strong style="font-size: 1.1rem;">NUEVA INSPECCIÓN EN CAMPO</strong>
+        <a href="/app/" class="back-link">â†</a>
+        <strong style="font-size: 1.1rem;">NUEVA INSPECCIÃ“N EN CAMPO</strong>
     </div>
 
     <main class="main-container" style="margin-top: 20px;">
@@ -103,37 +520,37 @@
             <!-- Datos Principales -->
             <div class="form-card" style="padding: 24px;">
                 <div class="section-title" style="font-size: 1.1rem;">
-                    <span>📋 1. Datos de la Inspección</span>
+                    <span>ðŸ“‹ 1. Datos de la InspecciÃ³n</span>
                 </div>
 
                 <div class="form-group">
-                    <label for="mobileSelect">Móvil <span class="required">*</span></label>
+                    <label for="mobileSelect">MÃ³vil <span class="required">*</span></label>
                     <select id="mobileSelect" class="select-control" required>
-                        <option value="">-- Seleccionar Móvil --</option>
+                        <option value="">-- Seleccionar MÃ³vil --</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="techSelect">Técnico Responsable <span class="required">*</span></label>
+                    <label for="techSelect">TÃ©cnico Responsable <span class="required">*</span></label>
                     <select id="techSelect" class="select-control" required>
-                        <option value="">-- Seleccionar Técnico --</option>
+                        <option value="">-- Seleccionar TÃ©cnico --</option>
                     </select>
                 </div>
 
                 <div class="form-grid-2">
                     <div class="form-group">
                         <label for="clientName">Nombre del Cliente</label>
-                        <input type="text" id="clientName" class="input-control" placeholder="Ej. Juan Pérez">
+                        <input type="text" id="clientName" class="input-control" placeholder="Ej. Juan PÃ©rez">
                     </div>
                     <div class="form-group">
-                        <label for="contractNumber">Número de Contrato</label>
+                        <label for="contractNumber">NÃºmero de Contrato</label>
                         <input type="text" id="contractNumber" class="input-control" placeholder="Ej. CT-12345">
                     </div>
                 </div>
 
                 <div class="form-grid-2">
                     <div class="form-group">
-                        <label for="orderNumber">Número de Orden <span class="required">*</span></label>
+                        <label for="orderNumber">NÃºmero de Orden <span class="required">*</span></label>
                         <input type="text" id="orderNumber" class="input-control" placeholder="Ej. 45821" required>
                     </div>
                     <div class="form-group">
@@ -147,10 +564,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="vehicleStatus">Estatus del Vehículo (Opcional)</label>
+                    <label for="vehicleStatus">Estatus del VehÃ­culo (Opcional)</label>
                     <select id="vehicleStatus" class="select-control">
                         <option value="">-- Seleccionar Estatus --</option>
-                        <option value="Limpio y Óptimo">Limpio y Óptimo</option>
+                        <option value="Limpio y Ã“ptimo">Limpio y Ã“ptimo</option>
                         <option value="Sucio">Sucio</option>
                         <option value="Golpeado / Chocado">Golpeado / Chocado</option>
                         <option value="Requiere Mantenimiento">Requiere Mantenimiento</option>
@@ -158,10 +575,10 @@
                 </div>
             </div>
 
-            <!-- Checklist por Categorías -->
+            <!-- Checklist por CategorÃ­as -->
             <div class="form-card" style="padding: 24px;">
                 <div class="section-title" style="font-size: 1.1rem;">
-                    <span>🛠️ 2. Checklist de Verificación</span>
+                    <span>ðŸ› ï¸ 2. Checklist de VerificaciÃ³n</span>
                 </div>
 
                 <div id="checklistContainer">
@@ -169,16 +586,16 @@
                 </div>
             </div>
 
-            <!-- Fotografías -->
+            <!-- FotografÃ­as -->
             <div class="form-card" style="padding: 24px;">
                 <div class="section-title" style="font-size: 1.1rem;">
-                    <span>📸 3. Fotografías de Evidencia</span>
+                    <span>ðŸ“¸ 3. FotografÃ­as de Evidencia</span>
                 </div>
 
                 <div class="form-group">
-                    <label>Capturar/Subir Fotografías</label>
+                    <label>Capturar/Subir FotografÃ­as</label>
                     <input type="file" id="photoInput" accept="image/*" capture="environment" multiple class="input-control">
-                    <div style="font-size: 0.8rem; color: #64748b; margin-top: 5px;">* Las imágenes se comprimen automáticamente antes de subir.</div>
+                    <div style="font-size: 0.8rem; color: #64748b; margin-top: 5px;">* Las imÃ¡genes se comprimen automÃ¡ticamente antes de subir.</div>
                 </div>
 
                 <div class="photo-preview-grid" id="photoPreviewContainer"></div>
@@ -187,7 +604,7 @@
             <!-- Observaciones -->
             <div class="form-card" style="padding: 24px;">
                 <div class="section-title" style="font-size: 1.1rem;">
-                    <span>📝 4. Observaciones y Acción Correctiva</span>
+                    <span>ðŸ“ 4. Observaciones y AcciÃ³n Correctiva</span>
                 </div>
 
                 <div class="form-group">
@@ -196,13 +613,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="corrInput">Acción Correctiva (Si aplica)</label>
-                    <input type="text" id="corrInput" class="input-control" placeholder="Instrucción de corrección otorgada al técnico...">
+                    <label for="corrInput">AcciÃ³n Correctiva (Si aplica)</label>
+                    <input type="text" id="corrInput" class="input-control" placeholder="InstrucciÃ³n de correcciÃ³n otorgada al tÃ©cnico...">
                 </div>
             </div>
 
             <button type="submit" class="btn-submit" id="btnSave" style="margin-bottom: 40px;">
-                <span>💾 GUARDAR INSPECCIÓN</span>
+                <span>ðŸ’¾ GUARDAR INSPECCIÃ“N</span>
             </button>
 
         </form>
@@ -219,7 +636,7 @@
         let selectedFiles = []; // Array de Files a subir
 
         async function initForm() {
-            // 1. Cargar Móviles
+            // 1. Cargar MÃ³viles
             const resM = await fetch(`${API_BASE}/mobiles`, { headers: { 'Authorization': `Bearer ${token}` } });
             const mobiles = await resM.json();
             const mSelect = document.getElementById('mobileSelect');
@@ -230,7 +647,7 @@
                 mSelect.appendChild(opt);
             });
 
-            // 2. Cargar Técnicos
+            // 2. Cargar TÃ©cnicos
             const resT = await fetch(`${API_BASE}/technicians`, { headers: { 'Authorization': `Bearer ${token}` } });
             const techs = await resT.json();
             const tSelect = document.getElementById('techSelect');
@@ -241,7 +658,7 @@
                 tSelect.appendChild(opt);
             });
 
-            // Auto-seleccionar técnico al cambiar de móvil
+            // Auto-seleccionar tÃ©cnico al cambiar de mÃ³vil
             mSelect.addEventListener('change', () => {
                 const selM = mobiles.find(m => m.id == mSelect.value);
                 if (selM && selM.primary_technician) {
@@ -286,8 +703,8 @@
                     qCard.innerHTML = `
                         <div class="question-text">${q.question_text}</div>
                         <div class="options-grid">
-                            <button type="button" class="opt-btn selected-cumple" id="btn_${q.id}_Cumple" onclick="setResponse(${q.id}, 'Cumple')">✓ Cumple</button>
-                            <button type="button" class="opt-btn" id="btn_${q.id}_NoCumple" onclick="setResponse(${q.id}, 'No cumple')">✗ No cumple</button>
+                            <button type="button" class="opt-btn selected-cumple" id="btn_${q.id}_Cumple" onclick="setResponse(${q.id}, 'Cumple')">âœ“ Cumple</button>
+                            <button type="button" class="opt-btn" id="btn_${q.id}_NoCumple" onclick="setResponse(${q.id}, 'No cumple')">âœ— No cumple</button>
                             <button type="button" class="opt-btn" id="btn_${q.id}_NoAplica" onclick="setResponse(${q.id}, 'No aplica')">- N/A</button>
                         </div>
                     `;
@@ -310,7 +727,7 @@
             btnNA.className = 'opt-btn' + (val === 'No aplica' ? ' selected-noaplica' : '');
         };
 
-        // Captura de fotos con compresión en Canvas
+        // Captura de fotos con compresiÃ³n en Canvas
         document.getElementById('photoInput').addEventListener('change', (e) => {
             const files = Array.from(e.target.files);
             files.forEach(file => {
@@ -363,12 +780,12 @@
             });
         }
 
-        // Guardar Inspección
+        // Guardar InspecciÃ³n
         document.getElementById('inspectionForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btnSave = document.getElementById('btnSave');
             btnSave.disabled = true;
-            btnSave.textContent = '⏳ GUARDANDO INSPECCIÓN...';
+            btnSave.textContent = 'â³ GUARDANDO INSPECCIÃ“N...';
 
             try {
                 const payload = {
@@ -394,7 +811,7 @@
                 });
 
                 const inspResult = await resInsp.json();
-                if (!resInsp.ok) throw new Error(inspResult.detail || 'Error al guardar inspección');
+                if (!resInsp.ok) throw new Error(inspResult.detail || 'Error al guardar inspecciÃ³n');
 
                 const inspectionId = inspResult.id;
 
@@ -409,12 +826,12 @@
                     });
                 }
 
-                alert(`¡Inspección ${inspResult.inspection_code} guardada exitosamente!\nResultado: ${inspResult.general_result}`);
+                alert(`Â¡InspecciÃ³n ${inspResult.inspection_code} guardada exitosamente!\nResultado: ${inspResult.general_result}`);
                 window.location.href = '/app/';
             } catch (err) {
                 alert('Error: ' + err.message);
                 btnSave.disabled = false;
-                btnSave.textContent = '💾 GUARDAR INSPECCIÓN';
+                btnSave.textContent = 'ðŸ’¾ GUARDAR INSPECCIÃ“N';
             }
         });
 

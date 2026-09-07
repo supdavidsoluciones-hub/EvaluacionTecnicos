@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Móviles – Control Operativo</title>
+  <title>MÃ³viles â€“ Control Operativo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -29,8 +29,8 @@
 <body>
   
   <nav class="navbar">
-    <button class="btn-back" onclick="window.location.href='/app/dashboard.html'">←</button>
-    <div class="navbar-title">🚗 Móviles</div>
+    <button class="btn-back" onclick="window.location.href='/app/dashboard.html'">â†</button>
+    <div class="navbar-title">ðŸš— MÃ³viles</div>
     <div class="navbar-actions">
       <button class="btn btn-sm btn-primary" id="btnAddMovil">+ Nueva</button>
     </div>
@@ -41,7 +41,7 @@
       
       <div class="chips-row mb-16">
         <div class="chip active" data-zone="all">Todos</div>
-        <div class="chip" data-zone="chiriqui">Chiriquí</div>
+        <div class="chip" data-zone="chiriqui">ChiriquÃ­</div>
         <div class="chip" data-zone="santiago">Santiago</div>
       </div>
 
@@ -56,19 +56,19 @@
 
   <nav class="bottom-nav">
     <a href="/app/dashboard.html" class="bnav-item">
-      <span class="bnav-icon">🏠</span><span class="bnav-label">Inicio</span>
+      <span class="bnav-icon">ðŸ </span><span class="bnav-label">Inicio</span>
     </a>
     <a href="/app/moviles.html" class="bnav-item active">
-      <span class="bnav-icon">🚗</span><span class="bnav-label">Móviles</span>
+      <span class="bnav-icon">ðŸš—</span><span class="bnav-label">MÃ³viles</span>
     </a>
     <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
-      <span class="bnav-main">➕</span>
+      <span class="bnav-main">âž•</span>
     </a>
     <a href="/app/inspecciones.html" class="bnav-item">
-      <span class="bnav-icon">📋</span><span class="bnav-label">Lista</span>
+      <span class="bnav-icon">ðŸ“‹</span><span class="bnav-label">Lista</span>
     </a>
     <a href="/app/metricas.html" class="bnav-item">
-      <span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span>
+      <span class="bnav-icon">ðŸ“Š</span><span class="bnav-label">MÃ©tricas</span>
     </a>
   </nav>
 
@@ -91,7 +91,7 @@
         mobilesData = await getMobiles();
         renderMobiles('all');
       } catch(e) {
-        document.getElementById('listaMoviles').innerHTML = `<p class="text-red text-center py-4">Error cargando móviles</p>`;
+        document.getElementById('listaMoviles').innerHTML = `<p class="text-red text-center py-4">Error cargando mÃ³viles</p>`;
       }
     });
 
@@ -99,24 +99,24 @@
       const list = document.getElementById('listaMoviles');
       
       let filtered = mobilesData;
-      if(zone === 'chiriqui') filtered = mobilesData.filter(m => m.zona === 'Chiriquí' || parseInt(m.codigo.substring(1)) <= 206);
+      if(zone === 'chiriqui') filtered = mobilesData.filter(m => m.zona === 'ChiriquÃ­' || parseInt(m.codigo.substring(1)) <= 206);
       if(zone === 'santiago') filtered = mobilesData.filter(m => m.zona === 'Santiago' || parseInt(m.codigo.substring(1)) >= 207);
 
       if(!filtered || filtered.length === 0) {
-        list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🚐</div><div class="empty-state-title">No hay móviles</div><div class="empty-state-desc">No se encontraron móviles registrados.</div></div>`;
+        list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">ðŸš</div><div class="empty-state-title">No hay mÃ³viles</div><div class="empty-state-desc">No se encontraron mÃ³viles registrados.</div></div>`;
         return;
       }
 
       list.innerHTML = filtered.map(m => `
         <div class="vehicle-card" onclick="window.location.href='/inventario.html?movil=${m.codigo}'">
-          <div class="vehicle-icon">🚐</div>
+          <div class="vehicle-icon">ðŸš</div>
           <div class="vehicle-info">
             <div class="vehicle-code">${m.codigo} <span class="badge badge-neutral">${m.placa || 'N/A'}</span></div>
-            <div class="vehicle-detail">${m.tecnico?.nombre || 'Técnico sin asignar'}</div>
+            <div class="vehicle-detail">${m.tecnico?.nombre || 'TÃ©cnico sin asignar'}</div>
           </div>
           <div class="vehicle-status">
             ${semafBadge(m.score_calidad)}
-            <span class="text-muted" style="font-size:1.2rem;">›</span>
+            <span class="text-muted" style="font-size:1.2rem;">â€º</span>
           </div>
         </div>
       `).join('');

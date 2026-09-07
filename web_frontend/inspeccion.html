@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nueva Inspección – Control Operativo Móviles</title>
+  <title>Nueva InspecciÃ³n â€“ Control Operativo MÃ³viles</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,8 +50,8 @@
 <body>
   
   <nav class="navbar">
-    <button class="btn-back" onclick="history.back()">←</button>
-    <div class="navbar-title">Nueva Inspección</div>
+    <button class="btn-back" onclick="history.back()">â†</button>
+    <div class="navbar-title">Nueva InspecciÃ³n</div>
     <div class="navbar-actions"><span class="badge badge-teal" id="stepCounter">Paso 1/7</span></div>
   </nav>
 
@@ -71,12 +71,12 @@
         
         <!-- STEP 1 -->
         <div class="step-panel active" data-step="1">
-          <h3 class="mb-16">📋 Datos Generales</h3>
+          <h3 class="mb-16">ðŸ“‹ Datos Generales</h3>
           <div class="form-group">
-            <label class="form-label">Móvil</label>
+            <label class="form-label">MÃ³vil</label>
             <select id="selMovil" class="form-control" required>
               <option value="" disabled selected>Seleccione...</option>
-              <optgroup label="Chiriquí">
+              <optgroup label="ChiriquÃ­">
                 <option value="M200">M200</option>
                 <option value="M201">M201</option>
                 <option value="M202">M202</option>
@@ -93,9 +93,9 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Técnico</label>
+            <label class="form-label">TÃ©cnico</label>
             <select id="selTecnico" class="form-control" required>
-              <option value="" disabled selected>Cargando técnicos...</option>
+              <option value="" disabled selected>Cargando tÃ©cnicos...</option>
             </select>
           </div>
           <div class="form-group">
@@ -103,56 +103,56 @@
             <input type="text" id="inputCliente" class="form-control" placeholder="Nombre del cliente" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Número de Orden</label>
+            <label class="form-label">NÃºmero de Orden</label>
             <input type="text" id="inputOrden" class="form-control" placeholder="Ej. 123456" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Dirección / Zona</label>
+            <label class="form-label">DirecciÃ³n / Zona</label>
             <input type="text" id="inputDireccion" class="form-control" placeholder="Ciudad, Barrio..." required>
           </div>
           <div class="form-group">
             <label class="form-label">Tipo de Orden</label>
             <select id="selTipoOrden" class="form-control" required>
-              <option value="Instalación Nueva">Instalación Nueva</option>
-              <option value="Avería">Avería</option>
-              <option value="Garantía">Garantía</option>
-              <option value="Verificación">Verificación</option>
+              <option value="InstalaciÃ³n Nueva">InstalaciÃ³n Nueva</option>
+              <option value="AverÃ­a">AverÃ­a</option>
+              <option value="GarantÃ­a">GarantÃ­a</option>
+              <option value="VerificaciÃ³n">VerificaciÃ³n</option>
             </select>
           </div>
         </div>
 
         <!-- STEP 2 -->
         <div class="step-panel" data-step="2">
-          <h3 class="mb-16">🚗 Estado del Vehículo</h3>
+          <h3 class="mb-16">ðŸš— Estado del VehÃ­culo</h3>
           <label class="form-label">Limpieza Exterior</label>
           <div class="star-rating" id="ratingExterior" data-val="0">
-            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+            <span class="star" data-v="1">â˜…</span><span class="star" data-v="2">â˜…</span><span class="star" data-v="3">â˜…</span><span class="star" data-v="4">â˜…</span><span class="star" data-v="5">â˜…</span>
           </div>
           
           <label class="form-label">Limpieza Interior</label>
           <div class="star-rating" id="ratingInterior" data-val="0">
-            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+            <span class="star" data-v="1">â˜…</span><span class="star" data-v="2">â˜…</span><span class="star" data-v="3">â˜…</span><span class="star" data-v="4">â˜…</span><span class="star" data-v="5">â˜…</span>
           </div>
 
-          <label class="form-label mt-16">Presentación del Técnico</label>
+          <label class="form-label mt-16">PresentaciÃ³n del TÃ©cnico</label>
           <div id="checksVehiculo"></div>
           
           <div class="form-group mt-16">
             <label class="form-label">Observaciones</label>
-            <textarea id="obsVehiculo" class="form-control" placeholder="Detalles sobre el vehículo..."></textarea>
+            <textarea id="obsVehiculo" class="form-control" placeholder="Detalles sobre el vehÃ­culo..."></textarea>
           </div>
         </div>
 
         <!-- STEP 3 -->
         <div class="step-panel" data-step="3">
-          <h3 class="mb-16">🔧 Verificación de Herramientas</h3>
-          <p class="text-sm mb-16">Verifica el inventario básico del vehículo</p>
+          <h3 class="mb-16">ðŸ”§ VerificaciÃ³n de Herramientas</h3>
+          <p class="text-sm mb-16">Verifica el inventario bÃ¡sico del vehÃ­culo</p>
           <div id="checksHerramientas"></div>
         </div>
 
         <!-- STEP 4 -->
         <div class="step-panel" data-step="4">
-          <h3 class="mb-16">🦺 Seguridad</h3>
+          <h3 class="mb-16">ðŸ¦º Seguridad</h3>
           <div id="checksSeguridad"></div>
           <div class="form-group mt-16">
             <label class="form-label">Observaciones Seguridad</label>
@@ -162,20 +162,20 @@
 
         <!-- STEP 5 -->
         <div class="step-panel" data-step="5">
-          <h3 class="mb-16">⚡ Inspección Técnica</h3>
+          <h3 class="mb-16">âš¡ InspecciÃ³n TÃ©cnica</h3>
           <div id="checksTecnica"></div>
           <div class="form-group mt-16">
-            <label class="form-label">Observaciones Técnicas</label>
+            <label class="form-label">Observaciones TÃ©cnicas</label>
             <textarea id="obsTecnica" class="form-control" placeholder="..."></textarea>
           </div>
         </div>
 
         <!-- STEP 6 -->
         <div class="step-panel" data-step="6">
-          <h3 class="mb-16">👤 Atención al Cliente</h3>
-          <label class="form-label">Calificación General Atención</label>
+          <h3 class="mb-16">ðŸ‘¤ AtenciÃ³n al Cliente</h3>
+          <label class="form-label">CalificaciÃ³n General AtenciÃ³n</label>
           <div class="star-rating" id="ratingAtencion" data-val="0">
-            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+            <span class="star" data-v="1">â˜…</span><span class="star" data-v="2">â˜…</span><span class="star" data-v="3">â˜…</span><span class="star" data-v="4">â˜…</span><span class="star" data-v="5">â˜…</span>
           </div>
           
           <div id="checksCliente"></div>
@@ -192,27 +192,27 @@
 
         <!-- STEP 7 -->
         <div class="step-panel" data-step="7">
-          <h3 class="mb-16">📸 Evidencia Fotográfica</h3>
+          <h3 class="mb-16">ðŸ“¸ Evidencia FotogrÃ¡fica</h3>
           <div class="photo-grid mb-20" id="photoGrid">
             <!-- Fotos generadas por JS -->
           </div>
           
           <div class="divider"></div>
-          <h3 class="mb-16">📊 Resumen</h3>
+          <h3 class="mb-16">ðŸ“Š Resumen</h3>
           <div id="resumenInspeccion" class="card card-teal text-center mb-16">
             Calculando puntaje...
           </div>
           
-          <button type="button" class="btn btn-primary btn-block btn-lg" id="btnSubmit">✅ Enviar Inspección</button>
+          <button type="button" class="btn btn-primary btn-block btn-lg" id="btnSubmit">âœ… Enviar InspecciÃ³n</button>
         </div>
       </form>
     </div>
   </main>
 
   <div class="bottom-bar">
-    <button class="btn btn-secondary" id="btnPrev" disabled>← Anterior</button>
+    <button class="btn btn-secondary" id="btnPrev" disabled>â† Anterior</button>
     <span id="lblStep">Paso 1 de 7</span>
-    <button class="btn btn-primary" id="btnNext">Siguiente →</button>
+    <button class="btn btn-primary" id="btnNext">Siguiente â†’</button>
   </div>
 
   <script type="module">
@@ -225,18 +225,18 @@
 
     // Checklists data
     const lists = {
-      vehiculo: ['Uniforme limpio y completo', 'Identificación visible', 'Vehículo identificado/rotulado'],
-      herramientas: ['Escalera', 'Pelacables', 'Crimpeadora', 'Multímetro', 'Tester de fibra (OTDR/VFL)', 'Fusionadora', 'Taladro/Brocas', 'Cinta métrica', 'Cable UTP/Fibra (stock)', 'Conectores (stock)'],
-      seguridad: ['Conos colocados correctamente', 'Señalización adecuada', 'Casco utilizado (si aplica)', 'Guantes utilizados', 'Lentes de seguridad', 'Trabajo seguro en alturas (si aplica)'],
-      tecnica: ['ACOMETIDA: Correctamente instalada y fijada', 'CONECTORES FTTH: Bien elaborados y limpios', 'ONU Y EQUIPOS: Correctamente instalados y cableado organizado', 'EERO/WIFI: Configuración y aprovisionamiento correcto', 'TELEVISIÓN/TELEFONÍA: Servicio funcionando (si aplica)'],
-      cliente: ['Técnico explicó servicios', 'Respondió dudas', 'Cliente satisfecho']
+      vehiculo: ['Uniforme limpio y completo', 'IdentificaciÃ³n visible', 'VehÃ­culo identificado/rotulado'],
+      herramientas: ['Escalera', 'Pelacables', 'Crimpeadora', 'MultÃ­metro', 'Tester de fibra (OTDR/VFL)', 'Fusionadora', 'Taladro/Brocas', 'Cinta mÃ©trica', 'Cable UTP/Fibra (stock)', 'Conectores (stock)'],
+      seguridad: ['Conos colocados correctamente', 'SeÃ±alizaciÃ³n adecuada', 'Casco utilizado (si aplica)', 'Guantes utilizados', 'Lentes de seguridad', 'Trabajo seguro en alturas (si aplica)'],
+      tecnica: ['ACOMETIDA: Correctamente instalada y fijada', 'CONECTORES FTTH: Bien elaborados y limpios', 'ONU Y EQUIPOS: Correctamente instalados y cableado organizado', 'EERO/WIFI: ConfiguraciÃ³n y aprovisionamiento correcto', 'TELEVISIÃ“N/TELEFONÃA: Servicio funcionando (si aplica)'],
+      cliente: ['TÃ©cnico explicÃ³ servicios', 'RespondiÃ³ dudas', 'Cliente satisfecho']
     };
     
     const photoTypes = [
       { id: 'foto_fachada', label: 'Fachada' },
       { id: 'foto_acometida', label: 'Acometida' },
       { id: 'foto_equipos', label: 'Equipos/ONU' },
-      { id: 'foto_vehiculo', label: 'Vehículo' }
+      { id: 'foto_vehiculo', label: 'VehÃ­culo' }
     ];
 
     document.addEventListener('DOMContentLoaded', async () => {
@@ -264,8 +264,8 @@
             <div class="check-item" data-id="${id}">
               <div class="check-text">${item}</div>
               <div class="check-toggle">
-                <button type="button" class="toggle-btn ok" onclick="setCheck('${id}', 'ok', this)">✓</button>
-                <button type="button" class="toggle-btn nok" onclick="setCheck('${id}', 'nok', this)">✗</button>
+                <button type="button" class="toggle-btn ok" onclick="setCheck('${id}', 'ok', this)">âœ“</button>
+                <button type="button" class="toggle-btn nok" onclick="setCheck('${id}', 'nok', this)">âœ—</button>
                 <button type="button" class="toggle-btn na" onclick="setCheck('${id}', 'na', this)">-</button>
               </div>
             </div>
@@ -295,7 +295,7 @@
       const grid = document.getElementById('photoGrid');
       grid.innerHTML = photoTypes.map(pt => `
         <label class="photo-slot" id="slot_${pt.id}">
-          <div class="photo-icon">📷</div>
+          <div class="photo-icon">ðŸ“·</div>
           <div class="photo-label">${pt.label}</div>
           <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handlePhoto(this, '${pt.id}')">
         </label>
@@ -352,7 +352,7 @@
         document.getElementById('resumenInspeccion').innerHTML = `
           <div style="font-size: 2rem; font-weight: 800;">${score}%</div>
           <div class="text-sm">Puntaje Estimado</div>
-          <div class="text-xs mt-8">Respuestas válidas: ${total}</div>
+          <div class="text-xs mt-8">Respuestas vÃ¡lidas: ${total}</div>
         `;
         return score;
       }
@@ -380,7 +380,7 @@
       try {
         const data = await getTechnicians();
         const sel = document.getElementById('selTecnico');
-        sel.innerHTML = '<option value="" disabled selected>Seleccione técnico...</option>' + 
+        sel.innerHTML = '<option value="" disabled selected>Seleccione tÃ©cnico...</option>' + 
           (data || []).map(t => `<option value="${t.id}">${t.nombre}</option>`).join('');
       } catch(e) {}
 
@@ -413,12 +413,12 @@
           }
 
           await apiRequest('POST', '/inspections', fd, true);
-          showToast('Inspección guardada con éxito', 'success');
+          showToast('InspecciÃ³n guardada con Ã©xito', 'success');
           setTimeout(() => window.location.href = '/inspecciones.html', 1500);
         } catch(e) {
           showToast(e.message, 'error');
           btn.disabled = false;
-          btn.textContent = '✅ Enviar Inspección';
+          btn.textContent = 'âœ… Enviar InspecciÃ³n';
         }
       });
     });

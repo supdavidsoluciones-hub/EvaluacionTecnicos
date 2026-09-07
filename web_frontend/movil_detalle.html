@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Perfil detallado de móvil Chevrolet P900 – Control Operativo de las Móviles" />
-  <title>Perfil de Móvil – Control Operativo</title>
+  <meta name="description" content="Perfil detallado de mÃ³vil Chevrolet P900 â€“ Control Operativo de las MÃ³viles" />
+  <title>Perfil de MÃ³vil â€“ Control Operativo</title>
   <link rel="icon" type="image/png" href="/app/img/logo.png" />
   <link rel="apple-touch-icon" href="/app/img/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -84,7 +84,7 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
     <div class="navbar-title" style="flex:1; margin: 0 10px;">
-      <span style="font-weight: 700; font-size: 0.95rem;">Perfil de Móvil</span>
+      <span style="font-weight: 700; font-size: 0.95rem;">Perfil de MÃ³vil</span>
     </div>
     <span id="navMobileCode" class="badge badge-verde" style="font-size: 0.85rem;"></span>
   </nav>
@@ -108,7 +108,7 @@
           </svg>
         </div>
         <div class="hero-info">
-          <div class="hero-code" id="heroCode">—</div>
+          <div class="hero-code" id="heroCode">â€”</div>
           <div class="hero-model" id="heroModel">Chevrolet P900</div>
           <div id="heroPlate" style="font-size:0.8rem; color: var(--text-secondary);"></div>
           <div class="hero-badges">
@@ -116,7 +116,7 @@
             <span id="heroZone" class="badge" style="background: rgba(99,102,241,0.15); color: #818cf8;"></span>
           </div>
         </div>
-        <button onclick="openEditModal()" class="btn btn-sm btn-secondary" title="Editar móvil" style="flex-shrink:0;">
+        <button onclick="openEditModal()" class="btn btn-sm btn-secondary" title="Editar mÃ³vil" style="flex-shrink:0;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>
       </div>
@@ -124,52 +124,52 @@
       
       <!-- Vehicle Status -->
       <div class="hero-card" style="margin-top:-10px; padding: 12px 20px; display: flex; flex-direction: column; gap: 8px;">
-        <div style="font-size:0.85rem; font-weight:700; color:var(--text-primary); margin-bottom: 4px;">🚗 Estatus del Vehículo</div>
+        <div style="font-size:0.85rem; font-weight:700; color:var(--text-primary); margin-bottom: 4px;">ðŸš— Estatus del VehÃ­culo</div>
         <div style="display:flex; justify-content: space-between; font-size: 0.8rem;">
           <span style="color:var(--text-muted);">Limpieza:</span>
-          <span id="vCleanStatus" style="font-weight: 600;">—</span>
+          <span id="vCleanStatus" style="font-weight: 600;">â€”</span>
         </div>
         <div style="display:flex; justify-content: space-between; font-size: 0.8rem;">
-          <span style="color:var(--text-muted);">Daños/Golpes:</span>
-          <span id="vDamageStatus" style="font-weight: 600;">—</span>
+          <span style="color:var(--text-muted);">DaÃ±os/Golpes:</span>
+          <span id="vDamageStatus" style="font-weight: 600;">â€”</span>
         </div>
         <button onclick="openEditModal()" class="btn btn-sm btn-secondary" style="margin-top:8px; align-self: flex-start;">Actualizar Estatus</button>
       </div>
 
       <!-- Tabs -->
       <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('tecnicos')" id="tab-tecnicos">👥 Técnicos</button>
-        <button class="tab-btn" onclick="switchTab('inventario')" id="tab-inventario">🔧 Inventario</button>
-        <button class="tab-btn" onclick="switchTab('inspecciones')" id="tab-inspecciones">📋 Inspecciones</button>
-        <button class="tab-btn" onclick="switchTab('estadisticas')" id="tab-estadisticas">📊 Stats</button>
+        <button class="tab-btn active" onclick="switchTab('tecnicos')" id="tab-tecnicos">ðŸ‘¥ TÃ©cnicos</button>
+        <button class="tab-btn" onclick="switchTab('inventario')" id="tab-inventario">ðŸ”§ Inventario</button>
+        <button class="tab-btn" onclick="switchTab('inspecciones')" id="tab-inspecciones">ðŸ“‹ Inspecciones</button>
+        <button class="tab-btn" onclick="switchTab('estadisticas')" id="tab-estadisticas">ðŸ“Š Stats</button>
       </div>
 
-      <!-- TAB: Técnicos -->
+      <!-- TAB: TÃ©cnicos -->
       <div class="tab-panel active" id="panel-tecnicos">
         <div id="techniciansList">
           <div class="skeleton skeleton-card"></div>
         </div>
         <button class="btn btn-primary btn-full" onclick="openTechModal()" style="margin-top: 12px;">
-          👥 Asignar / Cambiar Técnicos
+          ðŸ‘¥ Asignar / Cambiar TÃ©cnicos
         </button>
       </div>
 
       <!-- TAB: Inventario -->
       <div class="tab-panel" id="panel-inventario">
         <div class="inv-summary" id="invSummary">
-          <div class="inv-stat"><div class="inv-stat-value" id="invTotal">—</div><div class="inv-stat-label">Total</div></div>
-          <div class="inv-stat"><div class="inv-stat-value" style="color:var(--teal)" id="invOk">—</div><div class="inv-stat-label">OK</div></div>
-          <div class="inv-stat"><div class="inv-stat-value" style="color:var(--red)" id="invIssues">—</div><div class="inv-stat-label">Problemas</div></div>
+          <div class="inv-stat"><div class="inv-stat-value" id="invTotal">â€”</div><div class="inv-stat-label">Total</div></div>
+          <div class="inv-stat"><div class="inv-stat-value" style="color:var(--teal)" id="invOk">â€”</div><div class="inv-stat-label">OK</div></div>
+          <div class="inv-stat"><div class="inv-stat-value" style="color:var(--red)" id="invIssues">â€”</div><div class="inv-stat-label">Problemas</div></div>
         </div>
         <div class="inv-filters">
           <button class="filter-btn active" onclick="filterInventory('todos')" id="f-todos">Todos</button>
-          <button class="filter-btn" onclick="filterInventory('Herramienta')" id="f-Herramienta">🔧 Herramienta</button>
-          <button class="filter-btn" onclick="filterInventory('Eléctrico')" id="f-Eléctrico">⚡ Eléctrico</button>
-          <button class="filter-btn" onclick="filterInventory('Fibra Óptica')" id="f-FibraÓptica">🔴 Fibra Ópt.</button>
-          <button class="filter-btn" onclick="filterInventory('EPP')" id="f-EPP">🦺 EPP</button>
-          <button class="filter-btn" onclick="filterInventory('Seguridad')" id="f-Seguridad">🚧 Seguridad</button>
-          <button class="filter-btn" onclick="filterInventory('Escalera')" id="f-Escalera">🪜 Escalera</button>
-          <button class="filter-btn" onclick="filterInventory('Telecom')" id="f-Telecom">📡 Telecom</button>
+          <button class="filter-btn" onclick="filterInventory('Herramienta')" id="f-Herramienta">ðŸ”§ Herramienta</button>
+          <button class="filter-btn" onclick="filterInventory('ElÃ©ctrico')" id="f-ElÃ©ctrico">âš¡ ElÃ©ctrico</button>
+          <button class="filter-btn" onclick="filterInventory('Fibra Ã“ptica')" id="f-FibraÃ“ptica">ðŸ”´ Fibra Ã“pt.</button>
+          <button class="filter-btn" onclick="filterInventory('EPP')" id="f-EPP">ðŸ¦º EPP</button>
+          <button class="filter-btn" onclick="filterInventory('Seguridad')" id="f-Seguridad">ðŸš§ Seguridad</button>
+          <button class="filter-btn" onclick="filterInventory('Escalera')" id="f-Escalera">ðŸªœ Escalera</button>
+          <button class="filter-btn" onclick="filterInventory('Telecom')" id="f-Telecom">ðŸ“¡ Telecom</button>
         </div>
         <div id="inventoryList">
           <div class="skeleton skeleton-card"></div>
@@ -183,16 +183,16 @@
         </div>
       </div>
 
-      <!-- TAB: Estadísticas -->
+      <!-- TAB: EstadÃ­sticas -->
       <div class="tab-panel" id="panel-estadisticas">
         <div class="stat-row">
-          <div class="stat-card"><div class="stat-value accent-teal" id="statOrders">—</div><div class="stat-label">Órdenes</div></div>
-          <div class="stat-card"><div class="stat-value accent-purple" id="statInspections">—</div><div class="stat-label">Inspecciones</div></div>
+          <div class="stat-card"><div class="stat-value accent-teal" id="statOrders">â€”</div><div class="stat-label">Ã“rdenes</div></div>
+          <div class="stat-card"><div class="stat-value accent-purple" id="statInspections">â€”</div><div class="stat-label">Inspecciones</div></div>
         </div>
         <div class="quality-bar-wrap">
           <div style="display:flex; justify-content: space-between; align-items: center;">
-            <span style="font-size:0.85rem; font-weight: 600;">Índice de Calidad</span>
-            <span id="statQuality" style="font-size: 1.2rem; font-weight: 800;">—%</span>
+            <span style="font-size:0.85rem; font-weight: 600;">Ãndice de Calidad</span>
+            <span id="statQuality" style="font-size: 1.2rem; font-weight: 800;">â€”%</span>
           </div>
           <div class="quality-bar-track">
             <div class="quality-bar-fill" id="qualityBar" style="width:0%; background: var(--teal);"></div>
@@ -206,31 +206,31 @@
 
   <!-- Bottom Nav -->
   <nav class="bottom-nav">
-    <a href="/app/dashboard.html" class="bnav-item"><span class="bnav-icon">🏠</span><span class="bnav-label">Inicio</span></a>
-    <a href="/app/moviles.html" class="bnav-item active"><span class="bnav-icon">🚐</span><span class="bnav-label">Móviles</span></a>
-    <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;"><span class="bnav-main">➕</span></a>
-    <a href="/app/inspecciones.html" class="bnav-item"><span class="bnav-icon">📋</span><span class="bnav-label">Lista</span></a>
-    <a href="/app/metricas.html" class="bnav-item"><span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span></a>
+    <a href="/app/dashboard.html" class="bnav-item"><span class="bnav-icon">ðŸ </span><span class="bnav-label">Inicio</span></a>
+    <a href="/app/moviles.html" class="bnav-item active"><span class="bnav-icon">ðŸš</span><span class="bnav-label">MÃ³viles</span></a>
+    <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;"><span class="bnav-main">âž•</span></a>
+    <a href="/app/inspecciones.html" class="bnav-item"><span class="bnav-icon">ðŸ“‹</span><span class="bnav-label">Lista</span></a>
+    <a href="/app/metricas.html" class="bnav-item"><span class="bnav-icon">ðŸ“Š</span><span class="bnav-label">MÃ©tricas</span></a>
   </nav>
 
   <!-- Modal: Edit Mobile -->
   <div class="modal-overlay" id="editMobileModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">✏️ Editar Móvil</div>
+      <div class="modal-title">âœï¸ Editar MÃ³vil</div>
       <div class="form-group"><label>Placa</label><input id="editPlate" class="form-control" type="text" placeholder="Ej: AB-1234" /></div>
       <div class="form-group"><label>Zona</label>
         <select id="editZone" class="form-control">
-          <option value="Chiriquí">Chiriquí</option>
+          <option value="ChiriquÃ­">ChiriquÃ­</option>
           <option value="Santiago">Santiago</option>
         </select>
       </div>
       <div class="form-group"><label>Color</label><input id="editColor" class="form-control" type="text" placeholder="Ej: blanco" /></div>
       <div class="form-group"><label>Estado</label>
         <select id="editStatus" class="form-control">
-          <option value="activa">✅ Activa</option>
-          <option value="mantenimiento">🔧 Mantenimiento</option>
-          <option value="inactiva">❌ Inactiva</option>
+          <option value="activa">âœ… Activa</option>
+          <option value="mantenimiento">ðŸ”§ Mantenimiento</option>
+          <option value="inactiva">âŒ Inactiva</option>
         </select>
       </div>
       
@@ -241,12 +241,12 @@
           <option value="Requiere lavado profundo">Requiere lavado profundo</option>
         </select>
       </div>
-      <div class="form-group"><label>Daños/Golpes</label>
+      <div class="form-group"><label>DaÃ±os/Golpes</label>
         <select id="editDamage" class="form-control">
-          <option value="Sin daños">Sin daños</option>
+          <option value="Sin daÃ±os">Sin daÃ±os</option>
           <option value="Rayones leves">Rayones leves</option>
           <option value="Golpe visible">Golpe visible</option>
-          <option value="Daño mayor">Daño mayor</option>
+          <option value="DaÃ±o mayor">DaÃ±o mayor</option>
         </select>
       </div>
 
@@ -260,12 +260,12 @@
   <div class="modal-overlay" id="techModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">👥 Asignar Técnicos</div>
-      <div class="form-group"><label>Técnico 1</label>
-        <select id="selPrimaryTech" class="form-control"><option value="">— Sin técnico —</option></select>
+      <div class="modal-title">ðŸ‘¥ Asignar TÃ©cnicos</div>
+      <div class="form-group"><label>TÃ©cnico 1</label>
+        <select id="selPrimaryTech" class="form-control"><option value="">â€” Sin tÃ©cnico â€”</option></select>
       </div>
-      <div class="form-group"><label>Técnico 2</label>
-        <select id="selSecondaryTech" class="form-control"><option value="">— Ninguno —</option></select>
+      <div class="form-group"><label>TÃ©cnico 2</label>
+        <select id="selSecondaryTech" class="form-control"><option value="">â€” Ninguno â€”</option></select>
       </div>
       
       <div class="form-group"><label>Limpieza</label>
@@ -275,16 +275,16 @@
           <option value="Requiere lavado profundo">Requiere lavado profundo</option>
         </select>
       </div>
-      <div class="form-group"><label>Daños/Golpes</label>
+      <div class="form-group"><label>DaÃ±os/Golpes</label>
         <select id="editDamage" class="form-control">
-          <option value="Sin daños">Sin daños</option>
+          <option value="Sin daÃ±os">Sin daÃ±os</option>
           <option value="Rayones leves">Rayones leves</option>
           <option value="Golpe visible">Golpe visible</option>
-          <option value="Daño mayor">Daño mayor</option>
+          <option value="DaÃ±o mayor">DaÃ±o mayor</option>
         </select>
       </div>
 
-      <div class="form-group"><label>Notas</label><input id="assignNotes" class="form-control" type="text" placeholder="Ej: Asignación de turno mañana" /></div>
+      <div class="form-group"><label>Notas</label><input id="assignNotes" class="form-control" type="text" placeholder="Ej: AsignaciÃ³n de turno maÃ±ana" /></div>
       <button class="btn btn-primary btn-full" onclick="saveAssignTechnicians()">Asignar</button>
       <button class="btn btn-secondary btn-full" onclick="closeModal('techModal')" style="margin-top:8px;">Cancelar</button>
     </div>
@@ -294,17 +294,17 @@
   <div class="modal-overlay" id="inventoryEditModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title" id="invEditTitle">🔧 Actualizar Herramienta</div>
+      <div class="modal-title" id="invEditTitle">ðŸ”§ Actualizar Herramienta</div>
       <input type="hidden" id="invEditId" />
       <div class="form-group"><label>Cantidad Actual</label><input id="invEditQty" class="form-control" type="number" min="0" /></div>
       <div class="form-group"><label>Estado</label>
         <select id="invEditStatus" class="form-control">
-          <option value="ok">✅ OK</option>
-          <option value="faltante">⚠️ Faltante</option>
-          <option value="danado">❌ Dañado</option>
+          <option value="ok">âœ… OK</option>
+          <option value="faltante">âš ï¸ Faltante</option>
+          <option value="danado">âŒ DaÃ±ado</option>
         </select>
       </div>
-      <div class="form-group"><label>Número de Serie / Modelo</label><input id="invEditSerial" class="form-control" type="text" placeholder="(opcional)" /></div>
+      <div class="form-group"><label>NÃºmero de Serie / Modelo</label><input id="invEditSerial" class="form-control" type="text" placeholder="(opcional)" /></div>
       
       <div class="form-group"><label>Limpieza</label>
         <select id="editCleanliness" class="form-control">
@@ -313,12 +313,12 @@
           <option value="Requiere lavado profundo">Requiere lavado profundo</option>
         </select>
       </div>
-      <div class="form-group"><label>Daños/Golpes</label>
+      <div class="form-group"><label>DaÃ±os/Golpes</label>
         <select id="editDamage" class="form-control">
-          <option value="Sin daños">Sin daños</option>
+          <option value="Sin daÃ±os">Sin daÃ±os</option>
           <option value="Rayones leves">Rayones leves</option>
           <option value="Golpe visible">Golpe visible</option>
-          <option value="Daño mayor">Daño mayor</option>
+          <option value="DaÃ±o mayor">DaÃ±o mayor</option>
         </select>
       </div>
 
@@ -343,7 +343,7 @@
     let allInventory = [];
     let allTechnicians = [];
 
-    // ── Tab switching ─────────────────────────────────────────────────────────
+    // â”€â”€ Tab switching â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function switchTab(name) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -351,12 +351,12 @@
       document.getElementById('panel-' + name).classList.add('active');
     }
 
-    // ── Modal helpers ─────────────────────────────────────────────────────────
+    // â”€â”€ Modal helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function openModal(id) { document.getElementById(id).classList.add('open'); }
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
     document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
 
-    // ── Load profile data ─────────────────────────────────────────────────────
+    // â”€â”€ Load profile data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     async function loadProfile() {
       try {
         const res = await fetch(`${API_BASE}/mobiles/${mobileId}/profile`, { headers: { 'Authorization': 'Bearer ' + token() } });
@@ -374,18 +374,18 @@
       }
     }
 
-    // ── Render Hero ───────────────────────────────────────────────────────────
+    // â”€â”€ Render Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function renderHero(d) {
       document.getElementById('heroCode').textContent = d.code;
       document.getElementById('navMobileCode').textContent = d.code;
       document.getElementById('heroModel').textContent = d.vehicle_model || 'Chevrolet P900';
-      document.getElementById('heroPlate').textContent = d.plate ? '🪪 Placa: ' + d.plate : '';
-      document.title = d.code + ' – Control Operativo';
+      document.getElementById('heroPlate').textContent = d.plate ? 'ðŸªª Placa: ' + d.plate : '';
+      document.title = d.code + ' â€“ Control Operativo';
 
       document.getElementById('vCleanStatus').textContent = d.cleanliness_status || 'Limpio';
-      document.getElementById('vDamageStatus').textContent = d.damage_status || 'Sin daños';
+      document.getElementById('vDamageStatus').textContent = d.damage_status || 'Sin daÃ±os';
 
-      const statusMap = { activa: ['badge-verde','✅ Activa'], mantenimiento: ['badge-amarillo','🔧 Mantenimiento'], inactiva: ['badge-rojo','❌ Inactiva'] };
+      const statusMap = { activa: ['badge-verde','âœ… Activa'], mantenimiento: ['badge-amarillo','ðŸ”§ Mantenimiento'], inactiva: ['badge-rojo','âŒ Inactiva'] };
       const [cls, label] = statusMap[d.status] || ['badge-verde', d.status];
       const heroStatus = document.getElementById('heroStatus');
       heroStatus.className = 'badge ' + cls;
@@ -399,26 +399,26 @@
       document.querySelectorAll('#heroVan stop:last-child').forEach(s => s.setAttribute('stop-color', sc.replace('00d4aa','7c3aed')));
     }
 
-    // ── Render Technicians ────────────────────────────────────────────────────
+    // â”€â”€ Render Technicians â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function renderTechnicians(techs) {
       const div = document.getElementById('techniciansList');
       if (!techs || techs.length === 0) {
-        div.innerHTML = '<div style="text-align:center; padding: 24px; color: var(--text-muted); font-size:0.85rem;">⚠️ No hay técnicos asignados a esta móvil.<br><br>Usa el botón de abajo para asignar técnicos.</div>';
+        div.innerHTML = '<div style="text-align:center; padding: 24px; color: var(--text-muted); font-size:0.85rem;">âš ï¸ No hay tÃ©cnicos asignados a esta mÃ³vil.<br><br>Usa el botÃ³n de abajo para asignar tÃ©cnicos.</div>';
         return;
       }
       div.innerHTML = techs.map(t => `
         <div class="tech-card">
-          <div class="tech-avatar">${t.role === 'principal' ? '👤' : '👥'}</div>
+          <div class="tech-avatar">${t.role === 'principal' ? 'ðŸ‘¤' : 'ðŸ‘¥'}</div>
           <div class="tech-info">
             <div class="tech-name">${t.name}</div>
-            <div class="tech-role">${t.role === 'principal' ? '⭐ Técnico 1' : '🔹 Técnico 2'}</div>
-            <div style="font-size:0.72rem; color: var(--text-muted); margin-top:2px;">Desde: ${t.since ? new Date(t.since).toLocaleDateString('es-PA') : '—'}</div>
+            <div class="tech-role">${t.role === 'principal' ? 'â­ TÃ©cnico 1' : 'ðŸ”¹ TÃ©cnico 2'}</div>
+            <div style="font-size:0.72rem; color: var(--text-muted); margin-top:2px;">Desde: ${t.since ? new Date(t.since).toLocaleDateString('es-PA') : 'â€”'}</div>
           </div>
           <span class="badge ${t.status === 'activo' ? 'badge-verde' : 'badge-rojo'}">${t.status}</span>
         </div>`).join('');
     }
 
-    // ── Render Inventory ──────────────────────────────────────────────────────
+    // â”€â”€ Render Inventory â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function filterInventory(cat) {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       const btn = document.getElementById('f-' + cat);
@@ -428,15 +428,15 @@
     }
 
     const catIcons = {
-      Herramienta: '🔧', EPP: '🦺', Stock: '📦', Seguridad: '🚧', Documentos: '📄',
-      'Eléctrico': '⚡', 'Fibra Óptica': '🔴', Escalera: '🪜', Telecom: '📡'
+      Herramienta: 'ðŸ”§', EPP: 'ðŸ¦º', Stock: 'ðŸ“¦', Seguridad: 'ðŸš§', Documentos: 'ðŸ“„',
+      'ElÃ©ctrico': 'âš¡', 'Fibra Ã“ptica': 'ðŸ”´', Escalera: 'ðŸªœ', Telecom: 'ðŸ“¡'
     };
     const catCls = {
       Herramienta: 'cat-herramienta', EPP: 'cat-epp', Stock: 'cat-stock',
       Seguridad: 'cat-seguridad', Documentos: 'cat-documentos',
-      'Eléctrico': 'cat-electrico', 'Fibra Óptica': 'cat-fibra', Escalera: 'cat-escalera', Telecom: 'cat-telecom'
+      'ElÃ©ctrico': 'cat-electrico', 'Fibra Ã“ptica': 'cat-fibra', Escalera: 'cat-escalera', Telecom: 'cat-telecom'
     };
-    const statusBadge = s => s === 'ok' ? '<span class="badge badge-verde">OK</span>' : s === 'faltante' ? '<span class="badge badge-amarillo">FALTANTE</span>' : '<span class="badge badge-rojo">DAÑADO</span>';
+    const statusBadge = s => s === 'ok' ? '<span class="badge badge-verde">OK</span>' : s === 'faltante' ? '<span class="badge badge-amarillo">FALTANTE</span>' : '<span class="badge badge-rojo">DAÃ‘ADO</span>';
 
     function renderInventory(items) {
       const div = document.getElementById('inventoryList');
@@ -445,7 +445,7 @@
       document.getElementById('invIssues').textContent = allInventory.filter(i => i.status !== 'ok').length;
 
       if (!items || items.length === 0) {
-        div.innerHTML = '<p style="text-align:center; color: var(--text-muted); padding: 24px; font-size:0.85rem;">No hay herramientas registradas en esta categoría.</p>';
+        div.innerHTML = '<p style="text-align:center; color: var(--text-muted); padding: 24px; font-size:0.85rem;">No hay herramientas registradas en esta categorÃ­a.</p>';
         return;
       }
       
@@ -458,7 +458,7 @@
       
       let html = '';
       // Default category order
-      const catOrder = ['Herramienta', 'Eléctrico', 'Fibra Óptica', 'EPP', 'Seguridad', 'Escalera', 'Telecom', 'Stock', 'Documentos'];
+      const catOrder = ['Herramienta', 'ElÃ©ctrico', 'Fibra Ã“ptica', 'EPP', 'Seguridad', 'Escalera', 'Telecom', 'Stock', 'Documentos'];
       const categories = Object.keys(grouped).sort((a, b) => {
         let idxA = catOrder.indexOf(a);
         let idxB = catOrder.indexOf(b);
@@ -470,7 +470,7 @@
       for (const cat of categories) {
         const catItems = grouped[cat];
         html += `<div style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:16px 0 8px; letter-spacing:0.05em; display:flex; align-items:center; gap:6px;">
-          <span>${catIcons[cat] || '📦'}</span> <span class="${catCls[cat] || ''}">${cat}</span>
+          <span>${catIcons[cat] || 'ðŸ“¦'}</span> <span class="${catCls[cat] || ''}">${cat}</span>
         </div>`;
         html += catItems.map(i => `
         <div class="inv-row" style="border-left: 4px solid ${i.status === 'ok' ? 'var(--teal)' : i.status === 'faltante' ? 'var(--amber)' : 'var(--red)'}; background: ${i.status === 'ok' ? 'var(--bg-card)' : 'rgba(239, 68, 68, 0.05)'};">
@@ -482,18 +482,18 @@
             <div class="inv-qty">${i.quantity_current}/${i.quantity_required}</div>
             ${statusBadge(i.status)}
           </div>
-          <button onclick="openInvEdit(${i.id}, '${i.tool_name}', ${i.quantity_current}, '${i.status}', '${i.serial_number||''}', '${i.notes||''}')" class="btn btn-sm btn-secondary" style="padding:4px 8px; margin-left:6px; flex-shrink:0;">✏️</button>
+          <button onclick="openInvEdit(${i.id}, '${i.tool_name}', ${i.quantity_current}, '${i.status}', '${i.serial_number||''}', '${i.notes||''}')" class="btn btn-sm btn-secondary" style="padding:4px 8px; margin-left:6px; flex-shrink:0;">âœï¸</button>
         </div>`).join('');
       }
       
       div.innerHTML = html;
     }
 
-    // ── Render Inspections ────────────────────────────────────────────────────
+    // â”€â”€ Render Inspections â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function renderInspections(inspections) {
       const div = document.getElementById('inspectionsList');
       if (!inspections || inspections.length === 0) {
-        div.innerHTML = '<div style="text-align:center; padding: 32px; color: var(--text-muted); font-size:0.85rem;">📋 No hay inspecciones registradas para esta móvil.</div>';
+        div.innerHTML = '<div style="text-align:center; padding: 32px; color: var(--text-muted); font-size:0.85rem;">ðŸ“‹ No hay inspecciones registradas para esta mÃ³vil.</div>';
         return;
       }
       const resultMap = { 'Cumple': 'badge-verde', 'Cumple parcialmente': 'badge-amarillo', 'No cumple': 'badge-rojo' };
@@ -506,12 +506,12 @@
             </div>
             <span class="badge ${resultMap[i.result] || 'badge-verde'}">${i.result}</span>
           </div>
-          <div class="insp-detail">📦 ${i.order_type} · #${i.order_number}</div>
-          <div class="insp-detail" style="margin-top:4px;">👤 ${i.technician}</div>
+          <div class="insp-detail">ðŸ“¦ ${i.order_type} Â· #${i.order_number}</div>
+          <div class="insp-detail" style="margin-top:4px;">ðŸ‘¤ ${i.technician}</div>
         </div>`).join('');
     }
 
-    // ── Render Stats ──────────────────────────────────────────────────────────
+    // â”€â”€ Render Stats â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function renderStats(stats) {
       if (!stats) return;
       document.getElementById('statOrders').textContent = stats.total_orders;
@@ -525,15 +525,15 @@
       setTimeout(() => bar.style.width = q + '%', 100);
     }
 
-    // ── Edit Mobile Modal ─────────────────────────────────────────────────────
+    // â”€â”€ Edit Mobile Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function openEditModal() {
       if (!profileData) return;
       document.getElementById('editPlate').value = profileData.plate || '';
-      document.getElementById('editZone').value = profileData.zone || 'Chiriquí';
+      document.getElementById('editZone').value = profileData.zone || 'ChiriquÃ­';
       
       document.getElementById('editColor').value = profileData.color || 'blanco';
       document.getElementById('editCleanliness').value = profileData.cleanliness_status || 'Limpio';
-      document.getElementById('editDamage').value = profileData.damage_status || 'Sin daños';
+      document.getElementById('editDamage').value = profileData.damage_status || 'Sin daÃ±os';
 
       document.getElementById('editStatus').value = profileData.status || 'activa';
       document.getElementById('editNotes').value = profileData.notes || '';
@@ -555,13 +555,13 @@
       try {
         const res = await fetch(`${API_BASE}/mobiles/${mobileId}`, { method: 'PUT', headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         if (!res.ok) throw new Error('Error ' + res.status);
-        showToast('✅ Móvil actualizada correctamente');
+        showToast('âœ… MÃ³vil actualizada correctamente');
         closeModal('editMobileModal');
         loadProfile();
       } catch(e) { showToast('Error: ' + e.message, 'error'); }
     }
 
-    // ── Assign Technicians Modal ──────────────────────────────────────────────
+    // â”€â”€ Assign Technicians Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     async function openTechModal() {
       try {
         const res = await fetch(`${API_BASE}/technicians`, { headers: { 'Authorization': 'Bearer ' + token() } });
@@ -569,8 +569,8 @@
         const opt1 = document.getElementById('selPrimaryTech');
         const opt2 = document.getElementById('selSecondaryTech');
         const opts = allTechnicians.map(t => `<option value="${t.id}">${t.full_name}${t.current_mobile_id ? ' (asignado)' : ''}</option>`).join('');
-        opt1.innerHTML = '<option value="">— Sin técnico —</option>' + opts;
-        opt2.innerHTML = '<option value="">— Ninguno —</option>' + opts;
+        opt1.innerHTML = '<option value="">â€” Sin tÃ©cnico â€”</option>' + opts;
+        opt2.innerHTML = '<option value="">â€” Ninguno â€”</option>' + opts;
         // Pre-select current technicians
         if (profileData?.technicians) {
           const primary = profileData.technicians.find(t => t.role === 'principal');
@@ -579,12 +579,12 @@
           if (secondary) opt2.value = secondary.id;
         }
         openModal('techModal');
-      } catch(e) { showToast('Error cargando técnicos: ' + e.message, 'error'); }
+      } catch(e) { showToast('Error cargando tÃ©cnicos: ' + e.message, 'error'); }
     }
 
     async function saveAssignTechnicians() {
       const primaryId = parseInt(document.getElementById('selPrimaryTech').value);
-      if (!primaryId) { showToast('Selecciona al menos un técnico principal', 'error'); return; }
+      if (!primaryId) { showToast('Selecciona al menos un tÃ©cnico principal', 'error'); return; }
       const body = {
         primary_technician_id: primaryId,
         secondary_technician_id: parseInt(document.getElementById('selSecondaryTech').value) || null,
@@ -593,15 +593,15 @@
       try {
         const res = await fetch(`${API_BASE}/mobiles/${mobileId}/assign-technicians`, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         if (!res.ok) throw new Error('Error ' + res.status);
-        showToast('✅ Técnicos asignados correctamente');
+        showToast('âœ… TÃ©cnicos asignados correctamente');
         closeModal('techModal');
         loadProfile();
       } catch(e) { showToast('Error: ' + e.message, 'error'); }
     }
 
-    // ── Inventory Edit Modal ──────────────────────────────────────────────────
+    // â”€â”€ Inventory Edit Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function openInvEdit(id, name, qty, status, serial, notes) {
-      document.getElementById('invEditTitle').textContent = '🔧 ' + name;
+      document.getElementById('invEditTitle').textContent = 'ðŸ”§ ' + name;
       document.getElementById('invEditId').value = id;
       document.getElementById('invEditQty').value = qty;
       document.getElementById('invEditStatus').value = status;
@@ -621,13 +621,13 @@
       try {
         const res = await fetch(`${API_BASE}/mobiles/${mobileId}/inventory/${itemId}`, { method: 'PUT', headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         if (!res.ok) throw new Error('Error ' + res.status);
-        showToast('✅ Inventario actualizado');
+        showToast('âœ… Inventario actualizado');
         closeModal('inventoryEditModal');
         loadProfile();
       } catch(e) { showToast('Error: ' + e.message, 'error'); }
     }
 
-    // ── Toast notification ────────────────────────────────────────────────────
+    // â”€â”€ Toast notification â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function showToast(msg, type = 'success') {
       const t = document.createElement('div');
       t.className = 'toast show';
@@ -637,7 +637,7 @@
       setTimeout(() => t.remove(), 3000);
     }
 
-    // ── Init ──────────────────────────────────────────────────────────────────
+    // â”€â”€ Init â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     document.addEventListener('DOMContentLoaded', loadProfile);
   </script>
 </body>

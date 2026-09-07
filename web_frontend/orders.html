@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Órdenes Diarias - Control Chiriquí</title>
+    <title>Ã“rdenes Diarias - Control ChiriquÃ­</title>
     <link rel="stylesheet" href="/static/css/style.css?v=2">
     <style>
         .top-bar {
@@ -37,45 +37,45 @@
 <body>
 
     <div class="top-bar">
-        <a href="/app/" class="back-link">←</a>
-        <strong style="font-size: 1.1rem;">CONTROL DIARIO DE ÓRDENES</strong>
+        <a href="/app/" class="back-link">â†</a>
+        <strong style="font-size: 1.1rem;">CONTROL DIARIO DE Ã“RDENES</strong>
     </div>
 
     <main class="main-container" style="margin-top: 20px;">
 
-        <!-- Formulario Rápido de Registro de Orden -->
+        <!-- Formulario RÃ¡pido de Registro de Orden -->
         <div class="form-card" style="padding: 24px;">
             <div class="section-title" style="font-size: 1.1rem;">
-                <span>➕ Registrar Nueva Orden</span>
+                <span>âž• Registrar Nueva Orden</span>
             </div>
 
             <form id="newOrderForm">
                 <div class="form-grid-2">
                     <div class="form-group">
-                        <label for="ordNum">Número de Orden *</label>
+                        <label for="ordNum">NÃºmero de Orden *</label>
                         <input type="text" id="ordNum" class="input-control" placeholder="Ej. 45830" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="ordMobile">Móvil *</label>
+                        <label for="ordMobile">MÃ³vil *</label>
                         <select id="ordMobile" class="select-control" required></select>
                     </div>
                 </div>
 
                 <div class="form-grid-2">
                     <div class="form-group">
-                        <label for="ordTech">Técnico Responsable *</label>
+                        <label for="ordTech">TÃ©cnico Responsable *</label>
                         <select id="ordTech" class="select-control" required></select>
                     </div>
 
                     <div class="form-group">
                         <label for="ordType">Tipo de Trabajo *</label>
                         <select id="ordType" class="select-control" required>
-                            <option value="Instalación">Instalación (Ref 45 min)</option>
+                            <option value="InstalaciÃ³n">InstalaciÃ³n (Ref 45 min)</option>
                             <option value="Mantenimiento">Mantenimiento</option>
-                            <option value="Avería">Avería</option>
+                            <option value="AverÃ­a">AverÃ­a</option>
                             <option value="Retiro">Retiro</option>
-                            <option value="Configuración">Configuración</option>
+                            <option value="ConfiguraciÃ³n">ConfiguraciÃ³n</option>
                             <option value="Otro">Otro</option>
                         </select>
                     </div>
@@ -94,19 +94,19 @@
                 </div>
 
                 <button type="submit" class="btn-submit">
-                    <span>💾 Guardar Orden</span>
+                    <span>ðŸ’¾ Guardar Orden</span>
                 </button>
             </form>
         </div>
 
-        <!-- Lista de Órdenes Registradas -->
+        <!-- Lista de Ã“rdenes Registradas -->
         <div class="section-title">
-            <span class="section-icon">📋</span>
-            <span>Órdenes del Día</span>
+            <span class="section-icon">ðŸ“‹</span>
+            <span>Ã“rdenes del DÃ­a</span>
         </div>
 
         <div id="ordersListContainer">
-            <div style="text-align: center; color: #64748b; padding: 20px;">Cargando órdenes...</div>
+            <div style="text-align: center; color: #64748b; padding: 20px;">Cargando Ã³rdenes...</div>
         </div>
 
     </main>
@@ -119,7 +119,7 @@
         let mobilesList = [];
 
         async function initOrdersPage() {
-            // Cargar Móviles y Técnicos
+            // Cargar MÃ³viles y TÃ©cnicos
             const resM = await fetch(`${API_BASE}/mobiles`, { headers: { 'Authorization': `Bearer ${token}` } });
             mobilesList = await resM.json();
             const mSelect = document.getElementById('ordMobile');
@@ -155,7 +155,7 @@
             container.innerHTML = '';
 
             if (orders.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: #64748b; padding: 20px;">No hay órdenes registradas hoy.</div>';
+                container.innerHTML = '<div style="text-align: center; color: #64748b; padding: 20px;">No hay Ã³rdenes registradas hoy.</div>';
                 return;
             }
 
@@ -164,8 +164,8 @@
                 card.className = 'order-card';
                 
                 const timeTag = o.exceeds_target_time 
-                    ? `<span class="time-badge-exceeded">🔴 SUPERÓ 45 MIN (${o.duration_minutes} min)</span>`
-                    : `<span style="font-size: 0.8rem; font-weight: 700; color: #10b981;">⏱️ ${o.duration_minutes} min</span>`;
+                    ? `<span class="time-badge-exceeded">ðŸ”´ SUPERÃ“ 45 MIN (${o.duration_minutes} min)</span>`
+                    : `<span style="font-size: 0.8rem; font-weight: 700; color: #10b981;">â±ï¸ ${o.duration_minutes} min</span>`;
 
                 card.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -173,7 +173,7 @@
                         <span class="badge badge-info">${o.mobile_code}</span>
                     </div>
                     <div style="font-size: 0.88rem; color: #475569; margin-bottom: 6px;">
-                        <strong>${o.order_type}</strong> | Técnico: ${o.primary_technician_name || 'N/A'}
+                        <strong>${o.order_type}</strong> | TÃ©cnico: ${o.primary_technician_name || 'N/A'}
                     </div>
                     <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: #64748b;">
                         <span>Horario: ${o.start_time || '--:--'} - ${o.end_time || '--:--'}</span>
@@ -206,7 +206,7 @@
             });
 
             if (res.ok) {
-                alert('¡Orden guardada exitosamente!');
+                alert('Â¡Orden guardada exitosamente!');
                 document.getElementById('ordNum').value = '';
                 cargarOrdenes();
             } else {
