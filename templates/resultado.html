@@ -3,214 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte de Evaluación - Contrato {{ contrato }}</title>
+    <title>Resultado de Inspección – CalidadTEC</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        @media print {
-            .actions-bar, .header-banner p { display: none !important; }
-            body { background: white; padding-bottom: 0; }
-            .main-container { margin-top: 0; max-width: 100%; padding: 0; }
-            .form-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
-        }
+        .info-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; margin-bottom:20px; }
+        .info-item { background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:14px 18px; }
+        .info-label { font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); margin-bottom:4px; }
+        .info-value { font-size:.98rem; font-weight:600; color:var(--text-main); }
+        .eero-si    { color:#059669; font-weight:700; }
+        .eero-no    { color:#DC2626; font-weight:700; }
+        .eero-na    { color:#64748B; }
+        .vehiculo-status { display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; }
+        .veh-badge { padding:8px 18px; border-radius:20px; font-weight:700; font-size:.9rem; }
     </style>
 </head>
 <body>
+<nav class="navbar">
+    <a class="navbar-brand" href="/"><div class="brand-icon">🔍</div><span>CalidadTEC</span></a>
+    <ul class="navbar-links">
+        <li><a href="/">📋 <span class="nav-text">Nueva Inspección</span></a></li>
+        <li><a href="/historial">📊 <span class="nav-text">Historial</span></a></li>
+        <li><a href="/configuracion" class="btn-config">⚙️ <span class="nav-text">Configuración</span></a></li>
+    </ul>
+</nav>
 
-    <header class="header-banner">
-        <h1>Informe de Evaluación Técnica y Tiempos</h1>
-        <p>Resultados del Control de Calidad y Auditoría de la Orden de Servicio</p>
-    </header>
+<header class="header-banner">
+    <h1>Resultado de la Inspección</h1>
+    <p>{{ row['fecha'] }} — {{ row['movil'] }} — {{ row['tipo_orden'] }}</p>
+</header>
 
-    <main class="main-container">
+<main class="main-container">
 
-        <!-- Result Header Summary Card -->
-        <div class="result-header-card">
-            <div>
-                <span class="badge badge-info" style="margin-bottom: 10px;">{{ movil }}</span>
-                <h2 style="font-size: 1.6rem; color: #0f172a; margin-bottom: 6px;">Contrato: {{ contrato }}</h2>
-                <p style="color: #475569; font-weight: 600;">
-                    👤 <strong>Técnico 1:</strong> {{ tecnico1 }}
-                </p>
-                {% if tecnico2 != 'N/A' and tecnico2 != '' %}
-                <p style="color: #475569; font-weight: 600;">
-                    👥 <strong>Técnico 2:</strong> {{ tecnico2 }}
-                </p>
+    <!-- ══ Encabezado de puntaje ══════════════════════════════════════════ -->
+    <div class="result-header-card">
+        <div>
+            <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:8px;">{{ row['nombre_cliente'] }}</h2>
+            <p style="color:var(--text-muted);font-size:.92rem;margin-bottom:12px;">
+                Contrato: <strong>{{ row['numero_contrato'] }}</strong> &nbsp;|&nbsp;
+                {{ row['movil'] }} &nbsp;|&nbsp;
+                <span class="badge badge-info">{{ row['tipo_orden'] }}</span>
+            </p>
+            <p style="font-size:.9rem;">
+                <strong>Técnico 1:</strong> {{ row['tecnico1'] }}<br>
+                {% if row['tecnico2'] and row['tecnico2'] != 'N/A' %}
+                <strong>Técnico 2:</strong> {{ row['tecnico2'] }}
                 {% endif %}
-            </div>
-
-            <div class="result-score-circle {{ clase_nivel }}">
-                <span class="score-num">{{ porcentaje }}%</span>
-                <span class="score-text">{{ nivel }}</span>
-            </div>
+            </p>
         </div>
-
-        <!-- Seccion: Auditoria de Tiempos y Demoras -->
-        <div class="form-card">
-            <div class="section-title">
-                <span class="section-icon">⏱️</span>
-                <span>Análisis de Tiempos y Demoras de la Orden</span>
-            </div>
-
-            <div class="live-time-metrics" style="margin-bottom: 20px;">
-
-                <div class="metric-box" style="background: #f8fafc; border: 1px solid #cbd5e1;">
-                    <div class="metric-label" style="color: #475569;">Tiempo de Traslado</div>
-                    <div class="metric-value" style="color: #0f172a;">{{ tiempos.tiempo_traslado }}</div>
-                    <div class="metric-unit" style="color: #2563eb;">minutos</div>
-                </div>
-
-                <div class="metric-box" style="background: #f8fafc; border: 1px solid #cbd5e1;">
-                    <div class="metric-label" style="color: #475569;">Tiempo de Iniciación</div>
-                    <div class="metric-value" style="color: #0f172a;">{{ tiempos.tiempo_iniciacion }}</div>
-                    <div class="metric-unit" style="color: #2563eb;">minutos</div>
-                </div>
-
-                <div class="metric-box highlight">
-                    <div class="metric-label" style="color: #93c5fd;">Demora (Traslado + Iniciación)</div>
-                    <div class="metric-value">{{ tiempos.demora_traslado_iniciacion }}</div>
-                    <div class="metric-unit">minutos acumulados</div>
-                </div>
-
-            </div>
-
-            <div class="form-grid-2">
-
-                <div class="criterio-item">
-                    <div class="criterio-info">
-                        <div class="criterio-title">Tiempo Demorado en Cerrar Orden</div>
-                        <div class="criterio-desc">Duración de la ejecución técnica y cierre formal.</div>
-                    </div>
-                    <div style="font-size: 1.2rem; font-weight: 800; color: #0f172a;">
-                        {{ tiempos.tiempo_cierre }} min
-                    </div>
-                </div>
-
-                <div class="criterio-item">
-                    <div class="criterio-info">
-                        <div class="criterio-title">Tiempo Total de la Orden</div>
-                        <div class="criterio-desc">Tiempo total transcurrido (Traslado + Iniciación + Cierre).</div>
-                    </div>
-                    <div style="font-size: 1.2rem; font-weight: 800; color: #2563eb;">
-                        {{ tiempos.tiempo_total_orden }} min
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="criterio-item" style="margin-top: 10px;">
-                <div class="criterio-info">
-                    <div class="criterio-title">¿Coordinan los tiempos entre reporte y llegada?</div>
-                    <div class="criterio-desc">Evaluación de congruencia entre hora de asignación, traslado e inicio.</div>
-                </div>
-                <div>
-                    {% if tiempos.coordinan_tiempos == 'Sí' %}
-                    <span class="badge badge-success">✓ Sí - Tiempos Coordinados</span>
-                    {% else %}
-                    <span class="badge badge-danger">✗ No - Tiempos Desfasados</span>
-                    {% endif %}
-                </div>
-            </div>
-
-            {% if tiempos.observaciones %}
-            <div style="background: #f1f5f9; padding: 14px 18px; border-radius: 8px; margin-top: 15px; font-size: 0.92rem;">
-                <strong>💬 Observaciones de Demora:</strong> {{ tiempos.observaciones }}
-            </div>
-            {% endif %}
-
+        <div class="result-score-circle {{ clase }}">
+            <div class="score-num">{{ row['porcentaje'] }}%</div>
+            <div class="score-text">{{ row['nivel'] }}</div>
         </div>
+    </div>
 
-        <!-- Seccion: Desglose de Criterios Tecnicos -->
-        <div class="form-card">
-            <div class="section-title">
-                <span class="section-icon">📝</span>
-                <span>Detalle de Calificación Técnica ({{ total_obtenido }} / {{ max_posible }} pts)</span>
-            </div>
-
-            <table class="table-details">
-                <thead>
-                    <tr>
-                        <th>Criterio Evaluado</th>
-                        <th style="width: 150px; text-align: center;">Calificación</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for criterio, nota in criterios.items() %}
-                    <tr>
-                        <td style="font-weight: 500;">{{ criterio }}</td>
-                        <td style="text-align: center;">
-                            {% if nota == 5 %}
-                            <span class="badge badge-success">5 / 5 - Excelente</span>
-                            {% elif nota == 4 %}
-                            <span class="badge badge-info">4 / 5 - Bueno</span>
-                            {% elif nota == 3 %}
-                            <span class="badge badge-warning">3 / 5 - Regular</span>
-                            {% else %}
-                            <span class="badge badge-danger">{{ nota }} / 5 - Deficiente</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-
-                    <tr>
-                        <td style="font-weight: 500;">9. Envío de video de uso de la caja TV si amerita</td>
-                        <td style="text-align: center;">
-                            {% if video_tv == 'Sí' %}
-                            <span class="badge badge-success">Sí - Enviado</span>
-                            {% elif video_tv == 'No' %}
-                            <span class="badge badge-danger">No - No Enviado</span>
-                            {% else %}
-                            <span class="badge badge-info">No Amerita</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <!-- ══ Criterios de Evaluación ════════════════════════════════════════ -->
+    <div class="form-card">
+        <div class="section-title">
+            <span class="section-icon">🛠️</span>
+            <span>Detalle de Criterios de Calidad</span>
         </div>
+        <table class="table-details">
+            <thead>
+                <tr>
+                    <th>Criterio</th>
+                    <th style="text-align:center;">Puntaje</th>
+                    <th style="text-align:center;">Calificación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for label, score in criterios.items() %}
+                {% set labels_map = {5:'Excelente',4:'Bueno',3:'Regular',2:'Deficiente',1:'Muy Deficiente'} %}
+                <tr>
+                    <td>{{ label }}</td>
+                    <td style="text-align:center;" class="score-{{ score }}">{{ score }} / 5</td>
+                    <td style="text-align:center;">
+                        {% if score == 5 %}<span class="badge badge-success">Excelente</span>
+                        {% elif score == 4 %}<span class="badge badge-info">Bueno</span>
+                        {% elif score == 3 %}<span class="badge badge-warning">Regular</span>
+                        {% else %}<span class="badge badge-danger">Deficiente</span>{% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td><strong>★ Eero – Configuración y explicación</strong></td>
+                    <td style="text-align:center;">
+                        {% if eero == 'si' %}<span class="eero-si">✔ Sí (+5 pts)</span>
+                        {% elif eero == 'no' %}<span class="eero-no">✘ No (+1 pt)</span>
+                        {% else %}<span class="eero-na">— No aplica</span>{% endif %}
+                    </td>
+                    <td style="text-align:center;">
+                        {% if eero == 'si' %}<span class="badge badge-success">Completado</span>
+                        {% elif eero == 'no' %}<span class="badge badge-danger">No completado</span>
+                        {% else %}<span class="badge" style="background:#F1F5F9;color:#475569;">N/A</span>{% endif %}
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr style="background:var(--primary-light);">
+                    <td><strong>TOTAL OBTENIDO</strong></td>
+                    <td style="text-align:center;"><strong>{{ row['total_obtenido'] }} / {{ row['max_posible'] }}</strong></td>
+                    <td style="text-align:center;"><strong>{{ row['porcentaje'] }}% — {{ row['nivel'] }}</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-        <!-- Actions -->
-        <div class="actions-bar">
-            <a href="/" class="btn-secondary">
-                <span>🔄 Nueva Evaluación</span>
+    <!-- ══ Fotos de la Inspección ════════════════════════════════════════ -->
+    {% if fotos_insp %}
+    <div class="form-card">
+        <div class="section-title">
+            <span class="section-icon">📸</span>
+            <span>Fotos de la Inspección</span>
+        </div>
+        <div class="photo-gallery">
+            {% for foto in fotos_insp %}
+            <a href="/static/{{ foto }}" target="_blank">
+                <img src="/static/{{ foto }}" alt="Foto de inspección">
             </a>
-
-            <button onclick="window.print()" class="btn-secondary">
-                <span>🖨️ Imprimir / PDF</span>
-            </button>
-
-            <button onclick="copiarResumen()" class="btn-secondary" style="background: #2563eb; color: white; border: none;">
-                <span>📋 Copiar Resumen</span>
-            </button>
+            {% endfor %}
         </div>
+    </div>
+    {% endif %}
 
-    </main>
+    <!-- ══ Tiempos ═══════════════════════════════════════════════════════ -->
+    <div class="form-card">
+        <div class="section-title">
+            <span class="section-icon cyan">⏱️</span>
+            <span>Registro de Tiempos</span>
+        </div>
+        <div class="info-grid">
+            <div class="info-item"><div class="info-label">Traslado</div><div class="info-value">{{ tiempos.traslado }} min</div></div>
+            <div class="info-item"><div class="info-label">Iniciación</div><div class="info-value">{{ tiempos.iniciacion }} min</div></div>
+            <div class="info-item"><div class="info-label">Cierre</div><div class="info-value">{{ tiempos.cierre }} min</div></div>
+            <div class="info-item"><div class="info-label">Demora Total (Traslado+Inicio)</div><div class="info-value">{{ tiempos.demora }} min</div></div>
+            <div class="info-item"><div class="info-label">Tiempo Total de la Orden</div><div class="info-value"><strong>{{ tiempos.total }} min</strong></div></div>
+            <div class="info-item"><div class="info-label">¿Coordinan Tiempos?</div>
+                <div class="info-value">
+                    {% if tiempos.coordinan == 'Sí' %}<span class="badge badge-success">✔ Sí</span>
+                    {% else %}<span class="badge badge-danger">✘ No</span>{% endif %}
+                </div>
+            </div>
+        </div>
+        {% if tiempos.obs %}
+        <p style="font-size:.88rem;color:var(--text-muted);margin-top:6px;"><strong>Observaciones:</strong> {{ tiempos.obs }}</p>
+        {% endif %}
+    </div>
 
-    <script>
-        function copiarResumen() {
-            const texto = `*EVALUACIÓN DE TÉCNICOS*
-Móvil: {{ movil }}
-Contrato: {{ contrato }}
-Técnico 1: {{ tecnico1 }}
-Técnico 2: {{ tecnico2 }}
-------------------------------
-*Resultado Técnico:* {{ porcentaje }}% ({{ nivel }})
-Puntuación: {{ total_obtenido }}/{{ max_posible }} pts
+    <!-- ══ Estatus del Vehículo ══════════════════════════════════════════ -->
+    <div class="form-card">
+        <div class="section-title">
+            <span class="section-icon yellow">🚗</span>
+            <span>Estatus del Vehículo</span>
+        </div>
+        <div class="vehiculo-status">
+            <div>
+                <div style="font-size:.8rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Limpieza</div>
+                {% if row['vehiculo_limpieza'] == 'Limpio' %}<span class="veh-badge badge-success">✅ {{ row['vehiculo_limpieza'] }}</span>
+                {% elif row['vehiculo_limpieza'] == 'Regular' %}<span class="veh-badge badge-warning">⚠️ {{ row['vehiculo_limpieza'] }}</span>
+                {% else %}<span class="veh-badge badge-danger">🔴 {{ row['vehiculo_limpieza'] }}</span>{% endif %}
+            </div>
+            <div>
+                <div style="font-size:.8rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Carrocería</div>
+                {% if row['vehiculo_carroceria'] == 'Óptimo' %}<span class="veh-badge badge-success">✅ {{ row['vehiculo_carroceria'] }}</span>
+                {% elif 'rayones' in row['vehiculo_carroceria']|lower or 'leve' in row['vehiculo_carroceria']|lower %}<span class="veh-badge badge-warning">⚠️ {{ row['vehiculo_carroceria'] }}</span>
+                {% else %}<span class="veh-badge badge-danger">🔴 {{ row['vehiculo_carroceria'] }}</span>{% endif %}
+            </div>
+            <div>
+                <div style="font-size:.8rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Accidente</div>
+                {% if row['vehiculo_accidente'] == 'No' %}<span class="veh-badge badge-success">✅ Sin accidentes</span>
+                {% else %}<span class="veh-badge badge-danger">🔴 Reporta accidente</span>{% endif %}
+            </div>
+        </div>
+        {% if row['vehiculo_detalle_accidente'] %}
+        <div style="margin-top:16px;padding:14px;background:#FEF2F2;border-left:4px solid var(--danger);border-radius:8px;">
+            <strong style="color:var(--danger);">📋 Detalle del accidente:</strong>
+            <p style="margin-top:6px;font-size:.9rem;color:#7F1D1D;">{{ row['vehiculo_detalle_accidente'] }}</p>
+        </div>
+        {% endif %}
 
-*Control de Tiempos:*
-• Tiempo Traslado: {{ tiempos.tiempo_traslado }} min
-• Tiempo Iniciación: {{ tiempos.tiempo_iniciacion }} min
-• Demora (Traslado + Iniciación): {{ tiempos.demora_traslado_iniciacion }} min
-• Tiempo Cierre Orden: {{ tiempos.tiempo_cierre }} min
-• Tiempo Total Orden: {{ tiempos.tiempo_total_orden }} min
-• ¿Coordinan Tiempos?: {{ tiempos.coordinan_tiempos }}
-{% if tiempos.observaciones %}• Obs: {{ tiempos.observaciones }}{% endif %}`;
+        {% if fotos_veh %}
+        <div style="margin-top:20px;">
+            <div style="font-size:.85rem;font-weight:700;color:var(--text-muted);margin-bottom:10px;">📷 Fotos del Vehículo</div>
+            <div class="photo-gallery">
+                {% for foto in fotos_veh %}
+                <a href="/static/{{ foto }}" target="_blank">
+                    <img src="/static/{{ foto }}" alt="Foto del vehículo">
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
 
-            navigator.clipboard.writeText(texto).then(() => {
-                alert('¡Resumen copiado al portapapeles!');
-            }).catch(err => {
-                console.error('Error al copiar: ', err);
-            });
-        }
-    </script>
+    <!-- ══ Notas Finales ═════════════════════════════════════════════════ -->
+    {% if row['notas_finales'] %}
+    <div class="form-card">
+        <div class="section-title">
+            <span class="section-icon green">📝</span>
+            <span>Notas y Observaciones del Inspector</span>
+        </div>
+        <div style="padding:16px;background:#F0FDF4;border-left:4px solid var(--success);border-radius:8px;font-size:.95rem;line-height:1.7;color:var(--text-main);">
+            {{ row['notas_finales'] }}
+        </div>
+    </div>
+    {% endif %}
 
+    <!-- ══ Botones de Acción ══════════════════════════════════════════════ -->
+    <div class="actions-bar" style="margin-bottom:40px;">
+        <a href="/" class="btn btn-primary">📋 Nueva Inspección</a>
+        <a href="/historial" class="btn btn-secondary">📊 Ver Historial</a>
+        <a href="/exportar_excel" class="btn btn-success">📥 Exportar Excel</a>
+        <button onclick="window.print()" class="btn btn-secondary">🖨️ Imprimir</button>
+    </div>
+
+</main>
 </body>
 </html>

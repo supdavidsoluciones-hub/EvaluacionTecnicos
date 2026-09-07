@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración – CalidadTEC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="navbar">
+    <a class="navbar-brand" href="/"><div class="brand-icon">🔍</div><span>CalidadTEC</span></a>
+    <ul class="navbar-links">
+        <li><a href="/">📋 <span class="nav-text">Nueva Inspección</span></a></li>
+        <li><a href="/historial">📊 <span class="nav-text">Historial</span></a></li>
+        <li><a href="/configuracion" class="btn-config active">⚙️ <span class="nav-text">Configuración</span></a></li>
+    </ul>
+</nav>
+
+<header class="header-banner">
+    <h1>⚙️ Configuración</h1>
+    <p>Gestión de Móviles y Técnicos Asignados por Cuadrilla</p>
+</header>
+
+<main class="main-container">
+
+    <!-- ══ Agregar / Editar Móvil ════════════════════════════════════════ -->
+    <div class="form-card">
+        <div class="section-title">
+            <span class="section-icon">🚗</span>
+            <span>Registrar Nueva Móvil</span>
+        </div>
+        <form action="/configuracion/guardar" method="POST" id="formMovil">
+            <input type="hidden" name="id" id="editId" value="">
+            <div class="form-grid-3">
+                <div class="form-group">
+                    <label for="nombre">Número / Nombre de la Móvil <span class="required">*</span></label>
+                    <div class="input-prefix-group">
+                        <span class="input-prefix">🚗</span>
+                        <input type="text" id="nombre" name="nombre" class="input-control"
+                               placeholder="Ej: Móvil 201" required autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tecnico1">Técnico 1 (Principal) <span class="required">*</span></label>
+                    <input type="text" id="tecnico1" name="tecnico1" class="input-control"
+                           placeholder="Nombre completo" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="tecnico2">Técnico 2 (Auxiliar)</label>
+                    <input type="text" id="tecnico2" name="tecnico2" class="input-control"
+                           placeholder="Nombre completo (opcional)" autocomplete="off">
+                </div>
+            </div>
+            <div class="actions-bar" style="margin-top:0;">
+                <button type="submit" class="btn btn-primary" id="btnGuardar">
+                    ➕ Guardar Móvil
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="cancelarEdicion()">
+                    ✖ Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ══ Listado de Móviles ════════════════════════════════════════════ -->
+    <div class="form-card">
+        <div class="section-title">
+            <span class="section-icon cyan">🚗</span>
+            <span>Móviles Registradas ({{ moviles|length }})</span>
+        </div>
+
+        {% if not moviles %}
+        <div style="text-align:center;padding:40px;color:var(--text-muted);">
+            <div style="font-size:3rem;margin-bottom:12px;">🚗</div>
+            <div style="font-weight:600;">Aún no hay móviles registradas</div>
+            <div style="font-size:.88rem;margin-top:6px;">Agrega la primera móvil con el formulario de arriba</div>
+        </div>
+        {% else %}
+        {% for m in moviles %}
+        <div class="movil-card">
+            <div class="movil-icon">🚗</div>
+            <div class="movil-info">
+                <div class="movil-nombre">{{ m.nombre }}</div>
+                <div class="movil-tecnicos">
+                    👤 T1: <strong>{{ m.tecnico1 }}</strong>
+                    {% if m.tecnico2 %}
+                    &nbsp;·&nbsp; 👤 T2: <strong>{{ m.tecnico2 }}</strong>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="movil-actions">
+                <button class="btn btn-secondary btn-sm"
+                    onclick="editarMovil({{ m.id }}, '{{ m.nombre }}', '{{ m.tecnico1 }}', '{{ m.tecnico2 or '' }}')">
+                    ✏️ Editar
+                </button>
+                <form action="/configuracion/eliminar/{{ m.id }}" method="POST"
+                      onsubmit="return confirm('¿Seguro que deseas eliminar la {{ m.nombre }}?')">
+                    <button type="submit" class="btn btn-danger btn-sm">🗑️ Eliminar</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+</main>
+
+<script>
+function editarMovil(id, nombre, t1, t2) {
+    document.getElementById('editId').value = id;
+    document.getElementById('nombre').value = nombre;
+    document.getElementById('tecnico1').value = t1;
+    document.getElementById('tecnico2').value = t2;
+    document.getElementById('btnGuardar').textContent = '💾 Actualizar Móvil';
+    document.getElementById('formMovil').scrollIntoView({ behavior: 'smooth' });
+}
+function cancelarEdicion() {
+    document.getElementById('editId').value = '';
+    document.getElementById('nombre').value = '';
+    document.getElementById('tecnico1').value = '';
+    document.getElementById('tecnico2').value = '';
+    document.getElementById('btnGuardar').textContent = '➕ Guardar Móvil';
+}
+</script>
+</body>
+</html>

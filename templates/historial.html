@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Inspecciones – CalidadTEC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .search-bar { position:relative; margin-bottom:20px; }
+        .search-bar input {
+            width:100%; padding:11px 16px 11px 42px;
+            border:1.5px solid #CBD5E1; border-radius:14px;
+            font-family:inherit; font-size:.95rem;
+            transition:all .2s;
+        }
+        .search-bar input:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(79,70,229,.15); }
+        .search-bar .search-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:1.1rem; pointer-events:none; }
+        .empty-state { text-align:center; padding:60px 20px; color:var(--text-muted); }
+        .empty-state .empty-icon { font-size:3.5rem; margin-bottom:14px; }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <a class="navbar-brand" href="/"><div class="brand-icon">🔍</div><span>CalidadTEC</span></a>
+    <ul class="navbar-links">
+        <li><a href="/">📋 <span class="nav-text">Nueva Inspección</span></a></li>
+        <li><a href="/historial" class="active">📊 <span class="nav-text">Historial</span></a></li>
+        <li><a href="/configuracion" class="btn-config">⚙️ <span class="nav-text">Configuración</span></a></li>
+    </ul>
+</nav>
+
+<header class="header-banner">
+    <h1>📊 Historial de Inspecciones</h1>
+    <p>Registro completo de todas las evaluaciones técnicas realizadas</p>
+</header>
+
+<main class="main-container">
+    <div class="form-card">
+        <!-- Barra de herramientas -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+            <div style="font-size:.9rem;color:var(--text-muted);">
+                <strong style="color:var(--text-main);font-size:1.05rem;">{{ inspecciones|length }}</strong> inspecciones registradas
+            </div>
+            <a href="/exportar_excel" class="btn btn-success">
+                📥 Exportar a Excel (.xlsx)
+            </a>
+        </div>
+
+        <!-- Buscador -->
+        <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Buscar por cliente, contrato, móvil, técnico o nivel..."
+                   oninput="filtrarTabla()">
+        </div>
+
+        {% if not inspecciones %}
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <div style="font-weight:700;font-size:1.1rem;margin-bottom:8px;">Sin inspecciones registradas</div>
+            <div>Realiza tu primera inspección para verla aquí</div>
+            <a href="/" class="btn btn-primary" style="margin-top:20px;">📋 Nueva Inspección</a>
+        </div>
+        {% else %}
+        <div style="overflow-x:auto;">
+            <table class="hist-table" id="histTabla">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Móvil</th>
+                        <th>Cliente</th>
+                        <th>Contrato</th>
+                        <th>Tipo</th>
+                        <th>Técnico 1</th>
+                        <th style="text-align:center;">Puntaje</th>
+                        <th style="text-align:center;">Nivel</th>
+                        <th style="text-align:center;">Ver</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for r in inspecciones %}
+                <tr>
+                    <td><span style="color:var(--text-muted);font-size:.82rem;">#{{ r.id }}</span></td>
+                    <td style="white-space:nowrap;font-size:.85rem;color:var(--text-muted);">{{ r.fecha }}</td>
+                    <td><strong>{{ r.movil }}</strong></td>
+                    <td>{{ r.nombre_cliente }}</td>
+                    <td style="font-size:.88rem;">{{ r.numero_contrato }}</td>
+                    <td>
+                        {% if r.tipo_orden == 'Solo Internet' %}<span class="badge badge-cyan">🌐 {{ r.tipo_orden }}</span>
+                        {% elif r.tipo_orden == 'Dúo' %}<span class="badge badge-info">📡 {{ r.tipo_orden }}</span>
+                        {% else %}<span class="badge" style="background:#F3E8FF;color:#6B21A8;">📦 {{ r.tipo_orden }}</span>{% endif %}
+                    </td>
+                    <td>{{ r.tecnico1 }}</td>
+                    <td style="text-align:center;" class="num">{{ r.porcentaje }}%</td>
+                    <td style="text-align:center;">
+                        {% if r.nivel == 'Excelente' %}<span class="badge badge-success">Excelente</span>
+                        {% elif r.nivel == 'Bueno' %}<span class="badge badge-info">Bueno</span>
+                        {% elif r.nivel == 'Regular' %}<span class="badge badge-warning">Regular</span>
+                        {% else %}<span class="badge badge-danger">Deficiente</span>{% endif %}
+                    </td>
+                    <td style="text-align:center;">
+                        <a href="/resultado/{{ r.id }}" class="btn btn-secondary btn-sm">👁️ Ver</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</main>
+
+<script>
+function filtrarTabla() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('#histTabla tbody tr').forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+}
+</script>
+</body>
+</html>

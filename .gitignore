@@ -5,3 +5,5 @@ __pycache__/
 .env
 static/uploads/*
 !static/uploads/.gitkeep
+inspecciones.db
+chiriqui_operativo.db
