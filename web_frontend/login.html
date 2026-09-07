@@ -371,19 +371,15 @@
         setLoading(true);
 
         try {
-          // login() uses URLSearchParams + application/x-www-form-urlencoded
           const data = await login(username, password);
 
-          // Persist token and user in localStorage
+          // El backend devuelve user_info (no user)
+          const userInfo = data.user_info ?? data.user ?? { username };
           localStorage.setItem('cm_token', data.access_token);
-          localStorage.setItem('cm_user', JSON.stringify(data.user ?? { username }));
+          localStorage.setItem('cm_user', JSON.stringify(userInfo));
 
-          showToast('Sesión iniciada correctamente 🎉', 'success');
-
-          // Small delay so the toast is visible before navigation
-          setTimeout(() => {
-            window.location.href = '/app/dashboard.html';
-          }, 600);
+          // Redirigir inmediatamente al dashboard
+          window.location.replace('/app/dashboard.html');
 
         } catch (err) {
           showError(err.message || 'Credenciales incorrectas. Intentá de nuevo.');
