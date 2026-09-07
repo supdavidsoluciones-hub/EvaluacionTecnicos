@@ -16,324 +16,198 @@
   <link rel="stylesheet" href="/app/css/style.css" />
 
   <style>
-    /* ─── Page Reset ──────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ─── CSS Custom Properties ───────────────────────────────── */
     :root {
-      --primary:        #4f46e5;
-      --primary-dark:   #3730a3;
-      --primary-light:  #818cf8;
-      --accent:         #06b6d4;
-      --accent2:        #8b5cf6;
-      --success:        #10b981;
-      --danger:         #ef4444;
-      --text:           #0f172a;
-      --text-muted:     #64748b;
-      --surface:        #ffffff;
-      --radius:         16px;
-      --shadow-lg:      0 20px 60px rgba(79,70,229,.18), 0 4px 16px rgba(0,0,0,.08);
-      --transition:     .25s cubic-bezier(.4,0,.2,1);
+      --navy:        #1A2B4A;
+      --navy-dark:   #111E36;
+      --petrol:      #1C3D4F;
+      --steel:       #3A6080;
+      --graphite:    #2D3342;
+      --radius:      16px;
+      --shadow-lg:   0 20px 60px rgba(17,30,54,.45), 0 4px 20px rgba(0,0,0,.2);
+      --transition:  .25s cubic-bezier(.4,0,.2,1);
     }
 
-    /* ─── Body & Background ───────────────────────────────────── */
     body.login-page {
       min-height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Inter', system-ui, sans-serif;
-      background: #0b0f1e;
+      background: linear-gradient(135deg, #0D1826 0%, #111E36 50%, #0D2333 100%);
       overflow: hidden;
       padding: 24px 16px;
     }
 
-    /* ─── Animated Gradient Orbs ──────────────────────────────── */
+    body.login-page::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+      z-index: 0; pointer-events: none;
+    }
+
     .orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: .55;
-      animation: drift 12s ease-in-out infinite alternate;
-      pointer-events: none;
-      z-index: 0;
+      position: fixed; border-radius: 50%;
+      filter: blur(100px); opacity: .2;
+      animation: drift 14s ease-in-out infinite alternate;
+      pointer-events: none; z-index: 0;
     }
     .orb-1 {
-      width: 520px; height: 520px;
-      background: radial-gradient(circle, #4f46e5 0%, transparent 70%);
-      top: -160px; left: -160px;
-      animation-delay: 0s;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #1A2B4A 0%, transparent 70%);
+      top: -180px; left: -180px;
     }
     .orb-2 {
-      width: 420px; height: 420px;
-      background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
-      bottom: -120px; right: -120px;
-      animation-delay: -4s;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #1C3D4F 0%, transparent 70%);
+      bottom: -140px; right: -140px; animation-delay: -5s;
     }
     .orb-3 {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, #234F65 0%, transparent 70%);
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      animation-delay: -8s;
-      opacity: .3;
+      animation-delay: -9s; opacity: .15;
     }
     @keyframes drift {
       from { transform: translate(0,0) scale(1); }
-      to   { transform: translate(40px, 30px) scale(1.08); }
+      to   { transform: translate(30px, 20px) scale(1.06); }
     }
     .orb-3 { animation-name: drift3; }
     @keyframes drift3 {
       from { transform: translate(-50%,-50%) scale(1); }
-      to   { transform: translate(calc(-50% + 30px), calc(-50% - 25px)) scale(1.12); }
+      to   { transform: translate(calc(-50% + 20px), calc(-50% - 18px)) scale(1.1); }
     }
 
-    /* Grid dots overlay */
-    body.login-page::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
-      background-size: 28px 28px;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* ─── Login Box ───────────────────────────────────────────── */
     .login-box {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 420px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 28px;
-      animation: fadeUp .6s cubic-bezier(.4,0,.2,1) both;
+      position: relative; z-index: 1;
+      width: 100%; max-width: 420px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 28px;
+      animation: fadeUp .55s cubic-bezier(.4,0,.2,1) both;
     }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
+      from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ─── Logo ────────────────────────────────────────────────── */
     .login-logo {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
+      text-align: center; display: flex;
+      flex-direction: column; align-items: center; gap: 12px;
     }
-
-    .logo-icon {
-      width: 72px;
-      height: 72px;
-      background: linear-gradient(135deg, #4f46e5, #06b6d4);
-      border-radius: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.08),
-        0 0 32px rgba(79,70,229,.6),
-        0 0 64px rgba(6,182,212,.35);
-      animation: glow 3s ease-in-out infinite alternate;
-    }
-    @keyframes glow {
-      from { box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 0 32px rgba(79,70,229,.6), 0 0 64px rgba(6,182,212,.35); }
-      to   { box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 0 48px rgba(79,70,229,.9), 0 0 80px rgba(6,182,212,.5); }
-    }
-
-    .logo-title {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: -.025em;
-      line-height: 1.2;
-    }
-    .gradient-text {
-      display: block;
-      background: linear-gradient(90deg, #818cf8, #06b6d4, #8b5cf6);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 4s linear infinite;
-    }
-    @keyframes shimmer {
-      from { background-position: 0% center; }
-      to   { background-position: 200% center; }
-    }
-
     .logo-sub {
-      font-size: .8rem;
-      color: rgba(255,255,255,.45);
-      letter-spacing: .06em;
-      text-transform: uppercase;
+      font-size: .8rem; color: rgba(255,255,255,.35);
+      letter-spacing: .07em; text-transform: uppercase;
     }
 
-    /* ─── Form Card ───────────────────────────────────────────── */
     .login-form-card {
       width: 100%;
-      background: rgba(255,255,255,.06);
-      backdrop-filter: blur(24px) saturate(160%);
-      -webkit-backdrop-filter: blur(24px) saturate(160%);
-      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      border: 1px solid rgba(255,255,255,.09);
       border-radius: var(--radius);
       padding: 36px 32px 28px;
       box-shadow: var(--shadow-lg);
-      animation: fadeUp .6s .12s cubic-bezier(.4,0,.2,1) both;
+      animation: fadeUp .55s .1s cubic-bezier(.4,0,.2,1) both;
     }
-
     .login-form-card h2 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 4px;
+      font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 4px;
     }
     .text-sm {
-      font-size: .82rem;
-      color: rgba(255,255,255,.45);
-      margin-bottom: 28px;
+      font-size: .82rem; color: rgba(255,255,255,.38); margin-bottom: 26px;
     }
 
-    /* ─── Form Groups ─────────────────────────────────────────── */
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 18px;
-    }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
     .form-group label {
-      font-size: .78rem;
-      font-weight: 600;
-      color: rgba(255,255,255,.65);
-      letter-spacing: .04em;
-      text-transform: uppercase;
+      font-size: .75rem; font-weight: 700;
+      color: rgba(255,255,255,.5);
+      letter-spacing: .05em; text-transform: uppercase;
     }
-
     .form-control {
-      width: 100%;
-      padding: 13px 16px;
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 10px;
-      color: #ffffff;
-      font-family: inherit;
-      font-size: .95rem;
-      outline: none;
+      width: 100%; padding: 12px 15px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px; color: #fff;
+      font-family: inherit; font-size: .93rem; outline: none;
       transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
     }
-    .form-control::placeholder { color: rgba(255,255,255,.25); }
+    .form-control::placeholder { color: rgba(255,255,255,.2); }
     .form-control:focus {
-      background: rgba(255,255,255,.11);
-      border-color: var(--primary-light);
-      box-shadow: 0 0 0 3px rgba(129,140,248,.22);
-    }
-    .form-control:user-valid:not(:placeholder-shown) {
-      border-color: rgba(16,185,129,.6);
+      background: rgba(255,255,255,.1);
+      border-color: rgba(58,96,128,.8);
+      box-shadow: 0 0 0 3px rgba(58,96,128,.2);
     }
 
-    /* Password wrapper */
-    .input-wrapper {
-      position: relative;
-    }
-    .input-wrapper .form-control {
-      padding-right: 48px;
-    }
+    .input-wrapper { position: relative; }
+    .input-wrapper .form-control { padding-right: 48px; }
     .toggle-password {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: rgba(255,255,255,.4);
-      font-size: 1.1rem;
-      line-height: 1;
-      padding: 4px;
-      transition: color var(--transition);
-      display: flex;
-      align-items: center;
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: rgba(255,255,255,.35); font-size: 1.1rem;
+      line-height: 1; padding: 4px;
+      transition: color var(--transition); display: flex; align-items: center;
     }
-    .toggle-password:hover { color: rgba(255,255,255,.75); }
+    .toggle-password:hover { color: rgba(255,255,255,.7); }
 
-    /* ─── Error Message ───────────────────────────────────────── */
     #errorMsg {
       display: none;
-      background: rgba(239,68,68,.15);
-      border: 1px solid rgba(239,68,68,.35);
-      color: #fca5a5;
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: .84rem;
-      margin-bottom: 16px;
+      background: rgba(139,58,58,.2);
+      border: 1px solid rgba(139,58,58,.4);
+      color: #EDACAC;
+      border-radius: 8px; padding: 10px 14px;
+      font-size: .84rem; margin-bottom: 14px;
       animation: shake .35s ease;
     }
     #errorMsg.visible { display: block; }
     @keyframes shake {
       0%,100%{ transform:translateX(0); }
-      20%    { transform:translateX(-6px); }
-      60%    { transform:translateX(6px); }
+      25%    { transform:translateX(-5px); }
+      75%    { transform:translateX(5px); }
     }
 
-    /* ─── Buttons ─────────────────────────────────────────────── */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: none;
-      border-radius: 10px;
-      font-family: inherit;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background var(--transition), transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+      display: inline-flex; align-items: center;
+      justify-content: center; gap: 8px;
+      border: none; border-radius: 10px;
+      font-family: inherit; font-weight: 700;
+      cursor: pointer; transition: all var(--transition);
     }
     .btn:active { transform: scale(.97); }
     .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--accent2));
+      background: linear-gradient(135deg, #1A2B4A 0%, #234F65 100%);
       color: #fff;
-      box-shadow: 0 4px 20px rgba(79,70,229,.45);
+      box-shadow: 0 4px 20px rgba(17,30,54,.5);
+      border: 1px solid rgba(255,255,255,.08);
     }
     .btn-primary:hover:not(:disabled) {
-      box-shadow: 0 6px 28px rgba(79,70,229,.65);
-      filter: brightness(1.08);
+      background: linear-gradient(135deg, #111E36 0%, #1C3D4F 100%);
+      box-shadow: 0 6px 28px rgba(17,30,54,.65);
     }
-    .btn-primary:disabled {
-      opacity: .65;
-      cursor: not-allowed;
-    }
+    .btn-primary:disabled { opacity: .55; cursor: not-allowed; }
     .btn-full { width: 100%; }
     .btn-lg   { padding: 14px 24px; font-size: 1rem; }
 
-    /* Spinner */
     .spinner {
       width: 18px; height: 18px;
-      border: 2.5px solid rgba(255,255,255,.3);
-      border-top-color: #ffffff;
+      border: 2.5px solid rgba(255,255,255,.25);
+      border-top-color: #fff;
       border-radius: 50%;
-      animation: spin .7s linear infinite;
-      display: none;
+      animation: spin .7s linear infinite; display: none;
     }
     .loading .spinner { display: block; }
     .loading .btn-label { display: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ─── Footer ──────────────────────────────────────────────── */
     .login-footer {
-      text-align: center;
-      font-size: .75rem;
-      color: rgba(255,255,255,.25);
-      margin-top: 22px;
+      text-align: center; font-size: .75rem;
+      color: rgba(255,255,255,.2); margin-top: 20px;
     }
 
-    /* ─── Responsive tweaks ───────────────────────────────────── */
     @media (max-width: 380px) {
-      .login-form-card { padding: 28px 20px 22px; }
-      .logo-title { font-size: 1.35rem; }
+      .login-form-card { padding: 26px 18px 22px; }
     }
   </style>
 </head>
