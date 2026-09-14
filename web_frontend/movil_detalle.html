@@ -213,44 +213,44 @@
     <a href="/app/metricas.html" class="bnav-item"><span class="bnav-icon">ðŸ“Š</span><span class="bnav-label">MÃ©tricas</span></a>
   </nav>
 
-  <!-- Modal: Edit Mobile -->
+  <!-- Modal: Edit Mobile & Vehicle Status -->
   <div class="modal-overlay" id="editMobileModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">âœï¸ Editar MÃ³vil</div>
+      <div class="modal-title">🚐 Actualizar Perfil y Estatus</div>
+      
       <div class="form-group"><label>Placa</label><input id="editPlate" class="form-control" type="text" placeholder="Ej: AB-1234" /></div>
       <div class="form-group"><label>Zona</label>
         <select id="editZone" class="form-control">
-          <option value="ChiriquÃ­">ChiriquÃ­</option>
+          <option value="Chiriquí">Chiriquí</option>
           <option value="Santiago">Santiago</option>
         </select>
       </div>
-      <div class="form-group"><label>Color</label><input id="editColor" class="form-control" type="text" placeholder="Ej: blanco" /></div>
-      <div class="form-group"><label>Estado</label>
+      <div class="form-group"><label>Estado Operativo</label>
         <select id="editStatus" class="form-control">
-          <option value="activa">âœ… Activa</option>
-          <option value="mantenimiento">ðŸ”§ Mantenimiento</option>
-          <option value="inactiva">âŒ Inactiva</option>
-        </select>
-      </div>
-      
-      <div class="form-group"><label>Limpieza</label>
-        <select id="editCleanliness" class="form-control">
-          <option value="Limpio">Limpio</option>
-          <option value="Sucio">Sucio</option>
-          <option value="Requiere lavado profundo">Requiere lavado profundo</option>
-        </select>
-      </div>
-      <div class="form-group"><label>DaÃ±os/Golpes</label>
-        <select id="editDamage" class="form-control">
-          <option value="Sin daÃ±os">Sin daÃ±os</option>
-          <option value="Rayones leves">Rayones leves</option>
-          <option value="Golpe visible">Golpe visible</option>
-          <option value="DaÃ±o mayor">DaÃ±o mayor</option>
+          <option value="activa">✅ Activa</option>
+          <option value="mantenimiento">🔧 Mantenimiento</option>
+          <option value="inactiva">❌ Inactiva</option>
         </select>
       </div>
 
-      <div class="form-group"><label>Notas</label><textarea id="editNotes" class="form-control" rows="3" placeholder="Observaciones adicionales..."></textarea></div>
+      <hr style="border:0; border-top:1px dashed var(--border); margin:16px 0;" />
+      
+      <label style="font-weight:600; display:block; margin-bottom:10px; color:var(--text-primary);">Condición actual del Vehículo:</label>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px;">
+        <button type="button" class="btn btn-secondary veh-btn-clean" onclick="setVehClean('Limpio', this)">✅ Limpio</button>
+        <button type="button" class="btn btn-secondary veh-btn-clean" onclick="setVehClean('Sucio', this)">🧹 Sucio</button>
+      </div>
+      <input type="hidden" id="editCleanliness" value="Limpio">
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px;">
+        <button type="button" class="btn btn-secondary veh-btn-dmg" onclick="setVehDamage('Sin daños', this)">✅ Sin daños</button>
+        <button type="button" class="btn btn-secondary veh-btn-dmg" onclick="setVehDamage('Golpe visible', this)">⚠️ Golpeado</button>
+      </div>
+      <input type="hidden" id="editDamage" value="Sin daños">
+
+      <div class="form-group"><label>Notas / Descripción de daños</label><textarea id="editNotes" class="form-control" rows="3" placeholder="Observaciones sobre el vehículo..."></textarea></div>
+      
       <button class="btn btn-primary btn-full" onclick="saveMobileEdit()">Guardar Cambios</button>
       <button class="btn btn-secondary btn-full" onclick="closeModal('editMobileModal')" style="margin-top:8px;">Cancelar</button>
     </div>
@@ -525,17 +525,44 @@
       setTimeout(() => bar.style.width = q + '%', 100);
     }
 
-    // â”€â”€ Edit Mobile Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Edit Mobile & Vehicle Status Modal ────────────────────────────────
+    window.setVehClean = function(val, btn) {
+      document.getElementById('editCleanliness').value = val;
+      document.querySelectorAll('.veh-btn-clean').forEach(b => {
+        b.classList.remove('btn-primary');
+        b.classList.add('btn-secondary');
+      });
+      btn.classList.remove('btn-secondary');
+      btn.classList.add('btn-primary');
+    };
+
+    window.setVehDamage = function(val, btn) {
+      document.getElementById('editDamage').value = val;
+      document.querySelectorAll('.veh-btn-dmg').forEach(b => {
+        b.classList.remove('btn-primary');
+        b.classList.add('btn-secondary');
+      });
+      btn.classList.remove('btn-secondary');
+      btn.classList.add('btn-primary');
+    };
+
     function openEditModal() {
       if (!profileData) return;
       document.getElementById('editPlate').value = profileData.plate || '';
-      document.getElementById('editZone').value = profileData.zone || 'ChiriquÃ­';
-      
-      document.getElementById('editColor').value = profileData.color || 'blanco';
-      document.getElementById('editCleanliness').value = profileData.cleanliness_status || 'Limpio';
-      document.getElementById('editDamage').value = profileData.damage_status || 'Sin daÃ±os';
-
+      document.getElementById('editZone').value = profileData.zone || 'Chiriquí';
       document.getElementById('editStatus').value = profileData.status || 'activa';
+      
+      const cleanVal = profileData.cleanliness_status || 'Limpio';
+      const dmgVal = profileData.damage_status || 'Sin daños';
+      
+      // Auto-click the corresponding buttons
+      document.querySelectorAll('.veh-btn-clean').forEach(b => {
+        if (b.innerText.includes(cleanVal)) b.click();
+      });
+      document.querySelectorAll('.veh-btn-dmg').forEach(b => {
+        if (b.innerText.includes(dmgVal) || (dmgVal === 'Golpe visible' && b.innerText.includes('Golpeado'))) b.click();
+      });
+
       document.getElementById('editNotes').value = profileData.notes || '';
       openModal('editMobileModal');
     }
@@ -544,23 +571,19 @@
       const body = {
         plate: document.getElementById('editPlate').value,
         zone: document.getElementById('editZone').value,
-        
-        color: document.getElementById('editColor').value,
         cleanliness_status: document.getElementById('editCleanliness').value,
         damage_status: document.getElementById('editDamage').value,
-
         status: document.getElementById('editStatus').value,
         notes: document.getElementById('editNotes').value,
       };
       try {
         const res = await fetch(`${API_BASE}/mobiles/${mobileId}`, { method: 'PUT', headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         if (!res.ok) throw new Error('Error ' + res.status);
-        showToast('âœ… MÃ³vil actualizada correctamente');
+        showToast('✅ Móvil y estatus actualizados');
         closeModal('editMobileModal');
         loadProfile();
       } catch(e) { showToast('Error: ' + e.message, 'error'); }
     }
-
     // â”€â”€ Assign Technicians Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     async function openTechModal() {
       try {
