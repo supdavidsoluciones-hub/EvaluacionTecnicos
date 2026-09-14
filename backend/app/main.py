@@ -37,6 +37,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Middleware para deshabilitar cache en páginas HTML
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.requests import Request
+
+class NoCacheHTMLMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        if request.url.path.endswith(".html") or request.url.path in ("/", ""):
+            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Expires"] = "0"
+        return response
+
+app.add_middleware(NoCacheHTMLMiddleware)
+
+
 # Incluir Routers
 api_prefix = settings.API_V1_STR
 app.include_router(auth_router, prefix=api_prefix)
