@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard â€“ Control Operativo MÃ³viles</title>
+  <title>Dashboard – Control Operativo Móviles</title>
   <link rel="icon" type="image/png" href="/app/img/logo.png" />
   <link rel="apple-touch-icon" href="/app/img/logo.png" />
   
@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="/app/css/style.css?v=4" />
   
   <style>
-    /* Estilos especÃ­ficos del Dashboard */
+    /* Estilos específicos del Dashboard */
     .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
     .metric-card {
       background: var(--bg-card);
@@ -90,7 +90,7 @@
     <div class="navbar-title">
       <div style="line-height:1.1;">
         <span style="display:block; font-size: 0.85rem; font-weight: 700;">Control Operativo</span>
-        <span style="display:block; font-size: 0.68rem; color: var(--teal);">ChiriquÃ­ & Santiago</span>
+        <span style="display:block; font-size: 0.68rem; color: var(--teal);">Chiriquí & Santiago</span>
       </div>
     </div>
     <div class="navbar-actions">
@@ -105,7 +105,7 @@
       
       <div class="section" style="animation: fadeUp 0.4s ease;">
         <h2 id="userWelcome">Bienvenido</h2>
-        <p>Resumen operativo del dÃ­a</p>
+        <p>Resumen operativo del día</p>
       </div>
       
       <!-- Metrics Grid -->
@@ -113,7 +113,7 @@
         <div class="metric-card accent-teal">
           <div class="metric-icon">ðŸ“‹</div>
           <div class="metric-value" id="metOrdenesHoy">-</div>
-          <div class="metric-label">Ã“rdenes Hoy</div>
+          <div class="metric-label">Órdenes Hoy</div>
         </div>
         <div class="metric-card accent-purple">
           <div class="metric-icon">ðŸ”</div>
@@ -123,7 +123,7 @@
         <div class="metric-card accent-amber">
           <div class="metric-icon">âš ï¸</div>
           <div class="metric-value" id="metGarantias">-</div>
-          <div class="metric-label">GarantÃ­as %</div>
+          <div class="metric-label">Garantías %</div>
         </div>
         <div class="metric-card accent-red">
           <div class="metric-icon">â­</div>
@@ -134,25 +134,25 @@
       
       <!-- Quick Access -->
       <div class="section">
-        <h3 class="section-title">Accesos RÃ¡pidos</h3>
+        <h3 class="section-title">Accesos Rápidos</h3>
         <div class="quick-access-grid">
           <a href="/app/inspeccion.html" class="qa-card" id="qa-inspeccion">
             <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">ðŸ”</div>
-            <div class="qa-label">Nueva InspecciÃ³n</div>
+            <div class="qa-label">Nueva Inspección</div>
           </a>
           <a href="/app/moviles.html" class="qa-card" id="qa-moviles">
             <div class="qa-icon" style="background: var(--bg); padding: 5px;">
-              <img src="/app/img/van.jpg" alt="MÃ³vil" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;" />
+              <img src="/app/img/van.jpg" alt="Móvil" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;" />
             </div>
-            <div class="qa-label">Mis MÃ³viles</div>
+            <div class="qa-label">Mis Móviles</div>
           </a>
           <a href="/app/metricas.html" class="qa-card" id="qa-metricas">
             <div class="qa-icon" style="background: var(--amber-dim); color: var(--amber);">ðŸ“Š</div>
-            <div class="qa-label">MÃ©tricas</div>
+            <div class="qa-label">Métricas</div>
           </a>
           <a href="/app/configuracion.html" class="qa-card" id="qa-config">
             <div class="qa-icon" style="background: rgba(99,102,241,0.15); color: #818cf8;">âš™ï¸ </div>
-            <div class="qa-label">ConfiguraciÃ³n</div>
+            <div class="qa-label">Configuración</div>
           </a>
         </div>
       </div>
@@ -166,29 +166,29 @@
       </div>
 
 
-      <!-- SecciÃ³n ConfiguraciÃ³n -->
+      <!-- Sección Configuración -->
       <div class="section" id="configSection" style="display: none; animation: fadeUp 0.3s ease; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
-        <h2 style="margin-bottom: 16px;">âš™ï¸ ConfiguraciÃ³n y AdministraciÃ³n</h2>
+        <h2 style="margin-bottom: 16px;">âš™ï¸ Configuración y Administración</h2>
         
         <div class="quick-access-grid" style="margin-bottom: 24px;">
           <button class="qa-card" onclick="openAddMobileModal()" style="border: 1px dashed var(--teal);">
             <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">ðŸš</div>
-            <div class="qa-label">+ Nueva MÃ³vil</div>
+            <div class="qa-label">+ Nueva Móvil</div>
           </button>
           <button class="qa-card" onclick="openAddTechModal()" style="border: 1px dashed var(--purple-light);">
             <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">ðŸ‘¤</div>
-            <div class="qa-label">+ Nuevo TÃ©cnico</div>
+            <div class="qa-label">+ Nuevo Técnico</div>
           </button>
         </div>
 
-        <h3 class="section-title">ðŸ‘¥ TÃ©cnicos del Sistema (TÃ©cnico 1 y TÃ©cnico 2)</h3>
+        <h3 class="section-title">ðŸ‘¥ Técnicos del Sistema (Técnico 1 y Técnico 2)</h3>
         <div id="techConfigList" style="margin-bottom: 24px; display: grid; gap: 8px;">
-          <p class="text-muted text-sm">Cargando tÃ©cnicos...</p>
+          <p class="text-muted text-sm">Cargando técnicos...</p>
         </div>
         
-        <h3 class="section-title">ðŸš MÃ³viles Registradas</h3>
+        <h3 class="section-title">ðŸš Móviles Registradas</h3>
         <div id="mobileConfigList" style="display: grid; gap: 8px;">
-          <p class="text-muted text-sm">Cargando mÃ³viles...</p>
+          <p class="text-muted text-sm">Cargando móviles...</p>
         </div>
       </div>
 
@@ -203,7 +203,7 @@
     </a>
     <a href="/app/moviles.html" class="bnav-item">
       <span class="bnav-icon">ðŸš—</span>
-      <span class="bnav-label">MÃ³viles</span>
+      <span class="bnav-label">Móviles</span>
     </a>
     <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
       <span class="bnav-main">âž•</span>
@@ -214,7 +214,7 @@
     </a>
     <a href="/app/metricas.html" class="bnav-item">
       <span class="bnav-icon">ðŸ“Š</span>
-      <span class="bnav-label">MÃ©tricas</span>
+      <span class="bnav-label">Métricas</span>
     </a>
   </nav>
 
@@ -233,10 +233,10 @@
   <div class="modal-overlay" id="addMobileModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">ðŸš Agregar Nueva MÃ³vil</div>
-      <div class="form-group"><label>CÃ³digo* (ej: M210)</label><input id="addCode" class="form-control" type="text" placeholder="M210" /></div>
+      <div class="modal-title">ðŸš Agregar Nueva Móvil</div>
+      <div class="form-group"><label>Código* (ej: M210)</label><input id="addCode" class="form-control" type="text" placeholder="M210" /></div>
       <div class="form-group"><label>Placa</label><input id="addPlate" class="form-control" type="text" placeholder="AB-1234" /></div>
-      <button class="btn btn-primary btn-full" onclick="saveAddMobile()">Agregar MÃ³vil</button>
+      <button class="btn btn-primary btn-full" onclick="saveAddMobile()">Agregar Móvil</button>
       <button class="btn btn-secondary btn-full" onclick="closeModal('addMobileModal')" style="margin-top:8px;">Cancelar</button>
     </div>
   </div>
@@ -245,9 +245,9 @@
   <div class="modal-overlay" id="addTechModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">ðŸ‘¤ Agregar TÃ©cnico</div>
+      <div class="modal-title">ðŸ‘¤ Agregar Técnico</div>
       <div class="form-group"><label>Nombre Completo*</label><input id="techName" class="form-control" type="text" /></div>
-      <button class="btn btn-primary btn-full" onclick="saveAddTech()">Agregar TÃ©cnico</button>
+      <button class="btn btn-primary btn-full" onclick="saveAddTech()">Agregar Técnico</button>
       <button class="btn btn-secondary btn-full" onclick="closeModal('addTechModal')" style="margin-top:8px;">Cancelar</button>
     </div>
   </div>
@@ -272,14 +272,14 @@
 
     window.saveAddMobile = async () => {
       const code = document.getElementById('addCode').value.trim().toUpperCase();
-      if (!code) return alert('CÃ³digo requerido');
+      if (!code) return alert('Código requerido');
       try {
         const res = await fetch('/api/v1/mobiles', {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token'), 'Content-Type': 'application/json' },
           body: JSON.stringify({ code, plate: document.getElementById('addPlate').value })
         });
-        if (!res.ok) throw new Error('Error agregando mÃ³vil');
+        if (!res.ok) throw new Error('Error agregando móvil');
         closeModal('addMobileModal');
         loadConfigData();
         loadDashboard(); // reload main dash
@@ -295,14 +295,14 @@
           headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token'), 'Content-Type': 'application/json' },
           body: JSON.stringify({ full_name: name })
         });
-        if (!res.ok) throw new Error('Error agregando tÃ©cnico');
+        if (!res.ok) throw new Error('Error agregando técnico');
         closeModal('addTechModal');
         loadConfigData();
       } catch (e) { alert(e.message); }
     };
 
     window.deleteMobile = async (id, code) => {
-      if (!confirm(`Â¿EstÃ¡s seguro de eliminar la mÃ³vil ${code}?`)) return;
+      if (!confirm(`¿Estás seguro de eliminar la móvil ${code}?`)) return;
       try {
         const res = await fetch(`/api/v1/mobiles/${id}`, {
           method: 'DELETE',
@@ -366,7 +366,7 @@
         document.getElementById('metGarantias').textContent = (data.garantias_pct ?? '0') + '%';
         document.getElementById('metCalidad').textContent = (data.calidad_promedio ?? '0');
 
-        // Render Semaphore â€“ Chevrolet P900 cards
+        // Render Semaphore – Chevrolet P900 cards
         const semaforoDiv = document.getElementById('mobilesSemaforo');
         if (data.mobiles && data.mobiles.length > 0) {
           semaforoDiv.innerHTML = data.mobiles.map(m => {
@@ -399,7 +399,7 @@
             </div>`;
           }).join('');
         } else {
-          semaforoDiv.innerHTML = '<p class="text-muted text-sm text-center py-4">No hay mÃ³viles registrados.</p>';
+          semaforoDiv.innerHTML = '<p class="text-muted text-sm text-center py-4">No hay móviles registrados.</p>';
         }
 
         // Render Recent Activity
