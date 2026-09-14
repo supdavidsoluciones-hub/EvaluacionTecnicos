@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/app/css/style.css?v=2" />
+  <link rel="stylesheet" href="/app/css/style.css?v=4" />
   <style>
     .hero-card {
       background: linear-gradient(135deg, rgba(0,212,170,0.08) 0%, rgba(124,58,237,0.12) 100%);
@@ -655,7 +655,7 @@
       const t = document.createElement('div');
       t.className = 'toast show';
       t.textContent = msg;
-      t.style.cssText = `position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:${type==='error'?'var(--red)':'var(--teal)'};color:#fff;padding:10px 18px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:9999;max-width:90vw;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.4);`;
+      t.style.css?v=4Text = `position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:${type==='error'?'var(--red)':'var(--teal)'};color:#fff;padding:10px 18px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:9999;max-width:90vw;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.4);`;
       document.body.appendChild(t);
       setTimeout(() => t.remove(), 3000);
     }
