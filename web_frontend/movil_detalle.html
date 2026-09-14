@@ -138,10 +138,10 @@
 
       <!-- Tabs -->
       <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('tecnicos')" id="tab-tecnicos">ðŸ‘¥ Técnicos</button>
-        <button class="tab-btn" onclick="switchTab('inventario')" id="tab-inventario">ðŸ”§ Inventario</button>
-        <button class="tab-btn" onclick="switchTab('inspecciones')" id="tab-inspecciones">ðŸ“‹ Inspecciones</button>
-        <button class="tab-btn" onclick="switchTab('estadisticas')" id="tab-estadisticas">ðŸ“Š Stats</button>
+        <button class="tab-btn active" onclick="switchTab('tecnicos')" id="tab-tecnicos">👥 Técnicos</button>
+        <button class="tab-btn" onclick="switchTab('inventario')" id="tab-inventario">🔧 Inventario</button>
+        <button class="tab-btn" onclick="switchTab('inspecciones')" id="tab-inspecciones">📋 Inspecciones</button>
+        <button class="tab-btn" onclick="switchTab('estadisticas')" id="tab-estadisticas">📊 Stats</button>
       </div>
 
       <!-- TAB: Técnicos -->
@@ -150,7 +150,7 @@
           <div class="skeleton skeleton-card"></div>
         </div>
         <button class="btn btn-primary btn-full" onclick="openTechModal()" style="margin-top: 12px;">
-          ðŸ‘¥ Asignar / Cambiar Técnicos
+          👥 Asignar / Cambiar Técnicos
         </button>
       </div>
 
@@ -163,11 +163,11 @@
         </div>
         <div class="inv-filters">
           <button class="filter-btn active" onclick="filterInventory('todos')" id="f-todos">Todos</button>
-          <button class="filter-btn" onclick="filterInventory('Herramienta')" id="f-Herramienta">ðŸ”§ Herramienta</button>
+          <button class="filter-btn" onclick="filterInventory('Herramienta')" id="f-Herramienta">🔧 Herramienta</button>
           <button class="filter-btn" onclick="filterInventory('Eléctrico')" id="f-Eléctrico">âš¡ Eléctrico</button>
           <button class="filter-btn" onclick="filterInventory('Fibra Óptica')" id="f-FibraÓptica">ðŸ”´ Fibra Ópt.</button>
-          <button class="filter-btn" onclick="filterInventory('EPP')" id="f-EPP">ðŸ¦º EPP</button>
-          <button class="filter-btn" onclick="filterInventory('Seguridad')" id="f-Seguridad">ðŸš§ Seguridad</button>
+          <button class="filter-btn" onclick="filterInventory('EPP')" id="f-EPP">🦺 EPP</button>
+          <button class="filter-btn" onclick="filterInventory('Seguridad')" id="f-Seguridad">🚧 Seguridad</button>
           <button class="filter-btn" onclick="filterInventory('Escalera')" id="f-Escalera">ðŸªœ Escalera</button>
           <button class="filter-btn" onclick="filterInventory('Telecom')" id="f-Telecom">ðŸ“¡ Telecom</button>
         </div>
@@ -208,9 +208,9 @@
   <nav class="bottom-nav">
     <a href="/app/dashboard.html" class="bnav-item"><span class="bnav-icon">ðŸ </span><span class="bnav-label">Inicio</span></a>
     <a href="/app/moviles.html" class="bnav-item active"><span class="bnav-icon"><img src="/app/img/van.jpg" alt="Movil" style="width:40px;height:28px;object-fit:cover;border-radius:4px;vertical-align:middle;"></span><span class="bnav-label">Móviles</span></a>
-    <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;"><span class="bnav-main">âž•</span></a>
-    <a href="/app/inspecciones.html" class="bnav-item"><span class="bnav-icon">ðŸ“‹</span><span class="bnav-label">Lista</span></a>
-    <a href="/app/metricas.html" class="bnav-item"><span class="bnav-icon">ðŸ“Š</span><span class="bnav-label">Métricas</span></a>
+    <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;"><span class="bnav-main">➕</span></a>
+    <a href="/app/inspecciones.html" class="bnav-item"><span class="bnav-icon">📋</span><span class="bnav-label">Lista</span></a>
+    <a href="/app/metricas.html" class="bnav-item"><span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span></a>
   </nav>
 
   <!-- Modal: Edit Mobile & Vehicle Status -->
@@ -260,7 +260,7 @@
   <div class="modal-overlay" id="techModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">ðŸ‘¥ Asignar Técnicos</div>
+      <div class="modal-title">👥 Asignar Técnicos</div>
       <div class="form-group"><label>Técnico 1</label>
         <select id="selPrimaryTech" class="form-control"><option value="">— Sin técnico —</option></select>
       </div>
@@ -294,13 +294,13 @@
   <div class="modal-overlay" id="inventoryEditModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title" id="invEditTitle">ðŸ”§ Actualizar Herramienta</div>
+      <div class="modal-title" id="invEditTitle">🔧 Actualizar Herramienta</div>
       <input type="hidden" id="invEditId" />
       <div class="form-group"><label>Cantidad Actual</label><input id="invEditQty" class="form-control" type="number" min="0" /></div>
       <div class="form-group"><label>Estado</label>
         <select id="invEditStatus" class="form-control">
-          <option value="ok">âœ… OK</option>
-          <option value="faltante">âš ï¸ Faltante</option>
+          <option value="ok">✅ OK</option>
+          <option value="faltante">⚠ï¸ Faltante</option>
           <option value="danado">âŒ Dañado</option>
         </select>
       </div>
@@ -385,7 +385,7 @@
       document.getElementById('vCleanStatus').textContent = d.cleanliness_status || 'Limpio';
       document.getElementById('vDamageStatus').textContent = d.damage_status || 'Sin daños';
 
-      const statusMap = { activa: ['badge-verde','âœ… Activa'], mantenimiento: ['badge-amarillo','ðŸ”§ Mantenimiento'], inactiva: ['badge-rojo','âŒ Inactiva'] };
+      const statusMap = { activa: ['badge-verde','✅ Activa'], mantenimiento: ['badge-amarillo','🔧 Mantenimiento'], inactiva: ['badge-rojo','âŒ Inactiva'] };
       const [cls, label] = statusMap[d.status] || ['badge-verde', d.status];
       const heroStatus = document.getElementById('heroStatus');
       heroStatus.className = 'badge ' + cls;
@@ -403,12 +403,12 @@
     function renderTechnicians(techs) {
       const div = document.getElementById('techniciansList');
       if (!techs || techs.length === 0) {
-        div.innerHTML = '<div style="text-align:center; padding: 24px; color: var(--text-muted); font-size:0.85rem;">âš ï¸ No hay técnicos asignados a esta móvil.<br><br>Usa el botón de abajo para asignar técnicos.</div>';
+        div.innerHTML = '<div style="text-align:center; padding: 24px; color: var(--text-muted); font-size:0.85rem;">⚠ï¸ No hay técnicos asignados a esta móvil.<br><br>Usa el botón de abajo para asignar técnicos.</div>';
         return;
       }
       div.innerHTML = techs.map(t => `
         <div class="tech-card">
-          <div class="tech-avatar">${t.role === 'principal' ? 'ðŸ‘¤' : 'ðŸ‘¥'}</div>
+          <div class="tech-avatar">${t.role === 'principal' ? '👤' : '👥'}</div>
           <div class="tech-info">
             <div class="tech-name">${t.name}</div>
             <div class="tech-role">${t.role === 'principal' ? 'â­ Técnico 1' : 'ðŸ”¹ Técnico 2'}</div>
@@ -428,7 +428,7 @@
     }
 
     const catIcons = {
-      Herramienta: 'ðŸ”§', EPP: 'ðŸ¦º', Stock: 'ðŸ“¦', Seguridad: 'ðŸš§', Documentos: 'ðŸ“„',
+      Herramienta: '🔧', EPP: '🦺', Stock: '📦', Seguridad: '🚧', Documentos: '📄',
       'Eléctrico': 'âš¡', 'Fibra Óptica': 'ðŸ”´', Escalera: 'ðŸªœ', Telecom: 'ðŸ“¡'
     };
     const catCls = {
@@ -470,7 +470,7 @@
       for (const cat of categories) {
         const catItems = grouped[cat];
         html += `<div style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:16px 0 8px; letter-spacing:0.05em; display:flex; align-items:center; gap:6px;">
-          <span>${catIcons[cat] || 'ðŸ“¦'}</span> <span class="${catCls[cat] || ''}">${cat}</span>
+          <span>${catIcons[cat] || '📦'}</span> <span class="${catCls[cat] || ''}">${cat}</span>
         </div>`;
         html += catItems.map(i => `
         <div class="inv-row" style="border-left: 4px solid ${i.status === 'ok' ? 'var(--teal)' : i.status === 'faltante' ? 'var(--amber)' : 'var(--red)'}; background: ${i.status === 'ok' ? 'var(--bg-card)' : 'rgba(239, 68, 68, 0.05)'};">
@@ -493,7 +493,7 @@
     function renderInspections(inspections) {
       const div = document.getElementById('inspectionsList');
       if (!inspections || inspections.length === 0) {
-        div.innerHTML = '<div style="text-align:center; padding: 32px; color: var(--text-muted); font-size:0.85rem;">ðŸ“‹ No hay inspecciones registradas para esta móvil.</div>';
+        div.innerHTML = '<div style="text-align:center; padding: 32px; color: var(--text-muted); font-size:0.85rem;">📋 No hay inspecciones registradas para esta móvil.</div>';
         return;
       }
       const resultMap = { 'Cumple': 'badge-verde', 'Cumple parcialmente': 'badge-amarillo', 'No cumple': 'badge-rojo' };
@@ -506,8 +506,8 @@
             </div>
             <span class="badge ${resultMap[i.result] || 'badge-verde'}">${i.result}</span>
           </div>
-          <div class="insp-detail">ðŸ“¦ ${i.order_type} · #${i.order_number}</div>
-          <div class="insp-detail" style="margin-top:4px;">ðŸ‘¤ ${i.technician}</div>
+          <div class="insp-detail">📦 ${i.order_type} · #${i.order_number}</div>
+          <div class="insp-detail" style="margin-top:4px;">👤 ${i.technician}</div>
         </div>`).join('');
     }
 
@@ -616,7 +616,7 @@
       try {
         const res = await fetch(`${API_BASE}/mobiles/${mobileId}/assign-technicians`, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         if (!res.ok) throw new Error('Error ' + res.status);
-        showToast('âœ… Técnicos asignados correctamente');
+        showToast('✅ Técnicos asignados correctamente');
         closeModal('techModal');
         loadProfile();
       } catch(e) { showToast('Error: ' + e.message, 'error'); }
@@ -624,7 +624,7 @@
 
     // â”€â”€ Inventory Edit Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function openInvEdit(id, name, qty, status, serial, notes) {
-      document.getElementById('invEditTitle').textContent = 'ðŸ”§ ' + name;
+      document.getElementById('invEditTitle').textContent = '🔧 ' + name;
       document.getElementById('invEditId').value = id;
       document.getElementById('invEditQty').value = qty;
       document.getElementById('invEditStatus').value = status;
@@ -644,7 +644,7 @@
       try {
         const res = await fetch(`${API_BASE}/mobiles/${mobileId}/inventory/${itemId}`, { method: 'PUT', headers: { 'Authorization': 'Bearer ' + token(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         if (!res.ok) throw new Error('Error ' + res.status);
-        showToast('âœ… Inventario actualizado');
+        showToast('✅ Inventario actualizado');
         closeModal('inventoryEditModal');
         loadProfile();
       } catch(e) { showToast('Error: ' + e.message, 'error'); }

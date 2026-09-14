@@ -62,13 +62,13 @@
       <span class="bnav-icon"><img src="/app/img/van.jpg" alt="Movil" style="width:22px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;"></span><span class="bnav-label">Móviles</span>
     </a>
     <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
-      <span class="bnav-main">âž•</span>
+      <span class="bnav-main">➕</span>
     </a>
     <a href="/app/inspecciones.html" class="bnav-item">
-      <span class="bnav-icon">ðŸ“‹</span><span class="bnav-label">Lista</span>
+      <span class="bnav-icon">📋</span><span class="bnav-label">Lista</span>
     </a>
     <a href="/app/metricas.html" class="bnav-item">
-      <span class="bnav-icon">ðŸ“Š</span><span class="bnav-label">Métricas</span>
+      <span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span>
     </a>
   </nav>
 
@@ -108,7 +108,7 @@
       }
 
       list.innerHTML = filtered.map(m => `
-        <div class="vehicle-card" onclick="window.location.href='/inventario.html?movil=${m.codigo}'">
+        <div class="vehicle-card" onclick="window.location.href='/app/movil_detalle.html?id=' + m.id" style="cursor:pointer;">
           <div class="vehicle-icon"><img src="/app/img/van.jpg" alt="Movil" style="width:40px;height:28px;object-fit:cover;border-radius:4px;vertical-align:middle;"></div>
           <div class="vehicle-info">
             <div class="vehicle-code">${m.codigo} <span class="badge badge-neutral">${m.placa || 'N/A'}</span></div>

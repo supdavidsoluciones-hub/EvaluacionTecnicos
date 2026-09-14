@@ -111,7 +111,7 @@
       <!-- Metrics Grid -->
       <div class="metric-grid">
         <div class="metric-card accent-teal">
-          <div class="metric-icon">ðŸ“‹</div>
+          <div class="metric-icon">📋</div>
           <div class="metric-value" id="metOrdenesHoy">-</div>
           <div class="metric-label">Órdenes Hoy</div>
         </div>
@@ -121,7 +121,7 @@
           <div class="metric-label">Inspecciones</div>
         </div>
         <div class="metric-card accent-amber">
-          <div class="metric-icon">âš ï¸</div>
+          <div class="metric-icon">⚠ï¸</div>
           <div class="metric-value" id="metGarantias">-</div>
           <div class="metric-label">Garantías %</div>
         </div>
@@ -147,11 +147,11 @@
             <div class="qa-label">Mis Móviles</div>
           </a>
           <a href="/app/metricas.html" class="qa-card" id="qa-metricas">
-            <div class="qa-icon" style="background: var(--amber-dim); color: var(--amber);">ðŸ“Š</div>
+            <div class="qa-icon" style="background: var(--amber-dim); color: var(--amber);">📊</div>
             <div class="qa-label">Métricas</div>
           </a>
           <a href="/app/configuracion.html" class="qa-card" id="qa-config">
-            <div class="qa-icon" style="background: rgba(99,102,241,0.15); color: #818cf8;">âš™ï¸ </div>
+            <div class="qa-icon" style="background: rgba(99,102,241,0.15); color: #818cf8;">⚙ï¸ </div>
             <div class="qa-label">Configuración</div>
           </a>
         </div>
@@ -168,7 +168,7 @@
 
       <!-- Sección Configuración -->
       <div class="section" id="configSection" style="display: none; animation: fadeUp 0.3s ease; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
-        <h2 style="margin-bottom: 16px;">âš™ï¸ Configuración y Administración</h2>
+        <h2 style="margin-bottom: 16px;">⚙ï¸ Configuración y Administración</h2>
         
         <div class="quick-access-grid" style="margin-bottom: 24px;">
           <button class="qa-card" onclick="openAddMobileModal()" style="border: 1px dashed var(--teal);">
@@ -176,12 +176,12 @@
             <div class="qa-label">+ Nueva Móvil</div>
           </button>
           <button class="qa-card" onclick="openAddTechModal()" style="border: 1px dashed var(--purple-light);">
-            <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">ðŸ‘¤</div>
+            <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">👤</div>
             <div class="qa-label">+ Nuevo Técnico</div>
           </button>
         </div>
 
-        <h3 class="section-title">ðŸ‘¥ Técnicos del Sistema (Técnico 1 y Técnico 2)</h3>
+        <h3 class="section-title">👥 Técnicos del Sistema (Técnico 1 y Técnico 2)</h3>
         <div id="techConfigList" style="margin-bottom: 24px; display: grid; gap: 8px;">
           <p class="text-muted text-sm">Cargando técnicos...</p>
         </div>
@@ -202,18 +202,18 @@
       <span class="bnav-label">Inicio</span>
     </a>
     <a href="/app/moviles.html" class="bnav-item">
-      <span class="bnav-icon">ðŸš—</span>
+      <span class="bnav-icon">🚗</span>
       <span class="bnav-label">Móviles</span>
     </a>
     <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
-      <span class="bnav-main">âž•</span>
+      <span class="bnav-main">➕</span>
     </a>
     <a href="/app/inspecciones.html" class="bnav-item">
-      <span class="bnav-icon">ðŸ“‹</span>
+      <span class="bnav-icon">📋</span>
       <span class="bnav-label">Lista</span>
     </a>
     <a href="/app/metricas.html" class="bnav-item">
-      <span class="bnav-icon">ðŸ“Š</span>
+      <span class="bnav-icon">📊</span>
       <span class="bnav-label">Métricas</span>
     </a>
   </nav>
@@ -245,7 +245,7 @@
   <div class="modal-overlay" id="addTechModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">ðŸ‘¤ Agregar Técnico</div>
+      <div class="modal-title">👤 Agregar Técnico</div>
       <div class="form-group"><label>Nombre Completo*</label><input id="techName" class="form-control" type="text" /></div>
       <button class="btn btn-primary btn-full" onclick="saveAddTech()">Agregar Técnico</button>
       <button class="btn btn-secondary btn-full" onclick="closeModal('addTechModal')" style="margin-top:8px;">Cancelar</button>
@@ -332,7 +332,7 @@
 
         document.getElementById('techConfigList').innerHTML = techs.map(t => `
           <div class="config-card">
-            <div>ðŸ‘¤ <strong>${t.full_name}</strong></div>
+            <div>👤 <strong>${t.full_name}</strong></div>
             <span class="badge badge-verde">${t.status}</span>
           </div>
         `).join('');
@@ -388,7 +388,7 @@
               </div>
               <div class="vehicle-info">
                 <div class="vehicle-code">${m.code || m.codigo} <span style="font-size:0.68rem;color:var(--text-muted);font-weight:400;">${m.vehicle_model||'Chevrolet P900'}</span></div>
-                <div class="vehicle-detail">${m.zone ? m.zone + ' â€¢ ' : ''}${m.primary_technician?.name || 'Sin t\u00e9cnico asignado'}</div>
+                <div class="vehicle-detail">${m.zone ? m.zone + ' • ' : ''}${m.primary_technician?.name || 'Sin t\u00e9cnico asignado'}</div>
               </div>
               <div class="vehicle-status">
                 <span class="badge ${sem.cls}">${sem.label}</span>

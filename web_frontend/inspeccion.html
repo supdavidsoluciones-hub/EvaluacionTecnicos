@@ -71,7 +71,7 @@
         
         <!-- STEP 1 -->
         <div class="step-panel active" data-step="1">
-          <h3 class="mb-16">ðŸ“‹ Datos Generales</h3>
+          <h3 class="mb-16">📋 Datos Generales</h3>
           <div class="form-group">
             <label class="form-label">Móvil</label>
             <select id="selMovil" class="form-control" required>
@@ -122,37 +122,9 @@
         </div>
 
         <!-- STEP 2 -->
+<!-- STEP 4 -->
         <div class="step-panel" data-step="2">
-          <h3 class="mb-16"><img src="/app/img/van.jpg" alt="Movil" style="width:22px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;"> Estado del Vehículo</h3>
-          <label class="form-label">Limpieza Exterior</label>
-          <div class="star-rating" id="ratingExterior" data-val="0">
-            <span class="star" data-v="1">â˜…</span><span class="star" data-v="2">â˜…</span><span class="star" data-v="3">â˜…</span><span class="star" data-v="4">â˜…</span><span class="star" data-v="5">â˜…</span>
-          </div>
-          
-          <label class="form-label">Limpieza Interior</label>
-          <div class="star-rating" id="ratingInterior" data-val="0">
-            <span class="star" data-v="1">â˜…</span><span class="star" data-v="2">â˜…</span><span class="star" data-v="3">â˜…</span><span class="star" data-v="4">â˜…</span><span class="star" data-v="5">â˜…</span>
-          </div>
-
-          <label class="form-label mt-16">Presentación del Técnico</label>
-          <div id="checksVehiculo"></div>
-          
-          <div class="form-group mt-16">
-            <label class="form-label">Observaciones</label>
-            <textarea id="obsVehiculo" class="form-control" placeholder="Detalles sobre el vehículo..."></textarea>
-          </div>
-        </div>
-
-        <!-- STEP 3 -->
-        <div class="step-panel" data-step="3">
-          <h3 class="mb-16">ðŸ”§ Verificación de Herramientas</h3>
-          <p class="text-sm mb-16">Verifica el inventario básico del vehículo</p>
-          <div id="checksHerramientas"></div>
-        </div>
-
-        <!-- STEP 4 -->
-        <div class="step-panel" data-step="4">
-          <h3 class="mb-16">ðŸ¦º Seguridad</h3>
+          <h3 class="mb-16">🦺 Seguridad</h3>
           <div id="checksSeguridad"></div>
           <div class="form-group mt-16">
             <label class="form-label">Observaciones Seguridad</label>
@@ -161,7 +133,7 @@
         </div>
 
         <!-- STEP 5 -->
-        <div class="step-panel" data-step="5">
+        <div class="step-panel" data-step="3">
           <h3 class="mb-16">âš¡ Inspección Técnica</h3>
           <div id="checksTecnica"></div>
           <div class="form-group mt-16">
@@ -171,8 +143,8 @@
         </div>
 
         <!-- STEP 6 -->
-        <div class="step-panel" data-step="6">
-          <h3 class="mb-16">ðŸ‘¤ Atención al Cliente</h3>
+        <div class="step-panel" data-step="2">
+          <h3 class="mb-16">👤 Atención al Cliente</h3>
           <label class="form-label">Calificación General Atención</label>
           <div class="star-rating" id="ratingAtencion" data-val="0">
             <span class="star" data-v="1">â˜…</span><span class="star" data-v="2">â˜…</span><span class="star" data-v="3">â˜…</span><span class="star" data-v="4">â˜…</span><span class="star" data-v="5">â˜…</span>
@@ -191,19 +163,19 @@
         </div>
 
         <!-- STEP 7 -->
-        <div class="step-panel" data-step="7">
-          <h3 class="mb-16">ðŸ“¸ Evidencia Fotográfica</h3>
+        <div class="step-panel" data-step="5">
+          <h3 class="mb-16">📸 Evidencia Fotográfica</h3>
           <div class="photo-grid mb-20" id="photoGrid">
             <!-- Fotos generadas por JS -->
           </div>
           
           <div class="divider"></div>
-          <h3 class="mb-16">ðŸ“Š Resumen</h3>
+          <h3 class="mb-16">📊 Resumen</h3>
           <div id="resumenInspeccion" class="card card-teal text-center mb-16">
             Calculando puntaje...
           </div>
           
-          <button type="button" class="btn btn-primary btn-block btn-lg" id="btnSubmit">âœ… Enviar Inspección</button>
+          <button type="button" class="btn btn-primary btn-block btn-lg" id="btnSubmit">✅ Enviar Inspección</button>
         </div>
       </form>
     </div>
@@ -219,7 +191,7 @@
     import { requireAuth, getTechnicians, apiRequest, showToast, compressImage } from '/app/js/app.js';
 
     let currentStep = 1;
-    const totalSteps = 7;
+    const totalSteps = 3;
     const answers = {};
     const photos = {}; // key: file
 
@@ -286,7 +258,6 @@
       };
 
       renderChecks('checksVehiculo', lists.vehiculo, 'veh');
-      renderChecks('checksHerramientas', lists.herramientas, 'herr');
       renderChecks('checksSeguridad', lists.seguridad, 'seg');
       renderChecks('checksTecnica', lists.tecnica, 'tec');
       renderChecks('checksCliente', lists.cliente, 'cli');
@@ -295,7 +266,7 @@
       const grid = document.getElementById('photoGrid');
       grid.innerHTML = photoTypes.map(pt => `
         <label class="photo-slot" id="slot_${pt.id}">
-          <div class="photo-icon">ðŸ“·</div>
+          <div class="photo-icon">📷</div>
           <div class="photo-label">${pt.label}</div>
           <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handlePhoto(this, '${pt.id}')">
         </label>
@@ -418,7 +389,7 @@
         } catch(e) {
           showToast(e.message, 'error');
           btn.disabled = false;
-          btn.textContent = 'âœ… Enviar Inspección';
+          btn.textContent = '✅ Enviar Inspección';
         }
       });
     });
