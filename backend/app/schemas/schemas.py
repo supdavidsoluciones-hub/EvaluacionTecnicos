@@ -150,6 +150,8 @@ class InspectionCreate(BaseModel):
     contract_number: Optional[str] = None
     vehicle_status: Optional[str] = None
     vehicle_accidents: Optional[bool] = False
+    gps_lat: Optional[str] = None
+    gps_lon: Optional[str] = None
     general_result: Optional[str] = "Cumple"
     observations: Optional[str] = None
     corrective_action: Optional[str] = None
@@ -167,6 +169,8 @@ class InspectionResponse(BaseModel):
     contract_number: Optional[str] = None
     vehicle_status: Optional[str] = None
     vehicle_accidents: Optional[bool] = False
+    gps_lat: Optional[str] = None
+    gps_lon: Optional[str] = None
     general_result: str
     observations: Optional[str] = None
     corrective_action: Optional[str] = None

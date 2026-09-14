@@ -367,10 +367,7 @@
         document.getElementById('metCalidad').textContent = (data.calidad_promedio ?? '0');
 
         // Render Semaphore – Chevrolet P900 cards
-        const semaforoDiv = document.getElementById('mobilesSemaforo');
         if (data.mobiles && data.mobiles.length > 0) {
-          semaforoDiv.innerHTML = data.mobiles.map(m => {
-            const score = m.score_calidad || 100;
             const sem = score >= 85 ? {cls:'badge-verde', label:'OPTIMO'} : score >= 65 ? {cls:'badge-amarillo', label:'REGULAR'} : {cls:'badge-rojo', label:'CRITICO'};
             const statusColors = {activa:'#00d4aa', mantenimiento:'#f59e0b', inactiva:'#ef4444'};
             const sc = statusColors[m.status] || '#00d4aa';
@@ -399,7 +396,6 @@
             </div>`;
           }).join('');
         } else {
-          semaforoDiv.innerHTML = '<p class="text-muted text-sm text-center py-4">No hay móviles registrados.</p>';
         }
 
         // Render Recent Activity
@@ -423,7 +419,6 @@
 
       } catch (err) {
         console.error("Dashboard error:", err);
-        document.getElementById('mobilesSemaforo').innerHTML = '<p class="text-red text-sm">Error cargando datos.</p>';
         document.getElementById('actividadReciente').innerHTML = '<p class="text-red text-sm">Error cargando datos.</p>';
       }
     }

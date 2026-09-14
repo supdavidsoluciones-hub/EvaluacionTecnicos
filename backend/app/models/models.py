@@ -159,6 +159,8 @@ class Inspection(Base):
     contract_number = Column(String(50), nullable=True)
     vehicle_status = Column(String(50), nullable=True)
     vehicle_accidents = Column(Boolean, default=False)
+    gps_lat = Column(String)
+    gps_lon = Column(String)
     
     general_result = Column(String(30), default="Cumple")  # 'Cumple', 'Cumple parcialmente', 'No cumple'
     observations = Column(Text, nullable=True)

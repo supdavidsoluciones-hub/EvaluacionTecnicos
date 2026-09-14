@@ -30,7 +30,7 @@
   
   <nav class="navbar">
     <button class="btn-back" onclick="window.location.href='/app/dashboard.html'">â†</button>
-    <div class="navbar-title">ðŸš— Móviles</div>
+    <div class="navbar-title"><img src="/app/img/van.jpg" alt="Movil" style="width:22px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;"> Móviles</div>
     <div class="navbar-actions">
       <button class="btn btn-sm btn-primary" id="btnAddMovil">+ Nueva</button>
     </div>
@@ -59,7 +59,7 @@
       <span class="bnav-icon">ðŸ </span><span class="bnav-label">Inicio</span>
     </a>
     <a href="/app/moviles.html" class="bnav-item active">
-      <span class="bnav-icon">ðŸš—</span><span class="bnav-label">Móviles</span>
+      <span class="bnav-icon"><img src="/app/img/van.jpg" alt="Movil" style="width:22px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;"></span><span class="bnav-label">Móviles</span>
     </a>
     <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
       <span class="bnav-main">âž•</span>
@@ -103,13 +103,13 @@
       if(zone === 'santiago') filtered = mobilesData.filter(m => m.zona === 'Santiago' || parseInt(m.codigo.substring(1)) >= 207);
 
       if(!filtered || filtered.length === 0) {
-        list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">ðŸš</div><div class="empty-state-title">No hay móviles</div><div class="empty-state-desc">No se encontraron móviles registrados.</div></div>`;
+        list.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><img src="/app/img/van.jpg" alt="Movil" style="width:40px;height:28px;object-fit:cover;border-radius:4px;vertical-align:middle;"></div><div class="empty-state-title">No hay móviles</div><div class="empty-state-desc">No se encontraron móviles registrados.</div></div>`;
         return;
       }
 
       list.innerHTML = filtered.map(m => `
         <div class="vehicle-card" onclick="window.location.href='/inventario.html?movil=${m.codigo}'">
-          <div class="vehicle-icon">ðŸš</div>
+          <div class="vehicle-icon"><img src="/app/img/van.jpg" alt="Movil" style="width:40px;height:28px;object-fit:cover;border-radius:4px;vertical-align:middle;"></div>
           <div class="vehicle-info">
             <div class="vehicle-code">${m.codigo} <span class="badge badge-neutral">${m.placa || 'N/A'}</span></div>
             <div class="vehicle-detail">${m.tecnico?.nombre || 'Técnico sin asignar'}</div>
