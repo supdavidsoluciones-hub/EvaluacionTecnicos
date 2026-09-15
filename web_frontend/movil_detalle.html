@@ -680,16 +680,21 @@
       el.classList.add('active');
     }
     
-    const herramientas_base = ['Escalera', 'Pelacables', 'Crimpeadora', 'Multímetro', 'Tester de fibra (OTDR/VFL)', 'Casco', 'Arnés', 'Conos de seguridad'];
+    const herramientas_base = ["ALICATE CORTE DIAG. 7\"", "ALICATE PUNTA 7\"", "ALICATE UNIVERSAL 8\"", "DESATORNILLADOR ESTRELLA", "DESATORNILLADOR PLANO", "LLAVE COROFIJA 3/8", "LLAVE COROFIJA 7/16", "MARTILLO", "CAJA DE HERRAMIENTAS", "MARCO DE SEGUETA", "EXTENSION P/PINTOR", "ODOMETRO", "RATCH DE 3/8", "EXTENSION PARA RACH DE 3/8", "CUBO 3/8 X 5/8", "CUBO PARA RACH 7/16", "ENGRAPADORA T-59", "CUREÑA", "INVERSOR DE 1500 W / 1800 W", "SONDA PASA-CABLE", "EXTENSION ELECTRICA", "TALADRO", "CUBO P/TALADRO 3/8", "BROCA P/ CONCRETO 1/4", "BROCA P/CONCRETO 3/8", "BROCA 3/8\" METAL", "BROCAS 5/16 X 12 METAL", "ESCALERA DE EXTENSION # 28 (CON GANCHOS)", "ESCALERA RECTA 12 FT (MACHILLO)", "ESCALERA DE 6 PELDAÑOS", "ARNES", "CASCO SEGURIDAD", "LINEA DE VIDA SENCILLA", "LINEA DE POSICIONAMIENTO", "LENTE PROTECTOR OSCUROS", "LENTES DE SEGURIDAD CLARO", "CHALECO SEGURIDAD FOSFORESCENTE", "CONOS REFLECTORES 28\"", "GUANTE PROTEC 2", "FOCO DE MINERO", "TELEFONO", "CLEAVER F.O", "PELADORA FIBRA 3 CALIBRES", "PELADORA CABLE DROP", "REGLA PARA CORTADOR", "LIMPIADOR DE CONECTORES ONE CLEANER-CLICK (SC-2.5MM)", "MEDIDOR DE POTENCIA PON FTTH", "LOCALIZADOR OPTICO DE FALLA VISUAL F.O", "TELEVISOR 24\"", "LAPTOP CON PUERTO DE RED DE 1 GB"];
     
     function initHerramientas() {
       const hl = document.getElementById('herr-list');
       if(hl) {
         let html = '';
         herramientas_base.forEach((h, i) => {
-          html += `<label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px; border:1px solid #EDF2F7; border-radius:8px; background:#F7FAFC;"><input type="checkbox" id="herr_${i}" value="${h}"> ${h}</label>`;
+          html += `<label style="display:flex; align-items:flex-start; gap:8px; font-size:0.75rem; padding:6px 8px; border-bottom:1px solid #EDF2F7; background:#FFF;"><input type="checkbox" id="herr_${i}" value="${h}" style="margin-top:2px;"> <span>${h}</span></label>`;
         });
         hl.innerHTML = html;
+        hl.style.maxHeight = '400px';
+        hl.style.overflowY = 'auto';
+        hl.style.border = '1px solid #EDF2F7';
+        hl.style.borderRadius = '8px';
+        hl.style.marginBottom = '12px';
       }
     }
     
