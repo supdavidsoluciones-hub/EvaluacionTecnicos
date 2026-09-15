@@ -15,12 +15,12 @@
     .filter-input { flex: 1; padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); outline: none; }
     .filter-input:focus { border-color: var(--teal); }
 
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(64px + var(--safe-bottom)); background: rgba(7, 13, 26, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; padding-bottom: var(--safe-bottom); z-index: 100; }
-    .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); text-decoration: none; padding: 8px; min-width: 50px; }
-    .bnav-item.active { color: var(--teal); }
-    .bnav-icon { font-size: 1.3rem; }
+    
+    
+    
+    
     .bnav-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
-    .bnav-main { background: var(--teal); color: var(--bg); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transform: translateY(-10px); box-shadow: var(--shadow-glow-teal); }
+    
   </style>
 </head>
 <body>
@@ -53,23 +53,7 @@
     </div>
   </main>
 
-  <nav class="bottom-nav">
-    <a href="/app/dashboard.html" class="bnav-item">
-      <span class="bnav-icon">🏠</span><span class="bnav-label">Inicio</span>
-    </a>
-    <a href="/app/moviles.html" class="bnav-item">
-      <span class="bnav-icon"><img src="/app/img/van.jpg" alt="Movil" style="width:22px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;"></span><span class="bnav-label">Móviles</span>
-    </a>
-    <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
-      <span class="bnav-main">➕</span>
-    </a>
-    <a href="/app/inspecciones.html" class="bnav-item active">
-      <span class="bnav-icon">📋</span><span class="bnav-label">Lista</span>
-    </a>
-    <a href="/app/metricas.html" class="bnav-item">
-      <span class="bnav-icon">📊</span><span class="bnav-label">Métricas</span>
-    </a>
-  </nav>
+  
 
   <script type="module">
     import { requireAuth, getInspections, formatDate, scoreColor } from '/app/js/app.js';

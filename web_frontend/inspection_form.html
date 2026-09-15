@@ -3,430 +3,341 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nueva Inspección - Control Operativo</title>
-  <link rel="stylesheet" href="/app/css/style.css?v=4">
+  <title>Nueva Inspeccion - Control Operativo</title>
   <style>
-    .sec-badge {
-      background: var(--navy, #1A2B4A);
-      color: #fff;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      padding: 5px 12px;
-      border-radius: 6px;
-      margin-bottom: 14px;
-      display: inline-block;
-    }
-    .question-card {
-      background: #F7F9FB;
-      border: 1px solid #D4DAE3;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
-    }
-    .question-text {
-      font-weight: 600;
-      font-size: 0.93rem;
-      color: #2D3342;
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-    .options-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
-    .opt-btn {
-      padding: 9px 4px;
-      border: 1.5px solid #D4DAE3;
-      border-radius: 8px;
-      background: #fff;
-      color: #4A5568;
-      font-weight: 700;
-      font-size: 0.8rem;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.15s;
-    }
-    .opt-btn.sel-c  { background: #4A7C6F; color: #fff; border-color: #3a6258; }
-    .opt-btn.sel-nc { background: #8B3A3A; color: #fff; border-color: #722e2e; }
-    .opt-btn.sel-na { background: #6B7A8F; color: #fff; border-color: #556070; }
-    .photo-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 10px; }
-    .photo-wrap { position: relative; }
-    .photo-thumb { width:100%; height:80px; object-fit:cover; border-radius:8px; border:1px solid #D4DAE3; }
-    .photo-del {
-      position: absolute; top: 3px; right: 3px;
-      background: rgba(139,58,58,0.85); color: #fff;
-      border: none; border-radius: 50%; width: 20px; height: 20px;
-      font-size: 0.7rem; cursor: pointer;
-    }
-    .veh-btn {
-      border: 2px solid #D4DAE3; border-radius: 10px; padding: 10px 6px;
-      background: #fff; cursor: pointer; text-align: center;
-      font-weight: 700; font-size: 0.82rem; color: #2D3342; transition: all 0.15s;
-      width: 100%;
-    }
-    .veh-btn.active-ok     { background: #4A7C6F; color: #fff; border-color: #3a6258; }
-    .veh-btn.active-warn   { background: #8F6B1A; color: #fff; border-color: #7a5a12; }
-    .veh-btn.active-danger { background: #8B3A3A; color: #fff; border-color: #722e2e; }
-    .acc-toggle {
-      width: 50px; height: 28px; border-radius: 14px; background: #D4DAE3;
-      position: relative; cursor: pointer; transition: background 0.2s;
-      border: none; flex-shrink: 0;
-    }
-    .acc-toggle.on { background: #8B3A3A; }
-    .acc-toggle::after {
-      content: ''; position: absolute; top: 4px; left: 4px;
-      width: 20px; height: 20px; border-radius: 50%;
-      background: #fff; transition: left 0.2s;
-    }
-    .acc-toggle.on::after { left: 26px; }
+    * { box-sizing: border-box; }
+    body { background: #F5F7FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; color: #1A2B4A; }
+
+    .top-bar { background: #1A2B4A; color: #fff; padding: 16px 20px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 50; }
+    .back-btn { color: #fff; text-decoration: none; font-size: 1.2rem; }
+    .top-bar-title { font-size: 1rem; font-weight: 800; }
+    .top-bar-sub { font-size: 0.72rem; opacity: 0.75; }
+
+    .form-wrap { padding: 16px 16px 100px; }
+    .section { background: #fff; border-radius: 14px; border: 1px solid #EEF2F7; padding: 18px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    .sec-title { font-size: 0.78rem; font-weight: 800; color: #4A7C6F; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+
+    .fgroup { margin-bottom: 14px; }
+    .fgroup:last-child { margin-bottom: 0; }
+    .fgroup label { display: block; font-size: 0.72rem; font-weight: 700; color: #8A94A6; margin-bottom: 5px; text-transform: uppercase; }
+    .fgroup input, .fgroup select, .fgroup textarea { width: 100%; padding: 11px 12px; border: 1px solid #DEE2E8; border-radius: 10px; font-size: 0.9rem; font-family: inherit; background: #F9FAFB; }
+    .fgroup input:focus, .fgroup select:focus, .fgroup textarea:focus { outline: none; border-color: #1A2B4A; background: #fff; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .required { color: #E05252; }
+
+    /* Checklist */
+    .q-block { border-bottom: 1px solid #F0F2F5; padding: 14px 0; }
+    .q-block:last-child { border-bottom: none; padding-bottom: 0; }
+    .q-text { font-size: 0.85rem; font-weight: 600; color: #1A2B4A; margin-bottom: 10px; display: flex; gap: 6px; }
+    .q-num { color: #4A7C6F; font-weight: 800; }
+    .q-radios { display: flex; gap: 8px; flex-wrap: wrap; }
+    .q-radio-label { display: flex; align-items: center; gap: 6px; padding: 7px 12px; border: 1.5px solid #DEE2E8; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; background: #F9FAFB; }
+    .q-radio-label input { display: none; }
+    .q-radio-label.selected-cumple { background: #E6F9F0; border-color: #1E7C50; color: #1E7C50; }
+    .q-radio-label.selected-nocumple { background: #FEE8E8; border-color: #C0392B; color: #C0392B; }
+    .q-radio-label.selected-na { background: #F5F7FA; border-color: #8A94A6; color: #8A94A6; }
+    .q-photo-row { margin-top: 10px; }
+    .q-photo-row label { font-size: 0.7rem; color: #8A94A6; font-weight: 700; display: block; margin-bottom: 4px; }
+    .q-obs-row { margin-top: 8px; }
+    .q-obs-row input { width: 100%; padding: 8px 10px; border: 1px solid #DEE2E8; border-radius: 8px; font-size: 0.8rem; font-family: inherit; background: #F9FAFB; }
+
+    /* GPS */
+    .gps-tag { display: inline-flex; align-items: center; gap: 5px; background: #E6F9F0; color: #1E7C50; border-radius: 8px; padding: 5px 10px; font-size: 0.75rem; font-weight: 700; }
+
+    /* Submit */
+    .submit-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #EEF2F7; padding: 16px 20px 30px; box-shadow: 0 -4px 12px rgba(0,0,0,0.06); }
+    .btn-submit { width: 100%; background: #1A2B4A; color: #fff; border: none; border-radius: 12px; padding: 15px; font-size: 1rem; font-weight: 800; cursor: pointer; }
+    .btn-submit:disabled { background: #8A94A6; cursor: not-allowed; }
+    .btn-submit.loading::after { content: '...'; }
   </style>
 </head>
 <body>
+
   <div class="top-bar">
-    <a href="/app/dashboard.html" class="back-link">←</a>
-    <strong style="font-size:1.05rem;">NUEVA INSPECCIÓN</strong>
+    <a href="/app/dashboard.html" class="back-btn">&#8592;</a>
+    <div>
+      <div class="top-bar-title">Nueva Inspeccion</div>
+      <div class="top-bar-sub" id="gpsTag">Obteniendo ubicacion...</div>
+    </div>
   </div>
 
-  <main class="main-container" style="margin-top:16px; padding-bottom:60px;">
-    <form id="inspectionForm">
+  <form id="inspForm" class="form-wrap" onsubmit="submitInsp(event)">
 
-      <!-- 1. DATOS GENERALES -->
-      <div class="form-card" style="padding:20px; margin-bottom:14px;">
-        <div class="sec-badge">📋 1. DATOS GENERALES</div>
-
-        <div class="form-group">
-          <label>Móvil <span class="required">*</span></label>
-          <select id="mobileSelect" class="select-control" required>
-            <option value="">-- Seleccionar Móvil --</option>
+    <!-- 1. DATOS GENERALES -->
+    <div class="section">
+      <div class="sec-title">📋 1. Datos Generales</div>
+      <div class="fgroup">
+        <label>Movil <span class="required">*</span></label>
+        <select id="mobileId" required>
+          <option value="">-- Seleccionar Movil --</option>
+        </select>
+      </div>
+      <div class="fgroup">
+        <label>Tecnico Responsable <span class="required">*</span></label>
+        <select id="techId" required>
+          <option value="">-- Seleccionar Tecnico --</option>
+        </select>
+      </div>
+      <div class="row2">
+        <div class="fgroup">
+          <label>No. Orden <span class="required">*</span></label>
+          <input type="text" id="orderNum" placeholder="Ej. 45821" required>
+        </div>
+        <div class="fgroup">
+          <label>Tipo de Orden <span class="required">*</span></label>
+          <select id="orderType" required>
+            <option value="Solo Internet">Solo Internet</option>
+            <option value="Internet + TV">Internet + TV</option>
+            <option value="Garantia">Garantia</option>
+            <option value="Precomercial">Precomercial</option>
           </select>
         </div>
-
-        <div class="form-group">
-          <label>Técnico Responsable <span class="required">*</span></label>
-          <select id="techSelect" class="select-control" required>
-            <option value="">-- Seleccione una móvil primero --</option>
-          </select>
+      </div>
+      <div class="row2">
+        <div class="fgroup">
+          <label>Nombre del Cliente</label>
+          <input type="text" id="clientName" placeholder="Ej. Juan Perez">
         </div>
-
-        <div class="form-grid-2">
-          <div class="form-group">
-            <label>Nombre del Cliente</label>
-            <input type="text" id="clientName" class="input-control" placeholder="Ej. Juan Pérez">
-          </div>
-          <div class="form-group">
-            <label>Número de Contrato</label>
-            <input type="text" id="contractNumber" class="input-control" placeholder="Ej. CT-12345">
-          </div>
-        </div>
-
-        <div class="form-grid-2">
-          <div class="form-group">
-            <label>Número de Orden <span class="required">*</span></label>
-            <input type="text" id="orderNumber" class="input-control" placeholder="Ej. 45821" required>
-          </div>
-          <div class="form-group">
-            <label>Tipo de Orden <span class="required">*</span></label>
-            <select id="orderType" class="select-control" required>
-              <option value="Solo Internet">Solo Internet</option>
-              <option value="Duo">Duo</option>
-              <option value="Tripack">Tripack</option>
-            </select>
-          </div>
+        <div class="fgroup">
+          <label>No. Contrato</label>
+          <input type="text" id="contractNum" placeholder="Ej. CT-12345">
         </div>
       </div>
+    </div>
 
-      <!-- 2. CHECKLIST DE CALIDAD -->
-      <div class="form-card" style="padding:20px; margin-bottom:14px;">
-        <div class="sec-badge">🔧 2. CALIDAD DE INSTALACIÓN</div>
-        <div id="checklistContainer"></div>
+    <!-- 2. CALIDAD DE INSTALACION -->
+    <div class="section">
+      <div class="sec-title">✅ 2. Calidad de Instalacion</div>
+      <div id="checklistContainer">
+        <div style="color:#8A94A6; font-size:0.82rem; text-align:center; padding:20px;">Cargando preguntas...</div>
       </div>
+    </div>
 
-      <!-- 3. FOTOS DE EVIDENCIA -->
-      <div class="form-card" style="padding:20px; margin-bottom:14px;">
-        <div class="sec-badge">📸 3. FOTOS DE EVIDENCIA</div>
-        <div class="form-group">
-          <label>Capturar / Subir Fotos</label>
-          <input type="file" id="photoInput" accept="image/*" capture="environment" multiple class="input-control">
-          <small style="color:#6B7A8F; font-size:0.78rem;">Las imágenes se comprimen automáticamente.</small>
-        </div>
-        <div class="photo-grid" id="photoGrid"></div>
+    <!-- 3. FOTOS DE EVIDENCIA -->
+    <div class="section">
+      <div class="sec-title">📸 3. Fotos de Evidencia</div>
+      <div class="fgroup">
+        <label>Capturar / Subir Fotos</label>
+        <input type="file" id="photoInput" accept="image/*" capture="environment" multiple>
+        <div style="font-size:0.72rem; color:#8A94A6; margin-top:4px;">Las imagenes se comprimen automaticamente.</div>
       </div>
+      <div id="photoPreview" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;"></div>
+    </div>
 
-      <!-- GPS + HORA AUTOMÁTICA -->
-      <div style="background:#EEF2F8; border:1px solid #C8D0DC; border-radius:10px; padding:12px 16px; margin-bottom:14px; display:flex; align-items:center; gap:10px;">
-        <span style="font-size:1.2rem;">📍</span>
-        <div style="flex:1;">
-          <div style="font-weight:700; font-size:0.82rem; color:#1A2B4A;">Ubicación y Hora</div>
-          <div id="gpsInfo" style="font-size:0.75rem; color:#6B7A8F;">Obteniendo ubicación...</div>
-        </div>
+    <!-- 4. OBSERVACIONES -->
+    <div class="section">
+      <div class="sec-title">💬 4. Observaciones</div>
+      <div class="fgroup">
+        <label>Observaciones generales</label>
+        <textarea id="obsInput" rows="3" placeholder="Observaciones del supervisor en sitio..." style="resize:vertical;"></textarea>
       </div>
-      <input type="hidden" id="gpsLat" value="">
-      <input type="hidden" id="gpsLon" value="">
-
-      <!-- 4. OBSERVACIONES -->
-      <div class="form-card" style="padding:20px; margin-bottom:14px;">
-        <div class="sec-badge">📝 4. OBSERVACIONES</div>
-        <div class="form-group">
-          <label>Observaciones generales</label>
-          <textarea id="obsInput" class="input-control" rows="3" placeholder="Observaciones del supervisor en sitio..." style="resize:vertical;"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Acción correctiva (si aplica)</label>
-          <textarea id="corrInput" class="input-control" rows="2" placeholder="Instrucción de corrección dada al técnico..." style="resize:vertical;"></textarea>
-        </div>
+      <div class="fgroup">
+        <label>Resultado General <span class="required">*</span></label>
+        <select id="generalResult" required>
+          <option value="Cumple">Cumple</option>
+          <option value="Cumple parcialmente">Cumple parcialmente</option>
+          <option value="No cumple">No cumple</option>
+        </select>
       </div>
+    </div>
 
-      <button type="submit" id="btnSave"
-        style="width:100%; padding:16px; font-size:1rem; font-weight:800; margin-bottom:30px; border-radius:12px; background: var(--navy,#1A2B4A); color:#fff; border:none; cursor:pointer; letter-spacing:0.05em;">
-        💾 GUARDAR INSPECCIÓN
-      </button>
-    </form>
-  </main>
+  </form>
 
+  <div class="submit-bar">
+    <button class="btn-submit" id="submitBtn" onclick="submitInsp(event)">Enviar Inspeccion</button>
+  </div>
 
   <script>
-    const API_BASE = '/api/v1';
+    const API = '/api/v1';
     const token = localStorage.getItem('cm_token');
     if (!token) window.location.replace('/app/login.html');
 
-    const CHECKLIST = [
-      '¿Cumplió con las normas de instalación?',
-      '¿Utilizó rutas adecuadas de instalación?',
-      '¿Realizó las configuraciones adecuadas dentro del módem, cajas de TV y extensores?',
-      '¿Explicó el WiFi y la caja de TV al cliente?',
-      '¿Conectó al cliente al WiFi y explicó las bondades del servicio?',
-      'Si lleva Eero: ¿Realizó la configuración adecuada del Eero?',
-      'Si lleva Eero: ¿Explicó las bondades del Eero al cliente?',
-      '¿Realizó bien el cableado de fibra?',
-      '¿Realizó el recorrido correcto en NAP?',
-      '¿Utilizó los equipos de seguridad adecuadamente? (conos, casco y arnés)',
-      '¿Dejó limpia el área de trabajo?'
-    ];
+    let gpsLat = null, gpsLon = null;
 
-    let responses = {};
-    let inspPhotos = [];
-    let allMobiles = [];
-    let allTechs   = [];
-
-    // ── Checklist (configurable vía localStorage) ───────────────
-    const DEFAULT_CHECKLIST = [
-      '¿Cumplió con las normas de instalación?',
-      '¿Utilizó rutas adecuadas de instalación?',
-      '¿Realizó las configuraciones adecuadas dentro del módem, cajas de TV y extensores?',
-      '¿Explicó el WiFi y la caja de TV al cliente?',
-      '¿Conectó al cliente al WiFi y explicó las bondades del servicio?',
-      'Si lleva Eero: ¿Realizó la configuración adecuada del Eero?',
-      'Si lleva Eero: ¿Explicó las bondades del Eero al cliente?',
-      '¿Realizó bien el cableado de fibra?',
-      '¿Realizó el recorrido correcto en NAP?',
-      '¿Utilizó los equipos de seguridad adecuadamente? (conos, casco y arnés)',
-      '¿Dejó limpia el área de trabajo?'
-    ];
-    const CHECKLIST = JSON.parse(localStorage.getItem('cm_checklist') || 'null') || DEFAULT_CHECKLIST;
-
-    (function buildChecklist() {
-      const c = document.getElementById('checklistContainer');
-      CHECKLIST.forEach((txt, i) => {
-        const qid = 'q' + i;
-        responses[qid] = { question_text: txt, result: 'Cumple', category_name: 'Calidad de Instalación' };
-        c.insertAdjacentHTML('beforeend', `
-          <div class="question-card">
-            <div class="question-text">${txt}</div>
-            <div class="options-grid">
-              <button type="button" class="opt-btn sel-c"  id="${qid}_c"  onclick="ans('${qid}','Cumple')">✔ Cumple</button>
-              <button type="button" class="opt-btn"        id="${qid}_nc" onclick="ans('${qid}','No cumple')">✖ No cumple</button>
-              <button type="button" class="opt-btn"        id="${qid}_na" onclick="ans('${qid}','No aplica')">— N/A</button>
-            </div>
-          </div>`);
-      });
-    })();
-
-    window.ans = function(qid, val) {
-      responses[qid].result = val;
-      document.getElementById(qid+'_c').className  = 'opt-btn' + (val==='Cumple'    ? ' sel-c'  : '');
-      document.getElementById(qid+'_nc').className = 'opt-btn' + (val==='No cumple' ? ' sel-nc' : '');
-      document.getElementById(qid+'_na').className = 'opt-btn' + (val==='No aplica' ? ' sel-na' : '');
-    };
-
-    // ── GPS + Hora ─────────────────────────────────────────────
-    (function initGPS() {
-      const now = new Date();
-      const hora = now.toLocaleTimeString('es-PA', {hour:'2-digit', minute:'2-digit'});
-      const fecha = now.toLocaleDateString('es-PA', {day:'2-digit', month:'short', year:'numeric'});
-      document.getElementById('gpsInfo').textContent = `${fecha} ${hora} — Obteniendo GPS...`;
-
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          pos => {
-            const lat = pos.coords.latitude.toFixed(6);
-            const lon = pos.coords.longitude.toFixed(6);
-            document.getElementById('gpsLat').value = lat;
-            document.getElementById('gpsLon').value  = lon;
-            document.getElementById('gpsInfo').textContent = `${fecha} ${hora} — 📍 ${lat}, ${lon}`;
-          },
-          () => {
-            document.getElementById('gpsInfo').textContent = `${fecha} ${hora} — GPS no disponible`;
-          },
-          { timeout: 8000, maximumAge: 60000 }
-        );
-      } else {
-        document.getElementById('gpsInfo').textContent = `${fecha} ${hora} — GPS no soportado`;
-      }
-    })();
-
-
-
-    // ── Fotos ──────────────────────────────────────────────────
-    function compress(file) {
-      return new Promise(resolve => {
-        const r = new FileReader(); r.readAsDataURL(file);
-        r.onload = e => {
-          const img = new Image(); img.src = e.target.result;
-          img.onload = () => {
-            let {width:w, height:h} = img;
-            if (w>1200){h=Math.round(h*1200/w);w=1200;}
-            const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
-            cv.getContext('2d').drawImage(img,0,0,w,h);
-            cv.toBlob(b=>resolve(new File([b],file.name,{type:'image/jpeg'})),'image/jpeg',0.8);
-          };
-        };
-      });
+    // GPS
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          gpsLat = pos.coords.latitude.toFixed(6);
+          gpsLon = pos.coords.longitude.toFixed(6);
+          document.getElementById('gpsTag').textContent = 'GPS: ' + gpsLat + ', ' + gpsLon;
+        },
+        () => { document.getElementById('gpsTag').textContent = 'GPS no disponible'; }
+      );
     }
 
-    function renderPhotos(arr, gridId) {
-      const g = document.getElementById(gridId);
-      g.innerHTML = '';
-      arr.forEach((f,i) => {
-        const w = document.createElement('div'); w.className='photo-wrap';
-        w.innerHTML=`<img src="${URL.createObjectURL(f)}" class="photo-thumb">
-          <button type="button" class="photo-del" onclick="delPhoto(${i},'${gridId}')">✕</button>`;
-        g.appendChild(w);
-      });
-    }
-
-    window.delPhoto = function(i, gid) {
-      if(gid==='photoGrid'){inspPhotos.splice(i,1);renderPhotos(inspPhotos,'photoGrid');}
-      else{vehPhotos.splice(i,1);renderPhotos(vehPhotos,'vehPhotoGrid');}
-    };
-
-    document.getElementById('photoInput').addEventListener('change', async e=>{
-      for(const f of e.target.files) inspPhotos.push(await compress(f));
-      renderPhotos(inspPhotos,'photoGrid'); e.target.value='';
-    });
-    document.getElementById('vehPhotoInput').addEventListener('change', async e=>{
-      for(const f of e.target.files) vehPhotos.push(await compress(f));
-      renderPhotos(vehPhotos,'vehPhotoGrid'); e.target.value='';
-    });
-
-    // ── Cargar datos ───────────────────────────────────────────
-    async function init() {
+    // Load mobiles and technicians
+    async function loadDropdowns() {
       try {
-        const [rm,rt] = await Promise.all([
-          fetch(`${API_BASE}/mobiles`,{headers:{'Authorization':`Bearer ${token}`}}),
-          fetch(`${API_BASE}/technicians`,{headers:{'Authorization':`Bearer ${token}`}})
+        const [rm, rt] = await Promise.all([
+          fetch(API + '/mobiles', { headers: { Authorization: 'Bearer ' + token } }),
+          fetch(API + '/technicians', { headers: { Authorization: 'Bearer ' + token } })
         ]);
-        if(!rm.ok||!rt.ok) throw new Error('Error autenticación');
-        allMobiles = await rm.json();
-        allTechs   = await rt.json();
+        const mobiles = await rm.json();
+        const techs = await rt.json();
 
-        const ms = document.getElementById('mobileSelect');
-        allMobiles.forEach(m=>{
-          const o=document.createElement('option');
-          o.value=m.id; o.textContent=`${m.code} — ${m.zone||''}`;
-          o.dataset.pid=m.primary_technician?m.primary_technician.id:'';
-          o.dataset.sid=m.secondary_technician?m.secondary_technician.id:'';
+        const ms = document.getElementById('mobileId');
+        mobiles.forEach(m => {
+          const o = document.createElement('option');
+          o.value = m.id; o.textContent = m.code + ' - ' + (m.zone || '');
           ms.appendChild(o);
         });
 
-        ms.addEventListener('change', ()=>{
-          const opt=ms.options[ms.selectedIndex];
-          loadTechs(opt.dataset.pid, opt.dataset.sid);
+        const ts = document.getElementById('techId');
+        techs.forEach(t => {
+          const o = document.createElement('option');
+          o.value = t.id; o.textContent = t.full_name + (t.notes ? ' (' + t.notes.split(' - ')[0] + ')' : '');
+          ts.appendChild(o);
         });
-      } catch(err) {
-        console.error(err);
-        if(err.message.includes('autenticación')) window.location.replace('/app/login.html');
-      }
+      } catch(e) { console.error(e); }
     }
 
-    function loadTechs(pid, sid) {
-      const ts = document.getElementById('techSelect');
-      ts.innerHTML = '';
-      const assigned = allTechs.filter(t=>String(t.id)===String(pid)||String(t.id)===String(sid));
-      const others   = allTechs.filter(t=>String(t.id)!==String(pid)&&String(t.id)!==String(sid));
-      if(assigned.length){
-        const g=document.createElement('optgroup'); g.label='★ Técnicos de esta móvil';
-        assigned.forEach(t=>{
-          const o=document.createElement('option'); o.value=t.id;
-          o.textContent=t.full_name+(String(t.id)===String(pid)?' (Principal)':' (Auxiliar)');
-          g.appendChild(o);
-        });
-        ts.appendChild(g);
-        ts.value=pid||'';
+    // Load checklist
+    function loadChecklist() {
+      let cl;
+      try { const s = localStorage.getItem('cm_checklist_v2'); if (s) cl = JSON.parse(s); } catch(e) {}
+      if (!cl) {
+        cl = [
+          {text:'Cumplio con las normas de instalacion?', photo:true, obs:false, allowNA:true},
+          {text:'Utilizo rutas adecuadas de instalacion?', photo:false, obs:false, allowNA:true},
+          {text:'Realizo las configuraciones adecuadas dentro del modem, cajas de TV y extensores?', photo:false, obs:true, allowNA:true},
+          {text:'Explico el WiFi y la caja de TV al cliente?', photo:false, obs:false, allowNA:false},
+          {text:'Conecto al cliente al WiFi y explico las bondades del servicio?', photo:false, obs:false, allowNA:false},
+          {text:'Si lleva Eero: Realizo la configuracion adecuada del Eero?', photo:false, obs:false, allowNA:true},
+          {text:'Si lleva Eero: Explico las bondades del Eero al cliente?', photo:false, obs:false, allowNA:true},
+          {text:'Realizo bien el cableado de fibra?', photo:true, obs:false, allowNA:true},
+          {text:'Realizo el recorrido correcto en NAP?', photo:true, obs:false, allowNA:true},
+          {text:'Utilizo los equipos de seguridad adecuadamente? (conos, casco y arnes)', photo:false, obs:false, allowNA:false},
+          {text:'Dejo limpia el area de trabajo?', photo:true, obs:false, allowNA:false}
+        ];
       }
-      if(others.length){
-        const g2=document.createElement('optgroup'); g2.label='Otros técnicos';
-        others.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.full_name;g2.appendChild(o);});
-        ts.appendChild(g2);
-      }
-      if(!assigned.length&&!others.length){
-        ts.innerHTML='<option value="">No hay técnicos registrados</option>';
-      }
+
+      const container = document.getElementById('checklistContainer');
+      container.innerHTML = '';
+
+      cl.forEach((q, i) => {
+        const block = document.createElement('div');
+        block.className = 'q-block';
+
+        let radiosHtml = `
+          <label class="q-radio-label" onclick="selectRadio(${i},'Cumple',this)"><input type="radio" name="q${i}" value="Cumple" required> Cumple</label>
+          <label class="q-radio-label" onclick="selectRadio(${i},'No Cumple',this)"><input type="radio" name="q${i}" value="No Cumple"> No Cumple</label>
+        `;
+        if (q.allowNA !== false) {
+          radiosHtml += `<label class="q-radio-label" onclick="selectRadio(${i},'N/A',this)"><input type="radio" name="q${i}" value="N/A"> N/A</label>`;
+        }
+
+        let extraHtml = '';
+        if (q.photo) extraHtml += `<div class="q-photo-row"><label>📸 Foto evidencia</label><input type="file" id="qphoto_${i}" accept="image/*" capture="environment"></div>`;
+        if (q.obs) extraHtml += `<div class="q-obs-row"><input type="text" id="qobs_${i}" placeholder="Observacion adicional..."></div>`;
+
+        block.innerHTML = `
+          <div class="q-text"><span class="q-num">${i+1}.</span> ${q.text}</div>
+          <div class="q-radios" id="radios_${i}">${radiosHtml}</div>
+          ${extraHtml}
+        `;
+        container.appendChild(block);
+      });
     }
 
-    // ── Guardar ────────────────────────────────────────────────
-    document.getElementById('inspectionForm').addEventListener('submit', async e=>{
-      e.preventDefault();
-      const btn = document.getElementById('btnSave');
-      const mobId = document.getElementById('mobileSelect').value;
-      const techId = document.getElementById('techSelect').value;
-      if(!mobId||!techId){alert('Selecciona una móvil y un técnico.');return;}
-      btn.disabled=true; btn.textContent='⏳ Guardando...';
-      try {
-        const payload = {
-          mobile_id:      parseInt(mobId),
-          technician_id:  parseInt(techId),
-          client_name:    document.getElementById('clientName').value.trim()||null,
-          contract_number:document.getElementById('contractNumber').value.trim()||null,
-          vehicle_status: document.getElementById('vehicleStatus').value||null,
-          vehicle_accidents: document.getElementById('vehicleAccident').value==='true',
-          order_number:   document.getElementById('orderNumber').value.trim(),
-          order_type:     document.getElementById('orderType').value,
-          observations:   document.getElementById('obsInput').value.trim()||null,
-          corrective_action: document.getElementById('corrInput').value.trim()||null,
-          items: Object.values(responses).map(r=>({
-            question_text: r.question_text,
-            result:        r.result,
-            category_name: r.category_name,
-            template_id:   null
-          }))
-        };
-        const res = await fetch(`${API_BASE}/inspections`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-        if(!res.ok) throw new Error(data.detail||'Error al guardar');
-        const id = data.id;
+    function selectRadio(i, val, clickedLabel) {
+      const group = document.getElementById('radios_' + i);
+      group.querySelectorAll('.q-radio-label').forEach(l => {
+        l.classList.remove('selected-cumple', 'selected-nocumple', 'selected-na');
+      });
+      const radio = clickedLabel.querySelector('input');
+      radio.checked = true;
+      if (val === 'Cumple') clickedLabel.classList.add('selected-cumple');
+      else if (val === 'No Cumple') clickedLabel.classList.add('selected-nocumple');
+      else clickedLabel.classList.add('selected-na');
+    }
 
-        // Fotos de inspección
-        for(const f of inspPhotos){
-          const fd=new FormData();fd.append('file',f);fd.append('photo_type','inspeccion');
-          await fetch(`${API_BASE}/inspections/${id}/photos`,{method:'POST',headers:{'Authorization':`Bearer ${token}`},body:fd});
-        }
-        // Fotos de vehículo
-        for(const f of vehPhotos){
-          const fd=new FormData();fd.append('file',f);fd.append('photo_type','vehiculo');
-          await fetch(`${API_BASE}/inspections/${id}/photos`,{method:'POST',headers:{'Authorization':`Bearer ${token}`},body:fd});
-        }
-
-        alert(`✅ Inspección ${data.inspection_code} guardada correctamente.\nResultado: ${data.general_result}`);
-        window.location.replace('/app/dashboard.html');
-      } catch(err) {
-        alert('❌ ' + err.message);
-        btn.disabled=false; btn.textContent='💾 GUARDAR INSPECCIÓN';
-      }
+    // Photo preview
+    document.getElementById('photoInput').addEventListener('change', function() {
+      const prev = document.getElementById('photoPreview');
+      prev.innerHTML = '';
+      Array.from(this.files).forEach(file => {
+        const img = document.createElement('img');
+        img.style = 'width:70px; height:70px; object-fit:cover; border-radius:8px; border:1px solid #EEF2F7;';
+        img.src = URL.createObjectURL(file);
+        prev.appendChild(img);
+      });
     });
 
-    init();
+    // Submit
+    async function submitInsp(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      // Collect checklist answers
+      const items = [];
+      const qGroups = document.querySelectorAll('[name^="q"]');
+      const seen = new Set();
+      qGroups.forEach(radio => {
+        const name = radio.name;
+        if (seen.has(name)) return;
+        seen.add(name);
+        const idx = parseInt(name.replace('q',''));
+        const checked = document.querySelector('[name="' + name + '"]:checked');
+        const obsEl = document.getElementById('qobs_' + idx);
+        items.push({
+          category_name: 'Calidad',
+          question_text: checked ? checked.closest('.q-block')?.querySelector('.q-text')?.textContent?.trim()?.replace(/^\d+\. /, '') || '' : '',
+          result: checked ? checked.value : '',
+          notes: obsEl ? obsEl.value : ''
+        });
+      });
+
+      const unanswered = items.filter(it => !it.result);
+      if (unanswered.length > 0) {
+        alert('Por favor responde todas las preguntas antes de enviar.');
+        btn.disabled = false;
+        btn.textContent = 'Enviar Inspeccion';
+        return;
+      }
+
+      const payload = {
+        mobile_id: parseInt(document.getElementById('mobileId').value),
+        technician_id: parseInt(document.getElementById('techId').value),
+        order_number: document.getElementById('orderNum').value.trim(),
+        order_type: document.getElementById('orderType').value,
+        client_name: document.getElementById('clientName').value.trim() || null,
+        contract_number: document.getElementById('contractNum').value.trim() || null,
+        observations: document.getElementById('obsInput').value.trim() || null,
+        general_result: document.getElementById('generalResult').value,
+        gps_lat: gpsLat ? String(gpsLat) : null,
+        gps_lon: gpsLon ? String(gpsLon) : null,
+        items: items
+      };
+
+      if (!payload.mobile_id || !payload.technician_id || !payload.order_number) {
+        alert('Completa los campos obligatorios: Movil, Tecnico y Numero de Orden.');
+        btn.disabled = false;
+        btn.textContent = 'Enviar Inspeccion';
+        return;
+      }
+
+      try {
+        const r = await fetch(API + '/inspections', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify(payload)
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.detail || 'Error al guardar');
+        alert('Inspeccion guardada correctamente.');
+        window.location.replace('/app/dashboard.html');
+      } catch(err) {
+        alert('Error: ' + err.message);
+        btn.disabled = false;
+        btn.textContent = 'Enviar Inspeccion';
+      }
+    }
+
+    loadDropdowns();
+    loadChecklist();
   </script>
 </body>
 </html>
