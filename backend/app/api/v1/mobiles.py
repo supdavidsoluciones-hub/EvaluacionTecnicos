@@ -9,6 +9,37 @@ from backend.app.api.deps import get_current_user
 
 router = APIRouter(prefix="/mobiles", tags=["Móviles"])
 
+@router.delete("/admin/reset-all")
+def reset_all_mobiles_and_technicians(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """TEMPORARY: Delete ALL mobiles, technicians and related data."""
+    from backend.app.models.models import (
+        MobileTechnicianHistory, VehicleInventory, InspectionItem,
+        InspectionPhoto, NonConformity, Guarantee,
+        ActionPlan, ActionPlanEvidence, Order, Technician, Mobile
+    )
+    try:
+        db.query(ActionPlanEvidence).delete()
+        db.query(ActionPlan).delete()
+        db.query(NonConformity).delete()
+        db.query(InspectionPhoto).delete()
+        db.query(InspectionItem).delete()
+        db.query(Inspection).delete()
+        db.query(Order).delete()
+        db.query(VehicleInventory).delete()
+        db.query(MobileTechnicianHistory).delete()
+        db.query(Guarantee).delete()
+        db.query(Technician).delete()
+        db.query(Mobile).delete()
+        db.commit()
+        return {"detail": "All data deleted successfully."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ──────────────────────────────────────────────────────────────────────────────
 # LIST ALL MOBILES
 # ──────────────────────────────────────────────────────────────────────────────
@@ -402,34 +433,3 @@ def _seed_default_inventory(mobile_id: int, db: Session) -> int:
             added += 1
     db.commit()
     return added
-
-@router.delete("/reset-all-admin")
-def reset_all_mobiles_and_technicians(
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
-):
-    """TEMPORARY: Delete ALL mobiles, technicians and related data. Admin only."""
-    from backend.app.models.models import (
-        MobileTechnicianHistory, VehicleInventory, Inspection,
-        InspectionItem, InspectionPhoto, NonConformity, Guarantee,
-        ActionPlan, ActionPlanEvidence, Order, Technician, Mobile
-    )
-    try:
-        # Delete in dependency order
-        db.query(ActionPlanEvidence).delete()
-        db.query(ActionPlan).delete()
-        db.query(NonConformity).delete()
-        db.query(InspectionPhoto).delete()
-        db.query(InspectionItem).delete()
-        db.query(Inspection).delete()
-        db.query(Order).delete()
-        db.query(VehicleInventory).delete()
-        db.query(MobileTechnicianHistory).delete()
-        db.query(Guarantee).delete()
-        db.query(Technician).delete()
-        db.query(Mobile).delete()
-        db.commit()
-        return {"detail": "All mobiles, technicians and related data deleted successfully."}
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
