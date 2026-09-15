@@ -403,3 +403,28 @@ def _seed_default_inventory(mobile_id: int, db: Session) -> int:
             added += 1
     db.commit()
     return added
+
+@router.delete("/admin/wipe")
+def wipe_all_data(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Temporary: wipe all mobiles, technicians and related data."""
+    from backend.app.models.models import (
+        MobileTechnicianHistory, VehicleInventory, InspectionItem,
+        InspectionPhoto, Inspection, Order, Technician, Mobile
+    )
+    try:
+        db.query(InspectionPhoto).delete()
+        db.query(InspectionItem).delete()
+        db.query(Inspection).delete()
+        db.query(Order).delete()
+        db.query(VehicleInventory).delete()
+        db.query(MobileTechnicianHistory).delete()
+        db.query(Technician).delete()
+        db.query(Mobile).delete()
+        db.commit()
+        return {"detail": "Wiped."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
