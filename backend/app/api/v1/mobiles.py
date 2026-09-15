@@ -8,9 +8,6 @@ from backend.app.schemas.schemas import MobileCreate, MobileUpdate, MobileRespon
 from backend.app.api.deps import get_current_user
 
 router = APIRouter(prefix="/mobiles", tags=["Móviles"])
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ──────────────────────────────────────────────────────────────────────────────
