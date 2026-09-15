@@ -1,412 +1,170 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard – Control Operativo Móviles</title>
-  <link rel="icon" type="image/png" href="/app/img/logo.png" />
-  <link rel="apple-touch-icon" href="/app/img/logo.png" />
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  
-  <link rel="stylesheet" href="/app/css/style.css?v=4" />
-  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Control Operativo</title>
+  <link rel="stylesheet" href="/app/css/style.css?v=5">
   <style>
-    /* Estilos específicos del Dashboard */
-    .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    /* Modern Dashboard Enhancements */
+    .hero-header {
+      background: linear-gradient(135deg, #1A2B4A 0%, #2A4365 100%);
+      color: white; padding: 24px 20px; border-radius: 0 0 20px 20px;
+      margin: -20px -20px 20px -20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .hero-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 4px; }
+    .hero-subtitle { font-size: 0.85rem; opacity: 0.8; }
+    
+    .metrics-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;
+    }
     .metric-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      position: relative;
-      overflow: hidden;
+      background: #FFF; border-radius: 16px; padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #E2E8F0;
+      display: flex; flex-direction: column; justify-content: space-between;
     }
-    .metric-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: var(--accent-color, var(--teal));
+    .metric-icon-wrap {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; margin-bottom: 12px;
     }
-    .metric-card.accent-teal { --accent-color: var(--teal); }
-    .metric-card.accent-purple { --accent-color: var(--purple-light); }
-    .metric-card.accent-amber { --accent-color: var(--amber); }
-    .metric-card.accent-red { --accent-color: var(--red); }
+    .bg-blue { background: #EBF4FF; color: #3182CE; }
+    .bg-green { background: #F0FFF4; color: #38A169; }
+    .bg-orange { background: #FFFAF0; color: #DD6B20; }
+    .bg-purple { background: #FAF5FF; color: #805AD5; }
     
-    .metric-icon { font-size: 1.5rem; margin-bottom: 8px; }
-    .metric-value { font-size: 1.6rem; font-weight: 800; line-height: 1; margin-bottom: 4px; }
-    .metric-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
-    
-    .section-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
-    
-    .vehicle-card { display: flex; align-items: center; gap: 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 8px; }
-    .vehicle-icon { font-size: 1.5rem; }
-    .vehicle-info { flex: 1; }
-    .vehicle-code { font-weight: 700; color: var(--text-primary); }
-    .vehicle-detail { font-size: 0.75rem; color: var(--text-secondary); }
-    
-    .list-item { display: flex; align-items: center; gap: 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 8px; }
-    .li-icon { font-size: 1.2rem; }
-    .li-content { flex: 1; }
-    .li-title { font-weight: 600; font-size: 0.85rem; }
-    .li-sub { font-size: 0.75rem; color: var(--text-muted); }
-    .li-right { text-align: right; }
-    .li-date { font-size: 0.7rem; color: var(--text-muted); }
-    
-    .quick-access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .qa-card {
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 8px;
-      color: var(--text-primary); text-decoration: none; transition: all var(--transition);
+    .metric-value { font-size: 1.8rem; font-weight: 800; color: #1A2B4A; line-height: 1; margin-bottom: 4px; }
+    .metric-label { font-size: 0.75rem; font-weight: 600; color: #718096; text-transform: uppercase; }
+
+    .section-title { font-size: 0.85rem; font-weight: 800; color: #4A5568; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.05em; }
+
+    .qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    .qa-btn {
+      background: #FFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 16px 12px;
+      text-align: center; text-decoration: none; color: #1A2B4A; font-weight: 700;
+      font-size: 0.85rem; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .qa-card:hover { background: var(--bg-card2); border-color: var(--teal); transform: translateY(-2px); box-shadow: var(--shadow-card); }
-    .qa-icon {
-      width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-      background: linear-gradient(135deg, var(--teal-dim), var(--purple-dim));
+    .qa-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+    .qa-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+
+    /* Bottom Nav Modernization */
+    .bnav {
+      position: fixed; bottom: 0; left: 0; right: 0; background: #FFF;
+      display: flex; justify-content: space-around; padding: 10px 5px 25px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000; border-top: 1px solid #E2E8F0;
     }
-    .qa-label { font-size: 0.8rem; font-weight: 600; }
-    
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; height: calc(64px + var(--safe-bottom));
-      background: rgba(7, 13, 26, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-around; padding-bottom: var(--safe-bottom);
-      z-index: 100;
+    .bnav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      color: #A0AEC0; text-decoration: none; font-size: 0.65rem; font-weight: 700; flex: 1;
     }
-    .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); text-decoration: none; padding: 8px; min-width: 50px; }
-    .bnav-item.active { color: var(--teal); }
+    .bnav-item.active { color: #1A2B4A; }
     .bnav-icon { font-size: 1.3rem; }
-    .bnav-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
-    .bnav-main { 
-      background: var(--teal); color: var(--bg); border-radius: 50%; width: 48px; height: 48px;
-      display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transform: translateY(-10px); box-shadow: var(--shadow-glow-teal);
+    .bnav-main-wrap { position: relative; top: -20px; }
+    .bnav-main {
+      width: 56px; height: 56px; background: #4A7C6F; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #FFF; font-size: 1.8rem; box-shadow: 0 4px 12px rgba(74, 124, 111, 0.4);
+      border: 4px solid #FFF;
     }
   </style>
 </head>
 <body>
-
-  <!-- Navbar -->
-  <nav class="navbar">
-    <img src="/app/img/logo.png" alt="Logo" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);" />
-    <div class="navbar-title">
-      <div style="line-height:1.1;">
-        <span style="display:block; font-size: 0.85rem; font-weight: 700;">Control Operativo</span>
-        <span style="display:block; font-size: 0.68rem; color: var(--teal);">Chiriquí & Santiago</span>
-      </div>
+  <div class="main-container" style="padding: 20px;">
+    
+    <div class="hero-header">
+      <div class="hero-title">Hola, Admin</div>
+      <div class="hero-subtitle">Resumen operativo del día</div>
     </div>
-    <div class="navbar-actions">
-      <span id="userGreeting" style="font-size: 0.8rem; font-weight: 600;"></span>
-      <button id="btnLogout" class="btn btn-sm btn-secondary">Salir</button>
-    </div>
-  </nav>
 
-  <!-- Main Content -->
-  <main class="main-content">
-    <div class="container-wide">
-      
-      <div class="section" style="animation: fadeUp 0.4s ease;">
-        <h2 id="userWelcome">Bienvenido</h2>
-        <p>Resumen operativo del día</p>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon-wrap bg-blue">📦</div>
+        <div>
+          <div class="metric-value" id="metOrdenesHoy">-</div>
+          <div class="metric-label">Órdenes Hoy</div>
+        </div>
       </div>
-      
-      <!-- Metrics Grid -->
-      <div class="metric-grid">
-        <div class="metric-card accent-teal">
-          <div class="metric-icon">⭐</div>
+      <div class="metric-card">
+        <div class="metric-icon-wrap bg-green">📋</div>
+        <div>
+          <div class="metric-value" id="metInspecciones">-</div>
+          <div class="metric-label">Inspecciones</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon-wrap bg-orange">⚠️</div>
+        <div>
+          <div class="metric-value" id="metGarantias">-</div>
+          <div class="metric-label">Garantías %</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon-wrap bg-purple">⭐</div>
+        <div>
           <div class="metric-value" id="metCalidad">-</div>
           <div class="metric-label">Calidad Prom.</div>
         </div>
       </div>
-      
-      <!-- Quick Access -->
-      <div class="section">
-        <h3 class="section-title">Accesos Rápidos</h3>
-        <div class="quick-access-grid">
-          <a href="/app/inspeccion.html" class="qa-card" id="qa-inspeccion">
-            <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">ðŸ”</div>
-            <div class="qa-label">Nueva Inspección</div>
-          </a>
-          <a href="/app/moviles.html" class="qa-card" id="qa-moviles">
-            <div class="qa-icon" style="background: var(--bg); padding: 5px;">
-              <img src="/app/img/van.jpg" alt="Móvil" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;" />
-            </div>
-            <div class="qa-label">Mis Móviles</div>
-          </a>
-          <a href="/app/metricas.html" class="qa-card" id="qa-metricas">
-            <div class="qa-icon" style="background: var(--amber-dim); color: var(--amber);">📊</div>
-            <div class="qa-label">Métricas</div>
-          </a>
-          <a href="/app/configuracion.html" class="qa-card" id="qa-config">
-            <div class="qa-icon" style="background: rgba(99,102,241,0.15); color: #818cf8;">⚙ï¸ </div>
-            <div class="qa-label">Configuración</div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Actividad Reciente -->
-      <div class="section">
-        <h3 class="section-title">Actividad Reciente</h3>
-        <div id="actividadReciente">
-          <div class="skeleton skeleton-card"></div>
-        </div>
-      </div>
-
-
-      <!-- Sección Configuración -->
-      <div class="section" id="configSection" style="display: none; animation: fadeUp 0.3s ease; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
-        <h2 style="margin-bottom: 16px;">⚙ï¸ Configuración y Administración</h2>
-        
-        <div class="quick-access-grid" style="margin-bottom: 24px;">
-          <button class="qa-card" onclick="openAddMobileModal()" style="border: 1px dashed var(--teal);">
-            <div class="qa-icon" style="background: var(--teal-dim); color: var(--teal);">ðŸš</div>
-            <div class="qa-label">+ Nueva Móvil</div>
-          </button>
-          <button class="qa-card" onclick="openAddTechModal()" style="border: 1px dashed var(--purple-light);">
-            <div class="qa-icon" style="background: var(--purple-dim); color: var(--purple-light);">👤</div>
-            <div class="qa-label">+ Nuevo Técnico</div>
-          </button>
-        </div>
-
-        <h3 class="section-title">👥 Técnicos del Sistema (Técnico 1 y Técnico 2)</h3>
-        <div id="techConfigList" style="margin-bottom: 24px; display: grid; gap: 8px;">
-          <p class="text-muted text-sm">Cargando técnicos...</p>
-        </div>
-        
-        <h3 class="section-title">ðŸš Móviles Registradas</h3>
-        <div id="mobileConfigList" style="display: grid; gap: 8px;">
-          <p class="text-muted text-sm">Cargando móviles...</p>
-        </div>
-      </div>
-
     </div>
-  </main>
 
-  <!-- Bottom Nav -->
-  <nav class="bottom-nav">
+    <div class="section-title">Accesos Rápidos</div>
+    <div class="qa-grid">
+      <a href="/app/inspection_form.html" class="qa-btn">
+        <span class="qa-icon">📋</span> Nueva Inspección
+      </a>
+      <a href="/app/moviles.html" class="qa-btn">
+        <span class="qa-icon"><img src="/app/img/van.jpg" style="width:36px; border-radius:6px;"></span> Mis Móviles
+      </a>
+      <a href="/app/metricas.html" class="qa-btn">
+        <span class="qa-icon">📊</span> Métricas
+      </a>
+      <a href="/app/configuracion.html" class="qa-btn">
+        <span class="qa-icon">⚙️</span> Configuración
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bnav">
     <a href="/app/dashboard.html" class="bnav-item active">
-      <span class="bnav-icon">ðŸ </span>
-      <span class="bnav-label">Inicio</span>
+      <span class="bnav-icon">🏠</span><span>INICIO</span>
     </a>
     <a href="/app/moviles.html" class="bnav-item">
-      <span class="bnav-icon">🚗</span>
-      <span class="bnav-label">Móviles</span>
+      <span class="bnav-icon"><img src="/app/img/van.jpg" style="width:24px; border-radius:4px;"></span><span>MÓVILES</span>
     </a>
-    <a href="/app/inspeccion.html" class="bnav-item" style="margin: 0 10px;">
-      <span class="bnav-main">➕</span>
+    <a href="/app/inspection_form.html" class="bnav-item bnav-main-wrap">
+      <div class="bnav-main">➕</div>
     </a>
     <a href="/app/inspecciones.html" class="bnav-item">
-      <span class="bnav-icon">📋</span>
-      <span class="bnav-label">Lista</span>
+      <span class="bnav-icon">📋</span><span>LISTA</span>
     </a>
     <a href="/app/metricas.html" class="bnav-item">
-      <span class="bnav-icon">📊</span>
-      <span class="bnav-label">Métricas</span>
+      <span class="bnav-icon">📊</span><span>MÉTRICAS</span>
     </a>
   </nav>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const token = localStorage.getItem('cm_token');
+      if (!token) { window.location.href = '/app/login.html'; return; }
 
-  <!-- Modals Config -->
-  <style>
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
-    .modal-overlay.open { display: flex; }
-    .modal-sheet { background: var(--bg-card); border-radius: 20px 20px 0 0; width: 100%; max-width: 480px; padding: 24px; max-height: 85vh; overflow-y: auto; }
-    .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
-    .modal-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
-    .config-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; }
-  </style>
-
-  <!-- Add Mobile Modal -->
-  <div class="modal-overlay" id="addMobileModal">
-    <div class="modal-sheet">
-      <div class="modal-handle"></div>
-      <div class="modal-title">ðŸš Agregar Nueva Móvil</div>
-      <div class="form-group"><label>Código* (ej: M210)</label><input id="addCode" class="form-control" type="text" placeholder="M210" /></div>
-      <div class="form-group"><label>Placa</label><input id="addPlate" class="form-control" type="text" placeholder="AB-1234" /></div>
-      <button class="btn btn-primary btn-full" onclick="saveAddMobile()">Agregar Móvil</button>
-      <button class="btn btn-secondary btn-full" onclick="closeModal('addMobileModal')" style="margin-top:8px;">Cancelar</button>
-    </div>
-  </div>
-
-  <!-- Add Tech Modal -->
-  <div class="modal-overlay" id="addTechModal">
-    <div class="modal-sheet">
-      <div class="modal-handle"></div>
-      <div class="modal-title">👤 Agregar Técnico</div>
-      <div class="form-group"><label>Nombre Completo*</label><input id="techName" class="form-control" type="text" /></div>
-      <button class="btn btn-primary btn-full" onclick="saveAddTech()">Agregar Técnico</button>
-      <button class="btn btn-secondary btn-full" onclick="closeModal('addTechModal')" style="margin-top:8px;">Cancelar</button>
-    </div>
-  </div>
-
-  <script type="module">
-    import { requireAuth, getUser, logout, getDashboard, semafBadge, formatTime } from '/app/js/app.js';
-
-    
-    // Config Logic
-    window.toggleConfig = function() {
-      const section = document.getElementById('configSection');
-      section.style.display = section.style.display === 'none' ? 'block' : 'none';
-      if (section.style.display === 'block') {
-        loadConfigData();
-        section.scrollIntoView({behavior: 'smooth'});
-      }
-    };
-
-    window.openAddMobileModal = () => document.getElementById('addMobileModal').classList.add('open');
-    window.openAddTechModal = () => document.getElementById('addTechModal').classList.add('open');
-    window.closeModal = (id) => document.getElementById(id).classList.remove('open');
-
-    window.saveAddMobile = async () => {
-      const code = document.getElementById('addCode').value.trim().toUpperCase();
-      if (!code) return alert('Código requerido');
       try {
-        const res = await fetch('/api/v1/mobiles', {
-          method: 'POST',
-          headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token'), 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code, plate: document.getElementById('addPlate').value })
+        const r = await fetch('/api/v1/dashboard/stats', {
+          headers: { 'Authorization': `Bearer ${token}` }
         });
-        if (!res.ok) throw new Error('Error agregando móvil');
-        closeModal('addMobileModal');
-        loadConfigData();
-        loadDashboard(); // reload main dash
-      } catch (e) { alert(e.message); }
-    };
-
-    window.saveAddTech = async () => {
-      const name = document.getElementById('techName').value.trim();
-      if (!name) return alert('Nombre requerido');
-      try {
-        const res = await fetch('/api/v1/technicians', {
-          method: 'POST',
-          headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token'), 'Content-Type': 'application/json' },
-          body: JSON.stringify({ full_name: name })
-        });
-        if (!res.ok) throw new Error('Error agregando técnico');
-        closeModal('addTechModal');
-        loadConfigData();
-      } catch (e) { alert(e.message); }
-    };
-
-    window.deleteMobile = async (id, code) => {
-      if (!confirm(`¿Estás seguro de eliminar la móvil ${code}?`)) return;
-      try {
-        const res = await fetch(`/api/v1/mobiles/${id}`, {
-          method: 'DELETE',
-          headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token') }
-        });
-        if (!res.ok) throw new Error('No se pudo eliminar');
-        loadConfigData();
-        loadDashboard();
-      } catch (e) { alert(e.message); }
-    };
-
-    async function loadConfigData() {
-      try {
-        const [mobRes, techRes] = await Promise.all([
-          fetch('/api/v1/mobiles', { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token') } }),
-          fetch('/api/v1/technicians', { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_token') } })
-        ]);
-        const mobiles = await mobRes.json();
-        const techs = await techRes.json();
+        if (r.status === 401) { window.location.href = '/app/login.html'; return; }
+        const data = await r.json();
         
-        document.getElementById('mobileConfigList').innerHTML = mobiles.map(m => `
-          <div class="config-card">
-            <div><strong>${m.code}</strong> <span class="text-muted text-sm">${m.plate || 'Sin placa'}</span></div>
-            <button class="btn btn-sm" style="background:var(--red);color:#fff;" onclick="deleteMobile(${m.id}, '${m.code}')">Eliminar</button>
-          </div>
-        `).join('');
-
-        document.getElementById('techConfigList').innerHTML = techs.map(t => `
-          <div class="config-card">
-            <div>👤 <strong>${t.full_name}</strong></div>
-            <span class="badge badge-verde">${t.status}</span>
-          </div>
-        `).join('');
-      } catch(e) {
-        console.error(e);
-      }
-    }
-
-
-    document.addEventListener('DOMContentLoaded', () => {
-      requireAuth();
-      const user = getUser();
-      
-      if (user) {
-        document.getElementById('userGreeting').textContent = user.username;
-        document.getElementById('userWelcome').textContent = `Hola, ${user.username}`;
-      }
-
-      document.getElementById('btnLogout').addEventListener('click', logout);
-
-      loadDashboard();
-    });
-
-    async function loadDashboard() {
-      try {
-        const data = await getDashboard();
-        
-        // Update Metrics (assuming dummy or real API structure)
         document.getElementById('metOrdenesHoy').textContent = data.ordenes_hoy ?? '0';
         document.getElementById('metInspecciones').textContent = data.inspecciones_hoy ?? '0';
         document.getElementById('metGarantias').textContent = (data.garantias_pct ?? '0') + '%';
         document.getElementById('metCalidad').textContent = (data.calidad_promedio ?? '0');
-
-        // Render Semaphore – Chevrolet P900 cards
-        if (data.mobiles && data.mobiles.length > 0) {
-            const sem = score >= 85 ? {cls:'badge-verde', label:'OPTIMO'} : score >= 65 ? {cls:'badge-amarillo', label:'REGULAR'} : {cls:'badge-rojo', label:'CRITICO'};
-            const statusColors = {activa:'#00d4aa', mantenimiento:'#f59e0b', inactiva:'#ef4444'};
-            const sc = statusColors[m.status] || '#00d4aa';
-            return `
-            <div class="vehicle-card" onclick="window.location.href='/app/movil_detalle.html?id=${m.id}'" style="cursor:pointer; border-left: 3px solid ${sc};">
-              <div style="flex-shrink:0;">
-                <svg viewBox="0 0 200 80" style="width:56px;height:24px" aria-label="Chevrolet P900">
-                  <rect x="10" y="28" width="160" height="37" rx="6" fill="url(#sg${m.id})"/>
-                  <rect x="20" y="14" width="88" height="24" rx="5" fill="url(#sg${m.id})"/>
-                  <rect x="24" y="18" width="33" height="14" rx="2" fill="rgba(0,212,170,0.25)" stroke="#00d4aa" stroke-width="1"/>
-                  <rect x="62" y="18" width="33" height="14" rx="2" fill="rgba(0,212,170,0.25)" stroke="#00d4aa" stroke-width="1"/>
-                  <circle cx="44" cy="66" r="10" fill="#0d1526" stroke="${sc}" stroke-width="2"/>
-                  <circle cx="44" cy="66" r="5" fill="${sc}"/>
-                  <circle cx="145" cy="66" r="10" fill="#0d1526" stroke="${sc}" stroke-width="2"/>
-                  <circle cx="145" cy="66" r="5" fill="${sc}"/>
-                  <defs><linearGradient id="sg${m.id}" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="${sc}" stop-opacity="0.8"/><stop offset="100%" stop-color="#7c3aed" stop-opacity="0.9"/></linearGradient></defs>
-                </svg>
-              </div>
-              <div class="vehicle-info">
-                <div class="vehicle-code">${m.code || m.codigo} <span style="font-size:0.68rem;color:var(--text-muted);font-weight:400;">${m.vehicle_model||'Chevrolet P900'}</span></div>
-                <div class="vehicle-detail">${m.zone ? m.zone + ' • ' : ''}${m.primary_technician?.name || 'Sin t\u00e9cnico asignado'}</div>
-              </div>
-              <div class="vehicle-status">
-                <span class="badge ${sem.cls}">${sem.label}</span>
-              </div>
-            </div>`;
-          }).join('');
-        } else {
-        }
-
-        // Render Recent Activity
-        const actividadDiv = document.getElementById('actividadReciente');
-        if (data.actividad && data.actividad.length > 0) {
-          actividadDiv.innerHTML = data.actividad.map(a => `
-            <div class="list-item">
-              <div class="li-icon">ðŸ“</div>
-              <div class="li-content">
-                <div class="li-title">${a.tipo} - ${a.movil_codigo}</div>
-                <div class="li-sub">${a.descripcion}</div>
-              </div>
-              <div class="li-right">
-                <div class="li-date">${formatTime(a.fecha)}</div>
-              </div>
-            </div>
-          `).join('');
-        } else {
-          actividadDiv.innerHTML = '<p class="text-muted text-sm text-center py-4">No hay actividad reciente.</p>';
-        }
-
       } catch (err) {
-        console.error("Dashboard error:", err);
-        document.getElementById('actividadReciente').innerHTML = '<p class="text-red text-sm">Error cargando datos.</p>';
+        console.error('Error fetching dashboard stats:', err);
       }
-    }
+    });
   </script>
 </body>
 </html>

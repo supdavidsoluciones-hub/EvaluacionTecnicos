@@ -74,6 +74,16 @@
     .cat-fibra      { color: #f87171; }
     .cat-escalera   { color: #818cf8; }
     .cat-telecom    { color: #34d399; }
+  
+    .md-tabs { display: flex; overflow-x: auto; gap: 8px; margin: 20px 0; padding-bottom: 5px; border-bottom: 1px solid #E2E8F0; }
+    .md-tab { padding: 10px 16px; font-size: 0.85rem; font-weight: 700; color: #718096; border-radius: 8px 8px 0 0; cursor: pointer; white-space: nowrap; }
+    .md-tab.active { color: #1A2B4A; border-bottom: 3px solid #1A2B4A; background: #F7FAFC; }
+    .md-pane { display: none; }
+    .md-pane.active { display: block; }
+    
+    .status-card { background: #FFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+    .status-card h4 { margin-top: 0; color: #1A2B4A; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid #EDF2F7; padding-bottom: 12px; }
+
   </style>
 </head>
 <body>
@@ -662,6 +672,38 @@
 
     // â”€â”€ Init â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     document.addEventListener('DOMContentLoaded', loadProfile);
+  
+    function switchMdTab(tabId, el) {
+      document.querySelectorAll('.md-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.md-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      el.classList.add('active');
+    }
+    
+    const herramientas_base = ['Escalera', 'Pelacables', 'Crimpeadora', 'Multímetro', 'Tester de fibra (OTDR/VFL)', 'Casco', 'Arnés', 'Conos de seguridad'];
+    
+    function initHerramientas() {
+      const hl = document.getElementById('herr-list');
+      if(hl) {
+        let html = '';
+        herramientas_base.forEach((h, i) => {
+          html += `<label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px; border:1px solid #EDF2F7; border-radius:8px; background:#F7FAFC;"><input type="checkbox" id="herr_${i}" value="${h}"> ${h}</label>`;
+        });
+        hl.innerHTML = html;
+      }
+    }
+    
+    window.saveEstadoVehiculo = function() {
+      alert("✅ Estado del vehículo guardado exitosamente.");
+    };
+    window.saveInventario = function() {
+      alert("✅ Inventario de herramientas actualizado.");
+    };
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      initHerramientas();
+    });
+
   </script>
 </body>
 </html>

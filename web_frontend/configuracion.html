@@ -78,6 +78,22 @@
     .badge-photo { background: #D6E4EE; color: #1C3D4F; }
     .badge-obs   { background: #E6F0EE; color: #4A7C6F; }
     .badge-rate  { background: #F4EDD6; color: #8F6B1A; }
+  
+    /* QA Grid Fix */
+    .quick-access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+    .qa-card {
+      background: #FFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 16px 12px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      transition: all 0.2s;
+    }
+    .qa-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #4A7C6F; }
+    .qa-icon {
+      width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 8px; background: #F7FAFC;
+    }
+    .qa-label { font-size: 0.85rem; font-weight: 700; color: #1A2B4A; text-align: center; }
+
   </style>
 </head>
 <body>
@@ -90,13 +106,13 @@
 
     <!-- ── Acciones rápidas ── -->
     <div class="quick-access-grid" style="margin-bottom:8px;">
-      <button class="qa-card" onclick="openAddMobileModal()" style="border:1px dashed var(--teal);">
+      <button class="qa-card" onclick="openAddMobileModal()">
         <div class="qa-icon" style="background:var(--teal-dim,rgba(26,43,74,.1)); color:var(--navy,#1A2B4A);">
           <img src="/app/img/van.jpg" alt="Movil" style="width:32px;height:22px;object-fit:cover;border-radius:4px;">
         </div>
         <div class="qa-label">+ Nueva Móvil</div>
       </button>
-      <button class="qa-card" onclick="openAddTechModal()" style="border:1px dashed var(--border);">
+      <button class="qa-card" onclick="openAddTechModal()">
         <div class="qa-icon">👤</div>
         <div class="qa-label">+ Nuevo Técnico</div>
       </button>
