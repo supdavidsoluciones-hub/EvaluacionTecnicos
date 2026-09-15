@@ -6,18 +6,17 @@
   <title>Dashboard - Control Operativo</title>
   <link rel="icon" type="image/png" href="/app/img/logo.png">
   <link rel="apple-touch-icon" href="/app/img/logo.png">
-  <link rel="stylesheet" href="/app/css/style.css?v=7">
   <style>
-    body { background: #F5F7FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; color: #1A2B4A; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #F5F7FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1A2B4A; padding-bottom: 90px; }
     
-    .top-header {
-      background: #1A2B4A; color: #fff; padding: 20px 20px 28px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    .top-header { background: #1A2B4A; color: #fff; padding: 20px 20px 28px; display: flex; justify-content: space-between; align-items: center; }
     .top-header-title { font-size: 1.1rem; font-weight: 800; }
     .top-header-sub { font-size: 0.78rem; opacity: 0.75; margin-top: 2px; }
 
     .content-wrap { padding: 16px 16px 90px; margin-top: -12px; }
+
+    .sec-label { font-size: 0.75rem; font-weight: 800; color: #8A94A6; text-transform: uppercase; letter-spacing: 0.06em; margin: 16px 0 10px; }
 
     /* Metricas de inspecciones */
     .insp-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
@@ -25,22 +24,16 @@
     .icard-num { font-size: 2.2rem; font-weight: 800; color: #1A2B4A; line-height: 1; margin-bottom: 4px; }
     .icard-lbl { font-size: 0.75rem; font-weight: 700; color: #8A94A6; text-transform: uppercase; }
     
-    /* Estado de Moviles */
-    .sec-label { font-size: 0.75rem; font-weight: 800; color: #8A94A6; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; margin-top: 10px; }
-    .status-card { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #EEF2F7; margin-bottom: 20px; }
-    .status-row { display: flex; justify-content: space-between; margin-bottom: 12px; }
-    .sr-item { text-align: center; flex: 1; }
-    .sr-val { font-size: 1.5rem; font-weight: 800; margin-bottom: 2px; }
-    .sr-lbl { font-size: 0.65rem; font-weight: 700; color: #8A94A6; text-transform: uppercase; }
-    .val-ok { color: #1E7C50; }
-    .val-warn { color: #B7860D; }
-    .val-err { color: #C0392B; }
+    /* Grafica de estado */
+    .chart-card { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #EEF2F7; margin-bottom: 20px; overflow-x: auto; }
+    .chart-row { display: flex; flex-direction: column; gap: 10px; }
+    .bar-wrap { margin-bottom: 12px; }
+    .bar-lbl { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; margin-bottom: 4px; color: #1A2B4A; }
+    .bar-bg { height: 10px; background: #EEF2F7; border-radius: 10px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 10px; background: #4A7C6F; transition: width 1s ease; }
     
     /* Actividad Reciente */
-    .activity-card {
-      background: #fff; border-radius: 12px; padding: 14px; border: 1px solid #EEF2F7; margin-bottom: 8px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    .activity-card { background: #fff; border-radius: 12px; padding: 14px; border: 1px solid #EEF2F7; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
     .activity-title { font-size: 0.85rem; font-weight: 700; color: #1A2B4A; }
     .activity-sub { font-size: 0.72rem; color: #8A94A6; margin-top: 2px; }
     .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 700; }
@@ -49,17 +42,13 @@
     .badge-yellow { background: #FFF8E1; color: #B7860D; }
 
     /* Bottom Nav */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
-      display: flex; justify-content: space-around; align-items: center;
-      padding: 8px 0 20px; border-top: 1px solid #EEF2F7;
-      box-shadow: 0 -4px 12px rgba(0,0,0,0.06); z-index: 100;
-    }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; display: flex; justify-content: space-around; align-items: center; padding: 8px 0 16px; border-top: 1px solid #EEF2F7; box-shadow: 0 -4px 12px rgba(0,0,0,0.06); z-index: 100; }
     .bn-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #AAB4C4; text-decoration: none; font-size: 0.6rem; font-weight: 700; padding: 0 10px; }
     .bn-item.active { color: #1A2B4A; }
     .bn-icon { font-size: 1.3rem; line-height: 1; }
     .bn-van { width: 26px; height: 18px; object-fit: cover; border-radius: 4px; }
-    .bn-center-btn { width: 52px; height: 52px; background: #4A7C6F; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #fff; text-decoration: none; box-shadow: 0 4px 12px rgba(74,124,111,0.4); margin-top: -20px; border: 3px solid #F5F7FA; }
+    .bn-center-btn { width: 56px; height: 56px; background: linear-gradient(135deg, #1A2B4A, #2C4A7C); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -24px; box-shadow: 0 6px 16px rgba(26,43,74,0.3); border: 4px solid #F5F7FA; text-decoration: none; color: #fff; font-size: 1.8rem; font-weight: 300; line-height: 1; transition: transform 0.2s; }
+    .bn-center-btn:active { transform: scale(0.95); }
   </style>
 </head>
 <body>
@@ -75,54 +64,27 @@
     
     <div class="sec-label">Inspecciones Realizadas</div>
     <div class="insp-cards">
-      <div class="icard">
-        <div class="icard-num" id="inspChiri">-</div>
-        <div class="icard-lbl">Chiriqui</div>
-      </div>
-      <div class="icard">
-        <div class="icard-num" id="inspVera">-</div>
-        <div class="icard-lbl">Veraguas</div>
-      </div>
+      <div class="icard"><div class="icard-num" id="inspChiri">0</div><div class="icard-lbl">Chiriqui</div></div>
+      <div class="icard"><div class="icard-num" id="inspVera">0</div><div class="icard-lbl">Veraguas</div></div>
     </div>
 
-    <div class="sec-label">Estado de Moviles</div>
-    <div class="status-card">
-      <div class="status-row">
-        <div class="sr-item">
-          <div class="sr-val val-ok" id="movActivas">-</div>
-          <div class="sr-lbl">Activas</div>
-        </div>
-        <div class="sr-item" style="border-left:1px solid #EEF2F7; border-right:1px solid #EEF2F7;">
-          <div class="sr-val val-warn" id="movManto">-</div>
-          <div class="sr-lbl">Mantenimiento</div>
-        </div>
-        <div class="sr-item">
-          <div class="sr-val val-err" id="movInactivas">-</div>
-          <div class="sr-lbl">Inactivas</div>
-        </div>
-      </div>
+    <div class="sec-label">Inspecciones por Movil (Top 5)</div>
+    <div class="chart-card" id="chartArea">
+      <div style="text-align:center;color:#AAB4C4;font-size:0.8rem;padding:20px;">Sin inspecciones registradas aun</div>
     </div>
 
     <div class="sec-label">Actividad Reciente</div>
     <div id="activityList">
-      <div class="activity-card"><div class="activity-title" style="color:#AAB4C4;">Cargando...</div></div>
+      <div class="activity-card"><div class="activity-title" style="color:#AAB4C4;">No hay actividad</div></div>
     </div>
   </div>
 
   <nav class="bottom-nav">
-    <a href="/app/moviles.html" class="bn-item">
-      <span class="bn-icon"><img src="/app/img/van.jpg" alt="Moviles" class="bn-van"></span><span>MOVILES</span>
-    </a>
-    <a href="/app/inspecciones.html" class="bn-item">
-      <span class="bn-icon">📋</span><span>LISTA</span>
-    </a>
-    <a href="/app/inspection_form.html" class="bn-center-btn">➕</a>
-    <a href="/app/metricas.html" class="bn-item">
-      <span class="bn-icon">📊</span><span>METRICAS</span>
-    </a>
-    <a href="/app/configuracion.html" class="bn-item">
-      <span class="bn-icon">⚙️</span><span>CONFIG</span>
-    </a>
+    <a href="/app/moviles.html" class="bn-item"><span class="bn-icon"><img src="/app/img/van.jpg" alt="Moviles" class="bn-van"></span><span>MOVILES</span></a>
+    <a href="/app/inspecciones.html" class="bn-item"><span class="bn-icon">📋</span><span>LISTA</span></a>
+    <a href="/app/inspection_form.html" class="bn-center-btn">+</a>
+    <a href="/app/metricas.html" class="bn-item"><span class="bn-icon">📊</span><span>METRICAS</span></a>
+    <a href="/app/configuracion.html" class="bn-item"><span class="bn-icon">⚙️</span><span>CONFIG</span></a>
   </nav>
 
   <script>
@@ -130,10 +92,7 @@
     const token = localStorage.getItem('cm_token');
     if (!token) window.location.replace('/app/login.html');
 
-    function doLogout() {
-      localStorage.removeItem('cm_token');
-      window.location.replace('/app/login.html');
-    }
+    function doLogout() { localStorage.removeItem('cm_token'); window.location.replace('/app/login.html'); }
 
     async function loadDash() {
       try {
@@ -144,54 +103,52 @@
         
         if (rInsp.status === 401 || rMov.status === 401) { window.location.replace('/app/login.html'); return; }
         
-        const inspections = await rInsp.json();
+        const insps = await rInsp.json();
         const mobiles = await rMov.json();
 
-        // Process inspections for Chiriqui vs Veraguas (Santiago usually mapped to Veraguas)
-        let chiri = 0;
-        let vera = 0;
-        
-        inspections.forEach(i => {
-           // Si la api de moviles tiene la zona, la usamos. Si no, mapeamos por el tecnico o la movil de la inspeccion.
-           // Pero necesitamos cruzar los datos. Para hacerlo facil:
+        let chiri = 0, vera = 0;
+        const movStats = {};
+
+        insps.forEach(i => {
            const mov = mobiles.find(m => m.id === i.mobile_id) || {};
            const z = (mov.zone || '').toLowerCase();
            if (z.includes('chiriqui')) chiri++;
            else if (z.includes('veraguas') || z.includes('santiago')) vera++;
+
+           if (!movStats[i.mobile_id]) movStats[i.mobile_id] = { id: i.mobile_id, code: mov.code || 'M?', total: 0, ok: 0 };
+           movStats[i.mobile_id].total++;
+           if (i.general_result === 'Cumple') movStats[i.mobile_id].ok++;
         });
 
         document.getElementById('inspChiri').textContent = chiri;
         document.getElementById('inspVera').textContent = vera;
 
-        // Process mobiles state
-        let act = 0, man = 0, ina = 0;
-        mobiles.forEach(m => {
-          if (m.status === 'activa') act++;
-          else if (m.status === 'mantenimiento') man++;
-          else ina++;
-        });
-        
-        document.getElementById('movActivas').textContent = act;
-        document.getElementById('movManto').textContent = man;
-        document.getElementById('movInactivas').textContent = ina;
+        // Chart
+        const rank = Object.values(movStats).sort((a,b) => b.total - a.total).slice(0,5);
+        if (rank.length > 0) {
+          const max = Math.max(...rank.map(r => r.total));
+          document.getElementById('chartArea').innerHTML = '<div class="chart-row">' + rank.map(r => {
+            const pct = Math.round((r.total / max) * 100);
+            const okPct = Math.round((r.ok / r.total) * 100);
+            const color = okPct >= 80 ? '#4A7C6F' : (okPct >= 50 ? '#B7860D' : '#C0392B');
+            return `<div class="bar-wrap">
+              <div class="bar-lbl"><span>${r.code}</span><span>${r.total} insp. (${okPct}% Cumple)</span></div>
+              <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${color};"></div></div>
+            </div>`;
+          }).join('') + '</div>';
+        }
 
-        // Recent activity
+        // Recent
         const list = document.getElementById('activityList');
-        const recent = inspections.slice(0, 5); // Take top 5
-        
-        if (!recent.length) {
-          list.innerHTML = '<div class="activity-card"><div class="activity-title" style="color:#AAB4C4;">Sin inspecciones recientes</div></div>';
-        } else {
+        const recent = insps.slice(0, 5);
+        if (recent.length > 0) {
           list.innerHTML = recent.map(i => {
             const cls = i.general_result === 'Cumple' ? 'badge-green' : i.general_result === 'No cumple' ? 'badge-red' : 'badge-yellow';
             const mCode = mobiles.find(m => m.id === i.mobile_id)?.code || 'M?';
-            return '<div class="activity-card"><div><div class="activity-title">Orden: ' + (i.order_number || i.inspection_code || '-') + '</div><div class="activity-sub">Movil ' + mCode + ' &bull; ' + (i.inspection_date || '') + '</div></div><span class="badge ' + cls + '">' + (i.general_result || '-') + '</span></div>';
+            return '<div class="activity-card"><div><div class="activity-title">Orden: ' + (i.order_number || '-') + '</div><div class="activity-sub">Movil ' + mCode + ' &bull; ' + (i.inspection_date || '') + '</div></div><span class="badge ' + cls + '">' + (i.general_result || '-') + '</span></div>';
           }).join('');
         }
-      } catch(e) { 
-        console.error(e); 
-        document.getElementById('activityList').innerHTML = '<div class="activity-card"><div class="activity-title" style="color:#E05252;">Error de conexion</div></div>';
-      }
+      } catch(e) { console.error(e); }
     }
 
     loadDash();

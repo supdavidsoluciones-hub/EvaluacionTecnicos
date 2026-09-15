@@ -54,3 +54,15 @@ def get_technician_history(technician_id: int, db: Session = Depends(get_db), cu
         "end_date": h.end_date.isoformat() if h.end_date else None,
         "notes": h.notes
     } for h in history]
+
+@router.delete("/{tech_id}")
+def delete_technician(tech_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    t = db.query(Technician).filter(Technician.id == tech_id).first()
+    if not t: raise HTTPException(status_code=404, detail="Tecnico no encontrado")
+    
+    # Remove assignments first
+    db.query(MobileTechnicianHistory).filter(MobileTechnicianHistory.technician_id == tech_id).delete()
+    
+    db.delete(t)
+    db.commit()
+    return {"detail": "Tecnico eliminado"}
