@@ -2,47 +2,43 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  
-  <link rel="icon" type="image/png" href="/app/img/logo.png">
-  <link rel="apple-touch-icon" href="/app/img/logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Control Operativo</title>
-  <link rel="stylesheet" href="/app/css/style.css?v=6">
+  <link rel="icon" type="image/png" href="/app/img/logo.png">
+  <link rel="apple-touch-icon" href="/app/img/logo.png">
+  <link rel="stylesheet" href="/app/css/style.css?v=7">
   <style>
-    body { background: #F5F7FA; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+    body { background: #F5F7FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; color: #1A2B4A; }
     
     .top-header {
       background: #1A2B4A; color: #fff; padding: 20px 20px 28px;
       display: flex; justify-content: space-between; align-items: center;
     }
-    .top-header-info { }
     .top-header-title { font-size: 1.1rem; font-weight: 800; }
     .top-header-sub { font-size: 0.78rem; opacity: 0.75; margin-top: 2px; }
-    .top-header-logo { width: 42px; height: 42px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
 
     .content-wrap { padding: 16px 16px 90px; margin-top: -12px; }
 
-    /* Metrics cards */
-    .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-    .metric-card {
-      background: #fff; border-radius: 16px; padding: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #EEF2F7;
-    }
-    .mi-wrap {
-      width: 38px; height: 38px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; margin-bottom: 12px;
-    }
-    .bg-blue { background: #EBF4FF; } .bg-green { background: #F0FFF4; }
-    .bg-orange { background: #FFFAF0; } .bg-purple { background: #FAF5FF; }
-    .metric-val { font-size: 2rem; font-weight: 800; color: #1A2B4A; line-height: 1; }
-    .metric-lbl { font-size: 0.7rem; font-weight: 700; color: #8A94A6; text-transform: uppercase; margin-top: 4px; }
-
-    /* Recent activity */
-    .sec-label { font-size: 0.75rem; font-weight: 800; color: #8A94A6; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+    /* Metricas de inspecciones */
+    .insp-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .icard { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #EEF2F7; text-align: center; }
+    .icard-num { font-size: 2.2rem; font-weight: 800; color: #1A2B4A; line-height: 1; margin-bottom: 4px; }
+    .icard-lbl { font-size: 0.75rem; font-weight: 700; color: #8A94A6; text-transform: uppercase; }
+    
+    /* Estado de Moviles */
+    .sec-label { font-size: 0.75rem; font-weight: 800; color: #8A94A6; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; margin-top: 10px; }
+    .status-card { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #EEF2F7; margin-bottom: 20px; }
+    .status-row { display: flex; justify-content: space-between; margin-bottom: 12px; }
+    .sr-item { text-align: center; flex: 1; }
+    .sr-val { font-size: 1.5rem; font-weight: 800; margin-bottom: 2px; }
+    .sr-lbl { font-size: 0.65rem; font-weight: 700; color: #8A94A6; text-transform: uppercase; }
+    .val-ok { color: #1E7C50; }
+    .val-warn { color: #B7860D; }
+    .val-err { color: #C0392B; }
+    
+    /* Actividad Reciente */
     .activity-card {
-      background: #fff; border-radius: 12px; padding: 14px;
-      border: 1px solid #EEF2F7; margin-bottom: 8px;
+      background: #fff; border-radius: 12px; padding: 14px; border: 1px solid #EEF2F7; margin-bottom: 8px;
       display: flex; justify-content: space-between; align-items: center;
     }
     .activity-title { font-size: 0.85rem; font-weight: 700; color: #1A2B4A; }
@@ -59,67 +55,63 @@
       padding: 8px 0 20px; border-top: 1px solid #EEF2F7;
       box-shadow: 0 -4px 12px rgba(0,0,0,0.06); z-index: 100;
     }
-    .bn-item {
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-      color: #AAB4C4; text-decoration: none; font-size: 0.6rem; font-weight: 700;
-      padding: 0 10px;
-    }
+    .bn-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #AAB4C4; text-decoration: none; font-size: 0.6rem; font-weight: 700; padding: 0 10px; }
     .bn-item.active { color: #1A2B4A; }
     .bn-icon { font-size: 1.3rem; line-height: 1; }
     .bn-van { width: 26px; height: 18px; object-fit: cover; border-radius: 4px; }
-    .bn-center-btn {
-      width: 52px; height: 52px; background: #4A7C6F; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem; color: #fff; text-decoration: none;
-      box-shadow: 0 4px 12px rgba(74,124,111,0.4);
-      margin-top: -20px; border: 3px solid #F5F7FA;
-    }
+    .bn-center-btn { width: 52px; height: 52px; background: #4A7C6F; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #fff; text-decoration: none; box-shadow: 0 4px 12px rgba(74,124,111,0.4); margin-top: -20px; border: 3px solid #F5F7FA; }
   </style>
 </head>
 <body>
   <div class="top-header">
-    <div class="top-header-info">
+    <div>
       <div class="top-header-title">Control Operativo</div>
       <div class="top-header-sub">Resumen del dia</div>
     </div>
-    <div>
-      <button onclick="doLogout()" style="background:rgba(255,255,255,0.15);border:none;color:#fff;padding:6px 12px;border-radius:8px;font-size:0.78rem;cursor:pointer;">Salir</button>
-    </div>
+    <button onclick="doLogout()" style="background:rgba(255,255,255,0.15);border:none;color:#fff;padding:6px 12px;border-radius:8px;font-size:0.78rem;cursor:pointer;font-weight:600;">Salir</button>
   </div>
 
   <div class="content-wrap">
-    <div class="metrics-grid">
-      <div class="metric-card">
-        <div class="mi-wrap bg-blue">📦</div>
-        <div class="metric-val" id="metOrdenes">-</div>
-        <div class="metric-lbl">Ordenes Hoy</div>
+    
+    <div class="sec-label">Inspecciones Realizadas</div>
+    <div class="insp-cards">
+      <div class="icard">
+        <div class="icard-num" id="inspChiri">-</div>
+        <div class="icard-lbl">Chiriqui</div>
       </div>
-      <div class="metric-card">
-        <div class="mi-wrap bg-green">📋</div>
-        <div class="metric-val" id="metInspecciones">-</div>
-        <div class="metric-lbl">Inspecciones</div>
+      <div class="icard">
+        <div class="icard-num" id="inspVera">-</div>
+        <div class="icard-lbl">Veraguas</div>
       </div>
-      <div class="metric-card">
-        <div class="mi-wrap bg-orange">⚠️</div>
-        <div class="metric-val" id="metGarantias">-</div>
-        <div class="metric-lbl">Garantias %</div>
-      </div>
-      <div class="metric-card">
-        <div class="mi-wrap bg-purple">⭐</div>
-        <div class="metric-val" id="metCalidad">-</div>
-        <div class="metric-lbl">Calidad Prom.</div>
+    </div>
+
+    <div class="sec-label">Estado de Moviles</div>
+    <div class="status-card">
+      <div class="status-row">
+        <div class="sr-item">
+          <div class="sr-val val-ok" id="movActivas">-</div>
+          <div class="sr-lbl">Activas</div>
+        </div>
+        <div class="sr-item" style="border-left:1px solid #EEF2F7; border-right:1px solid #EEF2F7;">
+          <div class="sr-val val-warn" id="movManto">-</div>
+          <div class="sr-lbl">Mantenimiento</div>
+        </div>
+        <div class="sr-item">
+          <div class="sr-val val-err" id="movInactivas">-</div>
+          <div class="sr-lbl">Inactivas</div>
+        </div>
       </div>
     </div>
 
     <div class="sec-label">Actividad Reciente</div>
-    <div id="activityList"><div class="activity-card"><div class="activity-title" style="color:#AAB4C4;">Cargando...</div></div></div>
+    <div id="activityList">
+      <div class="activity-card"><div class="activity-title" style="color:#AAB4C4;">Cargando...</div></div>
+    </div>
   </div>
 
-  <!-- Bottom Navigation -->
   <nav class="bottom-nav">
     <a href="/app/moviles.html" class="bn-item">
-      <span class="bn-icon"><img src="/app/img/van.jpg" alt="Moviles" class="bn-van"></span>
-      <span>MOVILES</span>
+      <span class="bn-icon"><img src="/app/img/van.jpg" alt="Moviles" class="bn-van"></span><span>MOVILES</span>
     </a>
     <a href="/app/inspecciones.html" class="bn-item">
       <span class="bn-icon">📋</span><span>LISTA</span>
@@ -145,28 +137,61 @@
 
     async function loadDash() {
       try {
-        const r = await fetch(API + '/dashboard/stats', { headers: { 'Authorization': 'Bearer ' + token } });
-        if (r.status === 401) { window.location.replace('/app/login.html'); return; }
-        const d = await r.json();
-        document.getElementById('metOrdenes').textContent = d.ordenes_hoy ?? '0';
-        document.getElementById('metInspecciones').textContent = d.inspecciones_hoy ?? '0';
-        document.getElementById('metGarantias').textContent = (d.garantias_pct ?? '0') + '%';
-        document.getElementById('metCalidad').textContent = d.calidad_promedio ?? '0';
-      } catch(e) { console.error(e); }
+        const [rInsp, rMov] = await Promise.all([
+          fetch(API + '/inspections?limit=100', { headers: { 'Authorization': 'Bearer ' + token } }),
+          fetch(API + '/mobiles', { headers: { 'Authorization': 'Bearer ' + token } })
+        ]);
+        
+        if (rInsp.status === 401 || rMov.status === 401) { window.location.replace('/app/login.html'); return; }
+        
+        const inspections = await rInsp.json();
+        const mobiles = await rMov.json();
 
-      try {
-        const r2 = await fetch(API + '/inspections?limit=5', { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await r2.json();
+        // Process inspections for Chiriqui vs Veraguas (Santiago usually mapped to Veraguas)
+        let chiri = 0;
+        let vera = 0;
+        
+        inspections.forEach(i => {
+           // Si la api de moviles tiene la zona, la usamos. Si no, mapeamos por el tecnico o la movil de la inspeccion.
+           // Pero necesitamos cruzar los datos. Para hacerlo facil:
+           const mov = mobiles.find(m => m.id === i.mobile_id) || {};
+           const z = (mov.zone || '').toLowerCase();
+           if (z.includes('chiriqui')) chiri++;
+           else if (z.includes('veraguas') || z.includes('santiago')) vera++;
+        });
+
+        document.getElementById('inspChiri').textContent = chiri;
+        document.getElementById('inspVera').textContent = vera;
+
+        // Process mobiles state
+        let act = 0, man = 0, ina = 0;
+        mobiles.forEach(m => {
+          if (m.status === 'activa') act++;
+          else if (m.status === 'mantenimiento') man++;
+          else ina++;
+        });
+        
+        document.getElementById('movActivas').textContent = act;
+        document.getElementById('movManto').textContent = man;
+        document.getElementById('movInactivas').textContent = ina;
+
+        // Recent activity
         const list = document.getElementById('activityList');
-        if (!data || !data.length) {
+        const recent = inspections.slice(0, 5); // Take top 5
+        
+        if (!recent.length) {
           list.innerHTML = '<div class="activity-card"><div class="activity-title" style="color:#AAB4C4;">Sin inspecciones recientes</div></div>';
-          return;
+        } else {
+          list.innerHTML = recent.map(i => {
+            const cls = i.general_result === 'Cumple' ? 'badge-green' : i.general_result === 'No cumple' ? 'badge-red' : 'badge-yellow';
+            const mCode = mobiles.find(m => m.id === i.mobile_id)?.code || 'M?';
+            return '<div class="activity-card"><div><div class="activity-title">Orden: ' + (i.order_number || i.inspection_code || '-') + '</div><div class="activity-sub">Movil ' + mCode + ' &bull; ' + (i.inspection_date || '') + '</div></div><span class="badge ' + cls + '">' + (i.general_result || '-') + '</span></div>';
+          }).join('');
         }
-        list.innerHTML = data.map(i => {
-          const cls = i.general_result === 'Cumple' ? 'badge-green' : i.general_result === 'No cumple' ? 'badge-red' : 'badge-yellow';
-          return '<div class="activity-card"><div><div class="activity-title">' + (i.order_number || i.inspection_code || '-') + '</div><div class="activity-sub">' + (i.mobile_code || '') + ' &bull; ' + (i.inspection_date || '') + '</div></div><span class="badge ' + cls + '">' + (i.general_result || '-') + '</span></div>';
-        }).join('');
-      } catch(e) { console.error(e); }
+      } catch(e) { 
+        console.error(e); 
+        document.getElementById('activityList').innerHTML = '<div class="activity-card"><div class="activity-title" style="color:#E05252;">Error de conexion</div></div>';
+      }
     }
 
     loadDash();

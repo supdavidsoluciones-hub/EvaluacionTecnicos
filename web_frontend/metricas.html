@@ -1,187 +1,221 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metricas - Control Operativo</title>
   <link rel="icon" type="image/png" href="/app/img/logo.png">
   <link rel="apple-touch-icon" href="/app/img/logo.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Métricas – Control Operativo</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/app/css/style.css?v=4" />
   <style>
-    .tabs-metrics { display: flex; gap: 8px; margin-bottom: 24px; }
-    .tab-m { flex: 1; padding: 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-muted); text-align: center; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all var(--transition); }
-    .tab-m.active { background: var(--teal-dim); color: var(--teal); border-color: var(--teal); }
-    .tab-m:hover:not(.active) { background: var(--bg-card2); color: var(--text-primary); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #F5F7FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1A2B4A; }
+    .top-bar { background: #1A2B4A; color: #fff; padding: 16px 20px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 50; }
+    .back-btn { color: #fff; text-decoration: none; font-size: 1.4rem; line-height: 1; }
+    .top-bar strong { font-size: 1rem; font-weight: 800; }
+    .content { padding: 16px 16px 80px; }
+    
+    .filter-card { background: #fff; border-radius: 14px; border: 1px solid #EEF2F7; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    .fc-title { font-size: 0.75rem; font-weight: 800; color: #8A94A6; text-transform: uppercase; margin-bottom: 12px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .fgroup label { display: block; font-size: 0.72rem; font-weight: 700; color: #8A94A6; margin-bottom: 4px; }
+    .fgroup input, .fgroup select { width: 100%; padding: 8px 10px; border: 1px solid #DEE2E8; border-radius: 8px; font-size: 0.85rem; background: #F9FAFB; }
+    .btn-action { width: 100%; background: #1A2B4A; color: #fff; border: none; border-radius: 8px; padding: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+    
+    .stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+    .stat-card { background: #fff; border-radius: 12px; padding: 14px 10px; border: 1px solid #EEF2F7; text-align: center; }
+    .sc-val { font-size: 1.6rem; font-weight: 800; color: #1A2B4A; margin-bottom: 4px; }
+    .sc-lbl { font-size: 0.65rem; font-weight: 700; color: #8A94A6; text-transform: uppercase; }
 
-    .score-bar-container { margin-bottom: 16px; }
-    .score-bar-header { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600; }
-    .score-bar { height: 8px; background: var(--bg-card2); border-radius: 99px; overflow: hidden; }
-    .score-bar-fill { height: 100%; border-radius: 99px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); width: 0%; }
-    
-    .list-tech { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--bg-card); border-bottom: 1px solid var(--border); }
-    .list-tech:last-child { border-bottom: none; border-radius: 0 0 var(--radius) var(--radius); }
-    .list-tech:first-child { border-radius: var(--radius) var(--radius) 0 0; border-top: 1px solid var(--border); }
-    .tech-name { font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
-    .tech-rank { color: var(--text-muted); font-size: 0.8rem; width: 20px; font-weight: 700; }
-    
-    .zone-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-    .zone-card { background: linear-gradient(135deg, var(--bg-card), var(--bg-card2)); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
-    .zone-title { font-size: 0.8rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
-    .zone-value { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); }
-    
-    
-    
-    
-    
-    .bnav-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
-    
+    .sec-label { font-size: 0.75rem; font-weight: 800; color: #8A94A6; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+    .list-card { background: #fff; border: 1px solid #EEF2F7; border-radius: 12px; padding: 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.03); }
+    .lc-main { font-weight: 700; font-size: 0.9rem; color: #1A2B4A; }
+    .lc-sub { font-size: 0.72rem; color: #8A94A6; }
+    .lc-badge { font-weight: 800; font-size: 1rem; color: #4A7C6F; }
+    .lc-badge-err { color: #C0392B; }
+
+    .btn-export { width: 100%; background: #1E7C50; color: #fff; border: none; border-radius: 10px; padding: 12px; font-size: 0.9rem; font-weight: 700; cursor: pointer; margin-top: 10px; }
   </style>
 </head>
 <body>
+  <div class="top-bar">
+    <a href="/app/dashboard.html" class="back-btn">&#8592;</a>
+    <strong>METRICAS Y REPORTES</strong>
+  </div>
 
-  <nav class="navbar">
-    <button class="btn-back" onclick="history.back()">â†</button>
-    <div class="navbar-title">📊 Métricas y KPIs</div>
-  </nav>
-
-  <main class="main-content">
-    <div class="container-wide">
-      
-      <div class="tabs-metrics">
-        <div class="tab-m active" data-period="semana">Semana</div>
-        <div class="tab-m" data-period="mes">Mes</div>
-        <div class="tab-m" data-period="total">Total</div>
-      </div>
-
-      <!-- Resumen Semanal -->
-      <div class="section">
-        <h3 class="section-title">Resumen del Periodo</h3>
-        <div class="stats-mini" id="resumenStats">
-          <div class="stat-mini-card"><div class="stat-mini-value">-</div><div class="stat-mini-label">Total</div></div>
-          <div class="stat-mini-card"><div class="stat-mini-value" style="color:var(--green);">-</div><div class="stat-mini-label">Aprobadas</div></div>
-          <div class="stat-mini-card"><div class="stat-mini-value" style="color:var(--red);">-</div><div class="stat-mini-label">Fallidas</div></div>
+  <div class="content">
+    <div class="filter-card">
+      <div class="fc-title">Filtros de Datos</div>
+      <div class="row">
+        <div class="fgroup"><label>Region</label>
+          <select id="fZone">
+            <option value="Todas">Todas</option>
+            <option value="Chiriqui">Chiriqui</option>
+            <option value="Veraguas">Veraguas</option>
+            <option value="Panama">Panama</option>
+          </select>
+        </div>
+        <div class="fgroup"><label>Movil Especifica</label>
+          <select id="fMobile"><option value="">-- Todas --</option></select>
         </div>
       </div>
-
-      <!-- Zonas -->
-      <div class="section">
-        <h3 class="section-title">Inspecciones por Zona</h3>
-        <div class="zone-cards">
-          <div class="zone-card">
-            <div class="zone-title">Chiriquí</div>
-            <div class="zone-value" id="valChiriqui">-</div>
-          </div>
-          <div class="zone-card">
-            <div class="zone-title">Santiago</div>
-            <div class="zone-value" id="valSantiago">-</div>
-          </div>
-        </div>
+      <div class="row">
+        <div class="fgroup"><label>Desde</label><input type="date" id="fFrom"></div>
+        <div class="fgroup"><label>Hasta</label><input type="date" id="fTo"></div>
       </div>
-
-      <!-- Calidad por Móvil -->
-      <div class="section">
-        <h3 class="section-title">Calidad por Móvil (Top 5)</h3>
-        <div class="card p-16" id="calidadMoviles">
-          <div class="skeleton skeleton-card"></div>
-        </div>
-      </div>
-
-      <!-- Top Técnicos -->
-      <div class="section">
-        <h3 class="section-title">Top Técnicos</h3>
-        <div id="topTecnicos" style="border:1px solid var(--border); border-radius:var(--radius); border-top:none; border-bottom:none;">
-          <div class="skeleton skeleton-card"></div>
-        </div>
-      </div>
-
+      <button class="btn-action" onclick="loadData()">Aplicar Filtros</button>
+      <button class="btn-export" id="btnExport" onclick="exportData()">📥 Descargar Excel del Filtro</button>
     </div>
-  </main>
 
-  <!-- Bottom Nav -->
-  
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="sc-val" id="stTotal">-</div>
+        <div class="sc-lbl">Inspecciones</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-val" id="stOk">-</div>
+        <div class="sc-lbl">Cumplen</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-val" id="stErr">-</div>
+        <div class="sc-lbl">No Cumplen</div>
+      </div>
+    </div>
 
-  <script type="module">
-    import { requireAuth, getDashboard, scoreColor, semafBadge } from '/app/js/app.js';
+    <div class="sec-label">Rendimiento por Movil (Filtrado)</div>
+    <div id="rankList">
+      <div class="list-card"><div class="lc-sub">Cargando...</div></div>
+    </div>
 
-    document.addEventListener('DOMContentLoaded', () => {
-      requireAuth();
-      
-      const tabs = document.querySelectorAll('.tab-m');
-      tabs.forEach(t => t.addEventListener('click', (e) => {
-        tabs.forEach(tb => tb.classList.remove('active'));
-        e.target.classList.add('active');
-        loadMetrics(e.target.dataset.period);
-      }));
+  </div>
 
-      loadMetrics('semana');
-    });
+  <script>
+    const API = '/api/v1';
+    const token = localStorage.getItem('cm_token');
+    if (!token) window.location.replace('/app/login.html');
 
-    async function loadMetrics(period) {
+    // Default dates
+    const today = new Date();
+    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+    document.getElementById('fFrom').value = firstDay.toISOString().split('T')[0];
+    document.getElementById('fTo').value = today.toISOString().split('T')[0];
+
+    let allMobiles = [];
+
+    async function init() {
       try {
-        // En una app real, mandaríamos el parámetro period a una ruta específica de métricas.
-        // Aquí usamos getDashboard() simulando que nos devuelve datos.
-        const data = await getDashboard(); 
+        const rm = await fetch(API + '/mobiles', { headers: { 'Authorization': 'Bearer ' + token } });
+        allMobiles = await rm.json();
         
-        // Simular datos para métricas basándonos en el endpoint existente
-        const insps = parseInt(data.inspecciones_hoy) || 0;
-        document.getElementById('resumenStats').innerHTML = `
-          <div class="stat-mini-card"><div class="stat-mini-value">${insps * (period==='semana'?5:20)}</div><div class="stat-mini-label">Total</div></div>
-          <div class="stat-mini-card"><div class="stat-mini-value" style="color:var(--green);">${Math.floor(insps * (period==='semana'?5:20) * 0.85)}</div><div class="stat-mini-label">Aprobadas</div></div>
-          <div class="stat-mini-card"><div class="stat-mini-value" style="color:var(--red);">${Math.floor(insps * (period==='semana'?5:20) * 0.15)}</div><div class="stat-mini-label">Fallidas</div></div>
-        `;
+        const sel = document.getElementById('fMobile');
+        allMobiles.forEach(m => {
+          const o = document.createElement('option');
+          o.value = m.id;
+          o.textContent = m.code + ' - ' + (m.zone || '');
+          sel.appendChild(o);
+        });
         
-        document.getElementById('valChiriqui').textContent = Math.floor(insps * (period==='semana'?4:15));
-        document.getElementById('valSantiago').textContent = Math.floor(insps * (period==='semana'?1:5));
+        loadData();
+      } catch(e) { console.error(e); }
+    }
 
-        const cMoviles = document.getElementById('calidadMoviles');
-        if(data.mobiles && data.mobiles.length > 0) {
-          const sortedMobiles = [...data.mobiles].sort((a,b) => b.score_calidad - a.score_calidad).slice(0,5);
-          cMoviles.innerHTML = sortedMobiles.map(m => `
-            <div class="score-bar-container">
-              <div class="score-bar-header">
-                <span>${m.codigo} - ${m.tecnico}</span>
-                <span style="color:${scoreColor(m.score_calidad)}">${m.score_calidad}%</span>
-              </div>
-              <div class="score-bar">
-                <div class="score-bar-fill" style="width: 0%; background: ${scoreColor(m.score_calidad)};" data-w="${m.score_calidad}%"></div>
-              </div>
-            </div>
-          `).join('');
+    async function loadData() {
+      const z = document.getElementById('fZone').value.toLowerCase();
+      const mid = document.getElementById('fMobile').value;
+      const f = document.getElementById('fFrom').value;
+      const t = document.getElementById('fTo').value;
+
+      try {
+        const r = await fetch(API + `/inspections?limit=1000`, { headers: { 'Authorization': 'Bearer ' + token } });
+        let insps = await r.json();
+
+        // Filter by Date
+        if (f) insps = insps.filter(i => i.inspection_date >= f);
+        if (t) insps = insps.filter(i => i.inspection_date <= t);
+        
+        // Filter by Mobile ID
+        if (mid) insps = insps.filter(i => i.mobile_id == mid);
+        
+        // Filter by Zone
+        if (z !== 'todas') {
+          insps = insps.filter(i => {
+            const m = allMobiles.find(x => x.id === i.mobile_id) || {};
+            const mz = (m.zone || '').toLowerCase();
+            if (z === 'veraguas') return mz.includes('veraguas') || mz.includes('santiago');
+            return mz.includes(z);
+          });
+        }
+
+        let ok = 0, err = 0;
+        const movData = {}; // stats by mobile
+
+        insps.forEach(i => {
+          if (i.general_result === 'Cumple') ok++;
+          else if (i.general_result === 'No cumple') err++;
           
-          // Animate bars
-          setTimeout(() => {
-            cMoviles.querySelectorAll('.score-bar-fill').forEach(bar => {
-              bar.style.width = bar.dataset.w;
-            });
-          }, 100);
-        } else {
-          cMoviles.innerHTML = '<p class="text-sm text-muted text-center">Sin datos de móviles</p>';
-        }
+          if (!movData[i.mobile_id]) movData[i.mobile_id] = {id: i.mobile_id, total: 0, ok: 0};
+          movData[i.mobile_id].total++;
+          if (i.general_result === 'Cumple') movData[i.mobile_id].ok++;
+        });
 
-        const tTecs = document.getElementById('topTecnicos');
-        if(data.mobiles && data.mobiles.length > 0) {
-           const sortedMobiles = [...data.mobiles].sort((a,b) => b.score_calidad - a.score_calidad).slice(0,5);
-           tTecs.innerHTML = sortedMobiles.map((m, i) => `
-             <div class="list-tech">
-               <div class="tech-name">
-                 <span class="tech-rank">#${i+1}</span>
-                 ${m.tecnico || 'Desconocido'}
-               </div>
-               <div>${semafBadge(m.score_calidad)}</div>
-             </div>
-           `).join('');
-        } else {
-           tTecs.innerHTML = '<p class="text-sm text-muted text-center p-16" style="border:1px solid var(--border); border-radius:var(--radius);">Sin datos de técnicos</p>';
-        }
+        document.getElementById('stTotal').textContent = insps.length;
+        document.getElementById('stOk').textContent = ok;
+        document.getElementById('stErr').textContent = err;
 
-      } catch(err) {
-        console.error(err);
+        const rankArr = Object.values(movData).sort((a,b) => b.total - a.total);
+        const list = document.getElementById('rankList');
+        
+        if (!rankArr.length) {
+          list.innerHTML = '<div class="list-card"><div class="lc-sub">No hay inspecciones para estos filtros.</div></div>';
+        } else {
+          list.innerHTML = rankArr.map(d => {
+            const m = allMobiles.find(x => x.id === d.id) || {};
+            const pct = Math.round((d.ok / d.total) * 100);
+            const cls = pct >= 80 ? 'lc-badge' : 'lc-badge lc-badge-err';
+            return `<div class="list-card">
+              <div>
+                <div class="lc-main">${m.code || 'M?'}</div>
+                <div class="lc-sub">${d.total} Insp. &bull; ${m.zone || 'Sin zona'}</div>
+              </div>
+              <div class="${cls}">${pct}% OK</div>
+            </div>`;
+          }).join('');
+        }
+      } catch(e) { console.error(e); }
+    }
+
+    async function exportData() {
+      const from = document.getElementById('fFrom').value;
+      const to = document.getElementById('fTo').value;
+      const mid = document.getElementById('fMobile').value;
+      
+      // We will just use the same export endpoint. The API currently only supports from/to.
+      // Si quisieras que el backend filtre por movil, deberias modificar backend export endpoint.
+      // Por ahora exportamos el rango de fechas.
+      const btn = document.getElementById('btnExport');
+      btn.disabled = true; btn.textContent = 'Descargando...';
+
+      try {
+        const r = await fetch(API + '/inspections/export?from=' + from + '&to=' + to, {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!r.ok) { alert('Error al exportar.'); return; }
+        const blob = await r.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Inspecciones_' + from + '_al_' + to + '.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch(e) {
+        alert('Error: ' + e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = '📥 Descargar Excel del Filtro';
       }
     }
+
+    init();
   </script>
 </body>
 </html>
