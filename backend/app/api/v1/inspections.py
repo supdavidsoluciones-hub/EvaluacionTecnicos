@@ -2,6 +2,9 @@ import os
 import uuid
 from typing import List, Optional
 from datetime import date, datetime
+import openpyxl
+from io import BytesIO
+from fastapi.responses import StreamingResponse
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from backend.app.core.database import get_db
@@ -238,3 +241,80 @@ def get_inspection_detail(inspection_id: int, db: Session = Depends(get_db), cur
             "status": nc.status
         } for nc in insp.non_conformities]
     }
+
+@router.get("/export")
+async def export_inspections_excel(
+    from_date: str = None,
+    to_date: str = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Export inspections to Excel file for a date range."""
+    from datetime import date
+    import openpyxl
+    from io import BytesIO
+    from fastapi.responses import StreamingResponse
+
+    query = db.query(Inspection)
+
+    if from_date:
+        try:
+            fd = date.fromisoformat(from_date)
+            query = query.filter(Inspection.inspection_date >= fd)
+        except ValueError:
+            pass
+    if to_date:
+        try:
+            td = date.fromisoformat(to_date)
+            query = query.filter(Inspection.inspection_date <= td)
+        except ValueError:
+            pass
+
+    inspections = query.order_by(Inspection.inspection_date.desc()).all()
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Inspecciones"
+
+    headers = [
+        "Codigo", "Fecha", "Movil", "Tecnico", "No. Orden", "Tipo",
+        "Cliente", "Contrato", "Resultado General", "Observaciones",
+        "Accion Correctiva", "GPS Lat", "GPS Lon", "Creado"
+    ]
+    ws.append(headers)
+
+    for row in ws[1]:
+        row.font = openpyxl.styles.Font(bold=True)
+        row.fill = openpyxl.styles.PatternFill("solid", fgColor="1A2B4A")
+        row.font = openpyxl.styles.Font(bold=True, color="FFFFFF")
+
+    for ins in inspections:
+        mobile_code = ins.mobile.code if ins.mobile else ""
+        tech_name = ins.technician.full_name if ins.technician else ""
+        ws.append([
+            ins.inspection_code,
+            str(ins.inspection_date) if ins.inspection_date else "",
+            mobile_code,
+            tech_name,
+            ins.order_number or "",
+            ins.order_type or "",
+            ins.client_name or "",
+            ins.contract_number or "",
+            ins.general_result or "",
+            ins.observations or "",
+            ins.corrective_action or "",
+            ins.gps_lat or "",
+            ins.gps_lon or "",
+            str(ins.created_at)[:19] if ins.created_at else "",
+        ])
+
+    stream = BytesIO()
+    wb.save(stream)
+    stream.seek(0)
+
+    filename = f"Inspecciones_{from_date or 'inicio'}_al_{to_date or 'hoy'}.xlsx"
+    return StreamingResponse(
+        stream,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )

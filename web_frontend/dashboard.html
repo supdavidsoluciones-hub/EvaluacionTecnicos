@@ -4,167 +4,169 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Control Operativo</title>
-  <link rel="stylesheet" href="/app/css/style.css?v=5">
+  <link rel="stylesheet" href="/app/css/style.css?v=6">
   <style>
-    /* Modern Dashboard Enhancements */
-    .hero-header {
-      background: linear-gradient(135deg, #1A2B4A 0%, #2A4365 100%);
-      color: white; padding: 24px 20px; border-radius: 0 0 20px 20px;
-      margin: -20px -20px 20px -20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .hero-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 4px; }
-    .hero-subtitle { font-size: 0.85rem; opacity: 0.8; }
+    body { background: #F5F7FA; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
     
-    .metrics-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;
+    .top-header {
+      background: #1A2B4A; color: #fff; padding: 20px 20px 28px;
+      display: flex; justify-content: space-between; align-items: center;
     }
+    .top-header-info { }
+    .top-header-title { font-size: 1.1rem; font-weight: 800; }
+    .top-header-sub { font-size: 0.78rem; opacity: 0.75; margin-top: 2px; }
+    .top-header-logo { width: 42px; height: 42px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+
+    .content-wrap { padding: 16px 16px 90px; margin-top: -12px; }
+
+    /* Metrics cards */
+    .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
     .metric-card {
-      background: #FFF; border-radius: 16px; padding: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #E2E8F0;
-      display: flex; flex-direction: column; justify-content: space-between;
+      background: #fff; border-radius: 16px; padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #EEF2F7;
     }
-    .metric-icon-wrap {
-      width: 40px; height: 40px; border-radius: 12px;
+    .mi-wrap {
+      width: 38px; height: 38px; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; margin-bottom: 12px;
+      font-size: 1.1rem; margin-bottom: 12px;
     }
-    .bg-blue { background: #EBF4FF; color: #3182CE; }
-    .bg-green { background: #F0FFF4; color: #38A169; }
-    .bg-orange { background: #FFFAF0; color: #DD6B20; }
-    .bg-purple { background: #FAF5FF; color: #805AD5; }
-    
-    .metric-value { font-size: 1.8rem; font-weight: 800; color: #1A2B4A; line-height: 1; margin-bottom: 4px; }
-    .metric-label { font-size: 0.75rem; font-weight: 600; color: #718096; text-transform: uppercase; }
+    .bg-blue { background: #EBF4FF; } .bg-green { background: #F0FFF4; }
+    .bg-orange { background: #FFFAF0; } .bg-purple { background: #FAF5FF; }
+    .metric-val { font-size: 2rem; font-weight: 800; color: #1A2B4A; line-height: 1; }
+    .metric-lbl { font-size: 0.7rem; font-weight: 700; color: #8A94A6; text-transform: uppercase; margin-top: 4px; }
 
-    .section-title { font-size: 0.85rem; font-weight: 800; color: #4A5568; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.05em; }
+    /* Recent activity */
+    .sec-label { font-size: 0.75rem; font-weight: 800; color: #8A94A6; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+    .activity-card {
+      background: #fff; border-radius: 12px; padding: 14px;
+      border: 1px solid #EEF2F7; margin-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .activity-title { font-size: 0.85rem; font-weight: 700; color: #1A2B4A; }
+    .activity-sub { font-size: 0.72rem; color: #8A94A6; margin-top: 2px; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 700; }
+    .badge-green { background: #E6F9F0; color: #1E7C50; }
+    .badge-red { background: #FEE8E8; color: #C0392B; }
+    .badge-yellow { background: #FFF8E1; color: #B7860D; }
 
-    .qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-    .qa-btn {
-      background: #FFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 16px 12px;
-      text-align: center; text-decoration: none; color: #1A2B4A; font-weight: 700;
-      font-size: 0.85rem; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-      transition: transform 0.2s, box-shadow 0.2s;
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
+      display: flex; justify-content: space-around; align-items: center;
+      padding: 8px 0 20px; border-top: 1px solid #EEF2F7;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.06); z-index: 100;
     }
-    .qa-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
-    .qa-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
-
-    /* Bottom Nav Modernization */
-    .bnav {
-      position: fixed; bottom: 0; left: 0; right: 0; background: #FFF;
-      display: flex; justify-content: space-around; padding: 10px 5px 25px;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000; border-top: 1px solid #E2E8F0;
+    .bn-item {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      color: #AAB4C4; text-decoration: none; font-size: 0.6rem; font-weight: 700;
+      padding: 0 10px;
     }
-    .bnav-item {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      color: #A0AEC0; text-decoration: none; font-size: 0.65rem; font-weight: 700; flex: 1;
-    }
-    .bnav-item.active { color: #1A2B4A; }
-    .bnav-icon { font-size: 1.3rem; }
-    .bnav-main-wrap { position: relative; top: -20px; }
-    .bnav-main {
-      width: 56px; height: 56px; background: #4A7C6F; border-radius: 50%;
+    .bn-item.active { color: #1A2B4A; }
+    .bn-icon { font-size: 1.3rem; line-height: 1; }
+    .bn-van { width: 26px; height: 18px; object-fit: cover; border-radius: 4px; }
+    .bn-center-btn {
+      width: 52px; height: 52px; background: #4A7C6F; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      color: #FFF; font-size: 1.8rem; box-shadow: 0 4px 12px rgba(74, 124, 111, 0.4);
-      border: 4px solid #FFF;
+      font-size: 1.6rem; color: #fff; text-decoration: none;
+      box-shadow: 0 4px 12px rgba(74,124,111,0.4);
+      margin-top: -20px; border: 3px solid #F5F7FA;
     }
   </style>
 </head>
 <body>
-  <div class="main-container" style="padding: 20px;">
-    
-    <div class="hero-header">
-      <div class="hero-title">Hola, Admin</div>
-      <div class="hero-subtitle">Resumen operativo del día</div>
+  <div class="top-header">
+    <div class="top-header-info">
+      <div class="top-header-title">Control Operativo</div>
+      <div class="top-header-sub">Resumen del dia</div>
     </div>
+    <div>
+      <button onclick="doLogout()" style="background:rgba(255,255,255,0.15);border:none;color:#fff;padding:6px 12px;border-radius:8px;font-size:0.78rem;cursor:pointer;">Salir</button>
+    </div>
+  </div>
 
+  <div class="content-wrap">
     <div class="metrics-grid">
       <div class="metric-card">
-        <div class="metric-icon-wrap bg-blue">📦</div>
-        <div>
-          <div class="metric-value" id="metOrdenesHoy">-</div>
-          <div class="metric-label">Órdenes Hoy</div>
-        </div>
+        <div class="mi-wrap bg-blue">📦</div>
+        <div class="metric-val" id="metOrdenes">-</div>
+        <div class="metric-lbl">Ordenes Hoy</div>
       </div>
       <div class="metric-card">
-        <div class="metric-icon-wrap bg-green">📋</div>
-        <div>
-          <div class="metric-value" id="metInspecciones">-</div>
-          <div class="metric-label">Inspecciones</div>
-        </div>
+        <div class="mi-wrap bg-green">📋</div>
+        <div class="metric-val" id="metInspecciones">-</div>
+        <div class="metric-lbl">Inspecciones</div>
       </div>
       <div class="metric-card">
-        <div class="metric-icon-wrap bg-orange">⚠️</div>
-        <div>
-          <div class="metric-value" id="metGarantias">-</div>
-          <div class="metric-label">Garantías %</div>
-        </div>
+        <div class="mi-wrap bg-orange">⚠️</div>
+        <div class="metric-val" id="metGarantias">-</div>
+        <div class="metric-lbl">Garantias %</div>
       </div>
       <div class="metric-card">
-        <div class="metric-icon-wrap bg-purple">⭐</div>
-        <div>
-          <div class="metric-value" id="metCalidad">-</div>
-          <div class="metric-label">Calidad Prom.</div>
-        </div>
+        <div class="mi-wrap bg-purple">⭐</div>
+        <div class="metric-val" id="metCalidad">-</div>
+        <div class="metric-lbl">Calidad Prom.</div>
       </div>
     </div>
 
-    <div class="section-title">Accesos Rápidos</div>
-    <div class="qa-grid">
-      <a href="/app/inspection_form.html" class="qa-btn">
-        <span class="qa-icon">📋</span> Nueva Inspección
-      </a>
-      <a href="/app/moviles.html" class="qa-btn">
-        <span class="qa-icon"><img src="/app/img/van.jpg" style="width:36px; border-radius:6px;"></span> Mis Móviles
-      </a>
-      <a href="/app/metricas.html" class="qa-btn">
-        <span class="qa-icon">📊</span> Métricas
-      </a>
-      <a href="/app/configuracion.html" class="qa-btn">
-        <span class="qa-icon">⚙️</span> Configuración
-      </a>
-    </div>
-
+    <div class="sec-label">Actividad Reciente</div>
+    <div id="activityList"><div class="activity-card"><div class="activity-title" style="color:#AAB4C4;">Cargando...</div></div></div>
   </div>
 
   <!-- Bottom Navigation -->
-  <nav class="bnav">
-    <a href="/app/dashboard.html" class="bnav-item active">
-      <span class="bnav-icon">🏠</span><span>INICIO</span>
+  <nav class="bottom-nav">
+    <a href="/app/moviles.html" class="bn-item">
+      <span class="bn-icon"><img src="/app/img/van.jpg" alt="Moviles" class="bn-van"></span>
+      <span>MOVILES</span>
     </a>
-    <a href="/app/moviles.html" class="bnav-item">
-      <span class="bnav-icon"><img src="/app/img/van.jpg" style="width:24px; border-radius:4px;"></span><span>MÓVILES</span>
+    <a href="/app/inspecciones.html" class="bn-item">
+      <span class="bn-icon">📋</span><span>LISTA</span>
     </a>
-    <a href="/app/inspection_form.html" class="bnav-item bnav-main-wrap">
-      <div class="bnav-main">➕</div>
+    <a href="/app/inspection_form.html" class="bn-center-btn">➕</a>
+    <a href="/app/metricas.html" class="bn-item">
+      <span class="bn-icon">📊</span><span>METRICAS</span>
     </a>
-    <a href="/app/inspecciones.html" class="bnav-item">
-      <span class="bnav-icon">📋</span><span>LISTA</span>
-    </a>
-    <a href="/app/metricas.html" class="bnav-item">
-      <span class="bnav-icon">📊</span><span>MÉTRICAS</span>
+    <a href="/app/configuracion.html" class="bn-item">
+      <span class="bn-icon">⚙️</span><span>CONFIG</span>
     </a>
   </nav>
 
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const token = localStorage.getItem('cm_token');
-      if (!token) { window.location.href = '/app/login.html'; return; }
+    const API = '/api/v1';
+    const token = localStorage.getItem('cm_token');
+    if (!token) window.location.replace('/app/login.html');
+
+    function doLogout() {
+      localStorage.removeItem('cm_token');
+      window.location.replace('/app/login.html');
+    }
+
+    async function loadDash() {
+      try {
+        const r = await fetch(API + '/dashboard/stats', { headers: { 'Authorization': 'Bearer ' + token } });
+        if (r.status === 401) { window.location.replace('/app/login.html'); return; }
+        const d = await r.json();
+        document.getElementById('metOrdenes').textContent = d.ordenes_hoy ?? '0';
+        document.getElementById('metInspecciones').textContent = d.inspecciones_hoy ?? '0';
+        document.getElementById('metGarantias').textContent = (d.garantias_pct ?? '0') + '%';
+        document.getElementById('metCalidad').textContent = d.calidad_promedio ?? '0';
+      } catch(e) { console.error(e); }
 
       try {
-        const r = await fetch('/api/v1/dashboard/stats', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (r.status === 401) { window.location.href = '/app/login.html'; return; }
-        const data = await r.json();
-        
-        document.getElementById('metOrdenesHoy').textContent = data.ordenes_hoy ?? '0';
-        document.getElementById('metInspecciones').textContent = data.inspecciones_hoy ?? '0';
-        document.getElementById('metGarantias').textContent = (data.garantias_pct ?? '0') + '%';
-        document.getElementById('metCalidad').textContent = (data.calidad_promedio ?? '0');
-      } catch (err) {
-        console.error('Error fetching dashboard stats:', err);
-      }
-    });
+        const r2 = await fetch(API + '/inspections?limit=5', { headers: { 'Authorization': 'Bearer ' + token } });
+        const data = await r2.json();
+        const list = document.getElementById('activityList');
+        if (!data || !data.length) {
+          list.innerHTML = '<div class="activity-card"><div class="activity-title" style="color:#AAB4C4;">Sin inspecciones recientes</div></div>';
+          return;
+        }
+        list.innerHTML = data.map(i => {
+          const cls = i.general_result === 'Cumple' ? 'badge-green' : i.general_result === 'No cumple' ? 'badge-red' : 'badge-yellow';
+          return '<div class="activity-card"><div><div class="activity-title">' + (i.order_number || i.inspection_code || '-') + '</div><div class="activity-sub">' + (i.mobile_code || '') + ' &bull; ' + (i.inspection_date || '') + '</div></div><span class="badge ' + cls + '">' + (i.general_result || '-') + '</span></div>';
+        }).join('');
+      } catch(e) { console.error(e); }
+    }
+
+    loadDash();
   </script>
 </body>
 </html>

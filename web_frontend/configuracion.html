@@ -3,435 +3,435 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configuración – Control Operativo</title>
-  <link rel="stylesheet" href="/app/css/style.css?v=4">
+  <title>Configuracion - Control Operativo</title>
+  <link rel="stylesheet" href="/app/css/style.css?v=6">
   <style>
-    .sec-title {
-      font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em;
-      color: var(--muted); text-transform: uppercase; margin: 24px 0 10px;
+    body { background: #F5F7FA; font-family: 'Inter', sans-serif; margin: 0; }
+    .top-bar { background: #fff; border-bottom: 1px solid #EEF2F7; padding: 16px 20px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
+    .back-btn { font-size: 1.2rem; text-decoration: none; color: #1A2B4A; }
+    .top-bar strong { font-size: 1rem; font-weight: 800; color: #1A2B4A; }
+
+    .content { padding: 16px 16px 90px; }
+    .sec-label { font-size: 0.72rem; font-weight: 800; color: #8A94A6; text-transform: uppercase; letter-spacing: 0.06em; margin: 20px 0 10px; }
+
+    /* Action cards */
+    .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 4px; }
+    .action-card {
+      background: #fff; border-radius: 14px; border: 1px solid #EEF2F7;
+      padding: 16px 12px; display: flex; flex-direction: column; align-items: center;
+      cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: all 0.15s;
     }
-    .config-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px 16px; margin-bottom: 8px;
+    .action-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: #4A7C6F; }
+    .ac-icon { font-size: 1.6rem; margin-bottom: 8px; }
+    .ac-label { font-size: 0.82rem; font-weight: 700; color: #1A2B4A; text-align: center; }
+
+    /* Export card - full width */
+    .export-card {
+      background: #fff; border-radius: 14px; border: 1px solid #EEF2F7;
+      padding: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); margin-bottom: 8px;
+    }
+    .export-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .export-icon { font-size: 1.4rem; }
+    .export-title { font-weight: 700; color: #1A2B4A; font-size: 0.9rem; }
+    .export-sub { font-size: 0.72rem; color: #8A94A6; }
+    .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .date-row label { font-size: 0.72rem; font-weight: 700; color: #8A94A6; display: block; margin-bottom: 4px; }
+    .date-row input { width: 100%; padding: 8px 10px; border: 1px solid #DEE2E8; border-radius: 8px; font-size: 0.82rem; box-sizing: border-box; }
+
+    /* List cards */
+    .list-card {
+      background: #fff; border: 1px solid #EEF2F7; border-radius: 12px;
+      padding: 14px 16px; margin-bottom: 8px;
       display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
-    .config-card strong { font-size: 0.9rem; color: var(--navy, #1A2B4A); }
-    .config-card small { font-size: 0.73rem; color: var(--muted); }
+    .list-card-info { flex: 1; }
+    .list-card-info strong { font-size: 0.88rem; color: #1A2B4A; display: block; }
+    .list-card-info small { font-size: 0.72rem; color: #8A94A6; }
+    .btn-ver { background: #F5F7FA; border: 1px solid #DEE2E8; border-radius: 8px; padding: 5px 10px; font-size: 0.72rem; font-weight: 700; color: #1A2B4A; text-decoration: none; cursor: pointer; }
 
-    /* ── Editor de Formulario ── */
-    .q-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px; margin-bottom: 10px;
-    }
-    .q-card-top { display: flex; gap: 8px; align-items: flex-start; }
-    .q-num {
-      font-weight: 800; font-size: 0.85rem;
-      color: var(--navy, #1A2B4A); min-width: 24px; padding-top: 8px;
-    }
-    .q-text-input {
-      flex: 1; padding: 8px 12px; border: 1px solid var(--border);
-      border-radius: 8px; font-size: 0.88rem; font-family: inherit;
-      background: var(--bg-input, #FAFBFD); resize: vertical; min-height: 48px;
-    }
-    .q-text-input:focus { outline: none; border-color: var(--navy, #1A2B4A); }
-    .q-move-btns { display: flex; flex-direction: column; gap: 2px; }
-    .q-move-btns button {
-      width: 26px; height: 22px; border: 1px solid var(--border);
-      border-radius: 4px; background: var(--bg-card2); cursor: pointer;
-      font-size: 0.65rem; color: var(--muted); display: flex;
-      align-items: center; justify-content: center;
-    }
-    .q-move-btns button:hover { background: var(--navy, #1A2B4A); color: #fff; }
-    .q-del {
-      width: 30px; height: 30px; border: none; background: transparent;
-      cursor: pointer; color: var(--danger, #8B3A3A); font-size: 1rem;
-      padding-top: 6px; flex-shrink: 0;
-    }
-    .q-options {
-      display: flex; gap: 8px; flex-wrap: wrap;
-      margin-top: 10px; padding-top: 10px;
-      border-top: 1px dashed var(--border);
-    }
-    .q-opt-btn {
-      padding: 5px 10px; border: 1.5px solid var(--border);
-      border-radius: 20px; font-size: 0.75rem; font-weight: 600;
-      cursor: pointer; background: var(--bg-card2); color: var(--muted);
-      transition: all 0.15s;
-    }
-    .q-opt-btn.active-photo { background: #1C3D4F; color: #fff; border-color: #1C3D4F; }
-    .q-opt-btn.active-obs   { background: #4A7C6F; color: #fff; border-color: #4A7C6F; }
-    .q-opt-btn.active-na    { background: #6B7A8F; color: #fff; border-color: #6B7A8F; }
+    /* Checklist editor */
+    .editor-card { background: #fff; border-radius: 14px; border: 1px solid #EEF2F7; padding: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    .editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .editor-title { font-weight: 700; color: #1A2B4A; font-size: 0.9rem; }
+    .editor-sub { font-size: 0.72rem; color: #8A94A6; margin-top: 2px; }
+    .toggle-btn { background: #F5F7FA; border: 1px solid #DEE2E8; border-radius: 8px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; color: #1A2B4A; cursor: pointer; }
 
-    .add-q-row {
-      display: flex; gap: 8px; margin-top: 12px;
-    }
-    .add-q-row input {
-      flex: 1; padding: 10px 14px; border: 1px solid var(--border);
-      border-radius: 10px; font-size: 0.88rem; font-family: inherit;
-      background: var(--bg-input, #FAFBFD);
-    }
-    .preview-badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 0.68rem; font-weight: 700; padding: 2px 6px;
-      border-radius: 4px; margin-left: 4px;
-    }
-    .badge-photo { background: #D6E4EE; color: #1C3D4F; }
-    .badge-obs   { background: #E6F0EE; color: #4A7C6F; }
-    .badge-rate  { background: #F4EDD6; color: #8F6B1A; }
-  
-    /* QA Grid Fix */
-    .quick-access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-    .qa-card {
-      background: #FFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 16px 12px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-      transition: all 0.2s;
-    }
-    .qa-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-color: #4A7C6F; }
-    .qa-icon {
-      width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; margin-bottom: 8px; background: #F7FAFC;
-    }
-    .qa-label { font-size: 0.85rem; font-weight: 700; color: #1A2B4A; text-align: center; }
+    .q-card { background: #F9FAFB; border: 1px solid #EEF2F7; border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+    .q-top { display: flex; gap: 8px; align-items: flex-start; }
+    .q-num { font-weight: 800; font-size: 0.8rem; color: #1A2B4A; padding-top: 8px; min-width: 22px; }
+    .q-textarea { flex: 1; padding: 7px 10px; border: 1px solid #DEE2E8; border-radius: 8px; font-size: 0.82rem; font-family: inherit; resize: vertical; min-height: 44px; background: #fff; }
+    .q-moves { display: flex; flex-direction: column; gap: 3px; }
+    .q-move-btn { width: 24px; height: 20px; border: 1px solid #DEE2E8; border-radius: 4px; background: #fff; cursor: pointer; font-size: 0.6rem; color: #8A94A6; }
+    .q-move-btn:hover { background: #1A2B4A; color: #fff; }
+    .q-del { width: 28px; height: 28px; border: none; background: transparent; cursor: pointer; color: #E05252; font-size: 1rem; padding-top: 4px; }
+    .q-opts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #EEF2F7; }
+    .q-opt { padding: 4px 8px; border: 1.5px solid #DEE2E8; border-radius: 20px; font-size: 0.7rem; font-weight: 700; cursor: pointer; background: #F9FAFB; color: #8A94A6; }
+    .q-opt.ap { background: #1C3D4F; color: #fff; border-color: #1C3D4F; }
+    .q-opt.ao { background: #4A7C6F; color: #fff; border-color: #4A7C6F; }
+    .q-opt.an { background: #6B7A8F; color: #fff; border-color: #6B7A8F; }
+    .add-q { display: flex; gap: 8px; margin-top: 10px; }
+    .add-q input { flex: 1; padding: 9px 12px; border: 1px solid #DEE2E8; border-radius: 10px; font-size: 0.82rem; font-family: inherit; background: #F9FAFB; }
+    .save-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+    .saved-ok { display: none; margin-top: 10px; text-align: center; background: #E6F9F0; color: #1E7C50; border-radius: 8px; padding: 8px; font-weight: 700; font-size: 0.8rem; }
 
+    /* Modals */
+    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: flex-end; }
+    .modal-bg.open { display: flex; }
+    .modal-sheet { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 20px 40px; width: 100%; box-sizing: border-box; max-height: 90vh; overflow-y: auto; }
+    .modal-handle { width: 36px; height: 4px; background: #DEE2E8; border-radius: 2px; margin: 0 auto 20px; }
+    .modal-title { font-weight: 800; font-size: 1.05rem; color: #1A2B4A; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .fgroup { margin-bottom: 14px; }
+    .fgroup label { display: block; font-size: 0.75rem; font-weight: 700; color: #8A94A6; margin-bottom: 5px; text-transform: uppercase; }
+    .fgroup input, .fgroup select, .fgroup textarea { width: 100%; padding: 10px 12px; border: 1px solid #DEE2E8; border-radius: 10px; font-size: 0.88rem; font-family: inherit; background: #F9FAFB; box-sizing: border-box; }
+    .fgroup input:focus, .fgroup select:focus { outline: none; border-color: #1A2B4A; background: #fff; }
+
+    /* Buttons */
+    .btn-primary { background: #1A2B4A; color: #fff; border: none; border-radius: 10px; padding: 12px; font-size: 0.88rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 4px; }
+    .btn-secondary { background: #F5F7FA; color: #1A2B4A; border: 1px solid #DEE2E8; border-radius: 10px; padding: 12px; font-size: 0.88rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; }
+    .btn-export { background: #1E7C50; color: #fff; border: none; border-radius: 10px; padding: 11px; font-size: 0.85rem; font-weight: 700; cursor: pointer; width: 100%; }
+    .btn-export:hover { background: #166640; }
+
+    /* Bottom Nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; display: flex; justify-content: space-around; align-items: center; padding: 8px 0 20px; border-top: 1px solid #EEF2F7; box-shadow: 0 -4px 12px rgba(0,0,0,0.06); z-index: 100; }
+    .bn-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #AAB4C4; text-decoration: none; font-size: 0.6rem; font-weight: 700; padding: 0 10px; }
+    .bn-item.active { color: #1A2B4A; }
+    .bn-icon { font-size: 1.3rem; line-height: 1; }
+    .bn-van { width: 26px; height: 18px; object-fit: cover; border-radius: 4px; }
+    .bn-center-btn { width: 52px; height: 52px; background: #4A7C6F; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #fff; text-decoration: none; box-shadow: 0 4px 12px rgba(74,124,111,0.4); margin-top: -20px; border: 3px solid #F5F7FA; }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <a href="/app/dashboard.html" class="back-link">←</a>
-    <strong style="font-size:1.05rem;">CONFIGURACIÓN</strong>
+    <a href="/app/dashboard.html" class="back-btn">←</a>
+    <strong>CONFIGURACION</strong>
   </div>
 
-  <main class="main-container" style="margin-top:16px; padding-bottom:80px;">
-
-    <!-- ── Acciones rápidas ── -->
-    <div class="quick-access-grid" style="margin-bottom:8px;">
-      <button class="qa-card" onclick="openAddMobileModal()">
-        <div class="qa-icon" style="background:var(--teal-dim,rgba(26,43,74,.1)); color:var(--navy,#1A2B4A);">
-          <img src="/app/img/van.jpg" alt="Movil" style="width:32px;height:22px;object-fit:cover;border-radius:4px;">
-        </div>
-        <div class="qa-label">+ Nueva Móvil</div>
-      </button>
-      <button class="qa-card" onclick="openAddTechModal()">
-        <div class="qa-icon">👤</div>
-        <div class="qa-label">+ Nuevo Técnico</div>
-      </button>
+  <div class="content">
+    <!-- Action Buttons -->
+    <div class="sec-label">Agregar</div>
+    <div class="action-row">
+      <div class="action-card" onclick="openModal('modalMovil')">
+        <div class="ac-icon"><img src="/app/img/van.jpg" style="width:40px;border-radius:6px;"></div>
+        <div class="ac-label">+ Nueva Movil</div>
+      </div>
+      <div class="action-card" onclick="openModal('modalTecnico')">
+        <div class="ac-icon">👤</div>
+        <div class="ac-label">+ Nuevo Tecnico</div>
+      </div>
     </div>
 
-    <!-- ── Técnicos ── -->
-    <div class="sec-title">👥 Técnicos registrados</div>
-    <div id="techConfigList"><p class="text-muted text-sm">Cargando...</p></div>
-
-    <!-- ── Móviles ── -->
-    <div class="sec-title"><img src="/app/img/van.jpg" alt="Movil" style="width:16px;height:11px;object-fit:cover;border-radius:2px;vertical-align:middle;"> Móviles registradas</div>
-    <div id="mobileConfigList"><p class="text-muted text-sm">Cargando...</p></div>
-
-    <!-- ── Editor de Formulario de Inspección ── -->
-    <div class="sec-title">📋 Formulario de Inspección</div>
-    <div class="form-card" style="padding:18px; margin-bottom:16px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+    <!-- Export Section -->
+    <div class="sec-label">Exportar Registros</div>
+    <div class="export-card">
+      <div class="export-header">
+        <div class="export-icon">📊</div>
         <div>
-          <div style="font-weight:700; color:var(--navy,#1A2B4A); font-size:0.95rem;">Editor de Preguntas</div>
-          <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">Arrastra, edita, agrega o quita preguntas</div>
+          <div class="export-title">Descargar Inspecciones (Excel)</div>
+          <div class="export-sub">Exporta todos los registros por rango de fechas</div>
         </div>
-        <button class="btn btn-sm btn-secondary" onclick="toggleEditor()" id="editorToggleBtn">▶ Abrir</button>
       </div>
-
-      <div id="formEditor" style="display:none;">
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; font-size:0.72rem;">
-          <span class="preview-badge badge-photo">📸 Foto</span> requiere foto
-          <span class="preview-badge badge-obs">💬 Obs.</span> campo de observación
-          <span class="preview-badge badge-rate">★ Calif.</span> solo calificar
+      <div class="date-row">
+        <div>
+          <label>Fecha Inicio</label>
+          <input type="date" id="expFrom">
         </div>
-
-        <div id="questionsList"></div>
-
-        <div class="add-q-row">
-          <input type="text" id="newQText" placeholder="Escribe aquí la nueva pregunta...">
-          <button class="btn btn-primary" onclick="addQuestion()">+ Agregar</button>
+        <div>
+          <label>Fecha Fin</label>
+          <input type="date" id="expTo">
         </div>
+      </div>
+      <button class="btn-export" onclick="exportExcel()">📥 Descargar Excel</button>
+    </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px;">
-          <button class="btn btn-primary" onclick="saveChecklist()" style="background:var(--navy,#1A2B4A);">
-            💾 Guardar Formulario
-          </button>
-          <button class="btn btn-secondary" onclick="resetChecklist()" style="color:var(--danger,#8B3A3A); border-color:var(--danger,#8B3A3A);">
-            ↩ Restaurar Default
-          </button>
-        </div>
+    <!-- Tecnicos -->
+    <div class="sec-label">Tecnicos Registrados</div>
+    <div id="techList"><div class="list-card"><div class="list-card-info"><small style="color:#AAB4C4;">Cargando...</small></div></div></div>
 
-        <div id="savedMsg" style="display:none; margin-top:10px; text-align:center;
-          background:#E6F0EE; color:#4A7C6F; border-radius:8px; padding:8px; font-weight:700; font-size:0.82rem;">
-          ✅ Formulario guardado — se aplicará en la próxima inspección
+    <!-- Moviles -->
+    <div class="sec-label"><img src="/app/img/van.jpg" style="width:14px;border-radius:2px;vertical-align:middle;"> Moviles Registradas</div>
+    <div id="mobileList"><div class="list-card"><div class="list-card-info"><small style="color:#AAB4C4;">Cargando...</small></div></div></div>
+
+    <!-- Checklist Editor -->
+    <div class="sec-label">Formulario de Inspeccion</div>
+    <div class="editor-card">
+      <div class="editor-header">
+        <div>
+          <div class="editor-title">Editor de Preguntas</div>
+          <div class="editor-sub">Edita, reordena o agrega preguntas al formulario</div>
         </div>
+        <button class="toggle-btn" id="edBtn" onclick="toggleEditor()">Abrir ▶</button>
+      </div>
+      <div id="editorBody" style="display:none;">
+        <div id="qList"></div>
+        <div class="add-q">
+          <input type="text" id="newQText" placeholder="Nueva pregunta...">
+          <button class="btn-primary" style="width:auto;padding:9px 14px;margin:0;" onclick="addQ()">+ Agregar</button>
+        </div>
+        <div class="save-strip">
+          <button class="btn-primary" style="margin:0;" onclick="saveChecklist()">💾 Guardar</button>
+          <button class="btn-secondary" style="margin:0;" onclick="resetChecklist()">↩ Restaurar</button>
+        </div>
+        <div class="saved-ok" id="savedMsg">✅ Formulario guardado con exito</div>
       </div>
     </div>
-  </main>
+  </div>
 
-  <!-- Modals -->
-  <div class="modal-overlay" id="addMobileModal">
+  <!-- Modal: Nueva Movil -->
+  <div class="modal-bg" id="modalMovil">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title"><img src="/app/img/van.jpg" alt="Movil" style="width:20px;height:14px;object-fit:cover;border-radius:3px;"> Nueva Móvil</div>
-      <div class="form-group"><label>Código *</label><input id="mCode" class="input-control" placeholder="Ej. M201"></div>
-      <div class="form-group"><label>Zona *</label>
-        <select id="mZone" class="select-control">
-          <option value="Chiriquí">Chiriquí</option>
+      <div class="modal-title"><img src="/app/img/van.jpg" style="width:22px;border-radius:4px;"> Nueva Movil</div>
+      <div class="fgroup"><label>Codigo *</label><input id="mCode" placeholder="Ej. M205"></div>
+      <div class="fgroup"><label>Zona *</label>
+        <select id="mZone">
+          <option value="Chiriqui">Chiriqui</option>
           <option value="Santiago">Santiago</option>
-          <option value="Panamá">Panamá</option>
+          <option value="Panama">Panama</option>
         </select>
       </div>
-      <div class="form-group"><label>Modelo</label><input id="mModel" class="input-control" placeholder="Ej. Chevrolet Express 2022"></div>
-      <div class="form-group"><label>Placa</label><input id="mPlate" class="input-control" placeholder="Ej. AB-1234"></div>
-      <div class="form-group"><label>Estado</label>
-        <select id="mStatus" class="select-control">
-          <option value="activa">✅ Activa</option>
-          <option value="mantenimiento">🔧 Mantenimiento</option>
-          <option value="inactiva">❌ Inactiva</option>
+      <div class="fgroup"><label>Modelo del Vehiculo</label><input id="mModel" placeholder="Ej. Chevrolet Express 2022"></div>
+      <div class="fgroup"><label>Placa</label><input id="mPlate" placeholder="Ej. AB-1234"></div>
+      <div class="fgroup"><label>Estado</label>
+        <select id="mStatus">
+          <option value="activa">Activa</option>
+          <option value="mantenimiento">En Mantenimiento</option>
+          <option value="inactiva">Inactiva</option>
         </select>
       </div>
-      <button class="btn btn-primary btn-full" onclick="saveMobile()" style="background:var(--navy,#1A2B4A);">Guardar Móvil</button>
-      <button class="btn btn-secondary btn-full" onclick="closeModal('addMobileModal')" style="margin-top:8px;">Cancelar</button>
+      <button class="btn-primary" onclick="saveMobile()">Guardar Movil</button>
+      <button class="btn-secondary" onclick="closeModal('modalMovil')">Cancelar</button>
     </div>
   </div>
 
-  <div class="modal-overlay" id="addTechModal">
+  <!-- Modal: Nuevo Tecnico -->
+  <div class="modal-bg" id="modalTecnico">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">👤 Nuevo Técnico</div>
-      <div class="form-group"><label>Nombre completo *</label><input id="tName" class="input-control" placeholder="Ej. Juan Pérez"></div>
-      <div class="form-group"><label>Estado</label>
-        <select id="tStatus" class="select-control">
-          <option value="activo">✅ Activo</option>
-          <option value="inactivo">❌ Inactivo</option>
+      <div class="modal-title">👤 Nuevo Tecnico</div>
+      <div class="fgroup"><label>Nombre Completo *</label><input id="tName" placeholder="Ej. Juan Perez"></div>
+      <div class="fgroup"><label>Zona / Area</label>
+        <select id="tZone">
+          <option value="Chiriqui">Chiriqui</option>
+          <option value="Santiago">Santiago</option>
+          <option value="Panama">Panama</option>
         </select>
       </div>
-      <div class="form-group"><label>Notas</label><textarea id="tNotes" class="input-control" rows="2"></textarea></div>
-      <button class="btn btn-primary btn-full" onclick="saveTech()" style="background:var(--navy,#1A2B4A);">Guardar Técnico</button>
-      <button class="btn btn-secondary btn-full" onclick="closeModal('addTechModal')" style="margin-top:8px;">Cancelar</button>
+      <div class="fgroup"><label>Estado</label>
+        <select id="tStatus">
+          <option value="activo">Activo</option>
+          <option value="inactivo">Inactivo</option>
+        </select>
+      </div>
+      <div class="fgroup"><label>Notas</label><textarea id="tNotes" rows="2" placeholder="Opcional..."></textarea></div>
+      <button class="btn-primary" onclick="saveTech()">Guardar Tecnico</button>
+      <button class="btn-secondary" onclick="closeModal('modalTecnico')">Cancelar</button>
     </div>
   </div>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <a href="/app/moviles.html" class="bn-item">
+      <span class="bn-icon"><img src="/app/img/van.jpg" alt="Moviles" class="bn-van"></span><span>MOVILES</span>
+    </a>
+    <a href="/app/inspecciones.html" class="bn-item">
+      <span class="bn-icon">📋</span><span>LISTA</span>
+    </a>
+    <a href="/app/inspection_form.html" class="bn-center-btn">➕</a>
+    <a href="/app/metricas.html" class="bn-item">
+      <span class="bn-icon">📊</span><span>METRICAS</span>
+    </a>
+    <a href="/app/configuracion.html" class="bn-item active">
+      <span class="bn-icon">⚙️</span><span>CONFIG</span>
+    </a>
+  </nav>
 
   <script>
     const API = '/api/v1';
     const token = localStorage.getItem('cm_token');
     if (!token) window.location.replace('/app/login.html');
 
-    const DEFAULT_CHECKLIST = [
-      { text: '¿Cumplió con las normas de instalación?',                                   photo: true,  obs: false, allowNA: true  },
-      { text: '¿Utilizó rutas adecuadas de instalación?',                                  photo: false, obs: false, allowNA: true  },
-      { text: '¿Realizó las configuraciones adecuadas dentro del módem, cajas de TV y extensores?', photo: false, obs: true,  allowNA: true  },
-      { text: '¿Explicó el WiFi y la caja de TV al cliente?',                              photo: false, obs: false, allowNA: false },
-      { text: '¿Conectó al cliente al WiFi y explicó las bondades del servicio?',          photo: false, obs: false, allowNA: false },
-      { text: 'Si lleva Eero: ¿Realizó la configuración adecuada del Eero?',              photo: false, obs: false, allowNA: true  },
-      { text: 'Si lleva Eero: ¿Explicó las bondades del Eero al cliente?',                photo: false, obs: false, allowNA: true  },
-      { text: '¿Realizó bien el cableado de fibra?',                                       photo: true,  obs: false, allowNA: true  },
-      { text: '¿Realizó el recorrido correcto en NAP?',                                    photo: true,  obs: false, allowNA: true  },
-      { text: '¿Utilizó los equipos de seguridad adecuadamente? (conos, casco y arnés)',  photo: false, obs: false, allowNA: false },
-      { text: '¿Dejó limpia el área de trabajo?',                                          photo: true,  obs: false, allowNA: false },
-    ];
+    // Set default dates for export (current month)
+    const today = new Date();
+    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+    document.getElementById('expFrom').value = firstDay.toISOString().split('T')[0];
+    document.getElementById('expTo').value = today.toISOString().split('T')[0];
 
-    let checklist = [];
+    // ── Modals ──
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    document.querySelectorAll('.modal-bg').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
 
-    function loadChecklist() {
-      const stored = localStorage.getItem('cm_checklist_v2');
-      if (stored) {
-        try { checklist = JSON.parse(stored); } catch(e) { checklist = DEFAULT_CHECKLIST.map(d => ({...d})); }
-      } else {
-        const old = localStorage.getItem('cm_checklist');
-        if (old) {
-          try {
-            const arr = JSON.parse(old);
-            if (Array.isArray(arr) && typeof arr[0] === 'string') {
-              checklist = arr.map(t => ({ text: t, photo: false, obs: false, allowNA: true }));
-            } else { checklist = DEFAULT_CHECKLIST.map(d => ({...d})); }
-          } catch(e) { checklist = DEFAULT_CHECKLIST.map(d => ({...d})); }
-        } else {
-          checklist = DEFAULT_CHECKLIST.map(d => ({...d}));
-        }
+    // ── Export Excel ──
+    async function exportExcel() {
+      const from = document.getElementById('expFrom').value;
+      const to = document.getElementById('expTo').value;
+      if (!from || !to) { alert('Selecciona las fechas de inicio y fin.'); return; }
+      
+      try {
+        const r = await fetch(API + '/inspections/export?from=' + from + '&to=' + to, {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!r.ok) { alert('Error al exportar. Intenta de nuevo.'); return; }
+        const blob = await r.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Inspecciones_' + from + '_al_' + to + '.xlsx';
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch(e) {
+        console.error(e);
+        alert('Error de conexion al exportar.');
       }
     }
 
-    function renderEditor() {
-      const list = document.getElementById('questionsList');
-      if (!list) return;
-      list.innerHTML = '';
-      checklist.forEach((q, i) => {
-        const div = document.createElement('div');
-        div.className = 'q-card';
-        div.innerHTML = `
-          <div class="q-card-top">
-            <span class="q-num">${i + 1}.</span>
-            <textarea class="q-text-input" onchange="checklist[${i}].text=this.value">${q.text}</textarea>
-            <div class="q-move-btns">
-              <button onclick="moveQ(${i},-1)" title="Subir">▲</button>
-              <button onclick="moveQ(${i},1)" title="Bajar">▼</button>
-            </div>
-            <button class="q-del" onclick="delQ(${i})" title="Eliminar">✕</button>
-          </div>
-          <div class="q-options">
-            <button class="q-opt-btn ${q.photo ? 'active-photo' : ''}" onclick="toggleProp(${i},'photo',this)">📸 Llevar foto</button>
-            <button class="q-opt-btn ${q.obs   ? 'active-obs'   : ''}" onclick="toggleProp(${i},'obs',this)">💬 Observación</button>
-            <button class="q-opt-btn ${q.allowNA ? 'active-na' : ''}" onclick="toggleProp(${i},'allowNA',this)">— N/A permitido</button>
-          </div>
-        `;
-        list.appendChild(div);
+    // ── Save Mobile ──
+    async function saveMobile() {
+      const code = document.getElementById('mCode').value.trim();
+      if (!code) { alert('El codigo es obligatorio.'); return; }
+      try {
+        const r = await fetch(API + '/mobiles', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({
+            code,
+            zone: document.getElementById('mZone').value,
+            vehicle_model: document.getElementById('mModel').value.trim() || 'Chevrolet Express',
+            plate: document.getElementById('mPlate').value.trim() || null,
+            status: document.getElementById('mStatus').value,
+          })
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.detail || 'Error');
+        alert('Movil creada: ' + (d.code || code));
+        closeModal('modalMovil');
+        document.getElementById('mCode').value = '';
+        document.getElementById('mModel').value = '';
+        document.getElementById('mPlate').value = '';
+        loadLists();
+      } catch(e) { alert('Error: ' + e.message); }
+    }
+
+    // ── Save Technician ──
+    async function saveTech() {
+      const name = document.getElementById('tName').value.trim();
+      if (!name) { alert('El nombre es obligatorio.'); return; }
+      try {
+        const r = await fetch(API + '/technicians', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({
+            full_name: name,
+            status: document.getElementById('tStatus').value,
+            notes: (document.getElementById('tZone').value + ' - ' + (document.getElementById('tNotes').value.trim() || '')).trim().replace(/ - $/, ''),
+          })
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.detail || 'Error');
+        alert('Tecnico creado: ' + name);
+        closeModal('modalTecnico');
+        document.getElementById('tName').value = '';
+        document.getElementById('tNotes').value = '';
+        loadLists();
+      } catch(e) { alert('Error: ' + e.message); }
+    }
+
+    // ── Load Lists ──
+    async function loadLists() {
+      try {
+        const [rt, rm] = await Promise.all([
+          fetch(API + '/technicians', { headers: { 'Authorization': 'Bearer ' + token } }),
+          fetch(API + '/mobiles', { headers: { 'Authorization': 'Bearer ' + token } }),
+        ]);
+        const techs = await rt.json();
+        const mobiles = await rm.json();
+
+        const tl = document.getElementById('techList');
+        tl.innerHTML = !techs.length
+          ? '<p style="color:#AAB4C4;font-size:0.82rem;padding:8px 0;">Sin tecnicos registrados.</p>'
+          : techs.map(t => '<div class="list-card"><div class="list-card-info"><strong>' + t.full_name + '</strong><small>' + t.status + (t.notes ? ' &bull; ' + t.notes : '') + '</small></div></div>').join('');
+
+        const ml = document.getElementById('mobileList');
+        ml.innerHTML = !mobiles.length
+          ? '<p style="color:#AAB4C4;font-size:0.82rem;padding:8px 0;">Sin moviles registradas.</p>'
+          : mobiles.map(m => '<div class="list-card"><img src="/app/img/van.jpg" style="width:38px;height:26px;object-fit:cover;border-radius:6px;flex-shrink:0;"><div class="list-card-info"><strong>' + m.code + ' &mdash; ' + (m.zone || '') + '</strong><small>' + (m.plate || 'Sin placa') + ' &bull; ' + m.status + '</small></div><a href="/app/movil_detalle.html?id=' + m.id + '" class="btn-ver">Ver &rarr;</a></div>').join('');
+      } catch(e) { console.error(e); }
+    }
+
+    // ── Checklist Editor ──
+    const DEFAULT_CL = [
+      {text:'¿Cumplió con las normas de instalación?',photo:true,obs:false,allowNA:true},
+      {text:'¿Utilizó rutas adecuadas de instalación?',photo:false,obs:false,allowNA:true},
+      {text:'¿Realizó las configuraciones adecuadas dentro del módem, cajas de TV y extensores?',photo:false,obs:true,allowNA:true},
+      {text:'¿Explicó el WiFi y la caja de TV al cliente?',photo:false,obs:false,allowNA:false},
+      {text:'¿Conectó al cliente al WiFi y explicó las bondades del servicio?',photo:false,obs:false,allowNA:false},
+      {text:'Si lleva Eero: ¿Realizó la configuración adecuada del Eero?',photo:false,obs:false,allowNA:true},
+      {text:'Si lleva Eero: ¿Explicó las bondades del Eero al cliente?',photo:false,obs:false,allowNA:true},
+      {text:'¿Realizó bien el cableado de fibra?',photo:true,obs:false,allowNA:true},
+      {text:'¿Realizó el recorrido correcto en NAP?',photo:true,obs:false,allowNA:true},
+      {text:'¿Utilizó los equipos de seguridad adecuadamente? (conos, casco y arnés)',photo:false,obs:false,allowNA:false},
+      {text:'¿Dejó limpia el área de trabajo?',photo:true,obs:false,allowNA:false}
+    ];
+    let cl = [];
+
+    function loadCL() {
+      try { const s = localStorage.getItem('cm_checklist_v2'); if(s) { cl = JSON.parse(s); return; } } catch(e) {}
+      cl = DEFAULT_CL.map(d => ({...d}));
+    }
+
+    function renderCL() {
+      const ql = document.getElementById('qList');
+      ql.innerHTML = '';
+      cl.forEach((q, i) => {
+        const d = document.createElement('div');
+        d.className = 'q-card';
+        d.innerHTML = '<div class="q-top"><span class="q-num">' + (i+1) + '.</span><textarea class="q-textarea" onchange="cl[' + i + '].text=this.value">' + q.text + '</textarea><div class="q-moves"><button class="q-move-btn" onclick="moveQ(' + i + ',-1)">▲</button><button class="q-move-btn" onclick="moveQ(' + i + ',1)">▼</button></div><button class="q-del" onclick="delQ(' + i + ')">✕</button></div><div class="q-opts"><button class="q-opt ' + (q.photo?'ap':'') + '" onclick="toggleProp(' + i + ','photo',this)">📸 Foto</button><button class="q-opt ' + (q.obs?'ao':'') + '" onclick="toggleProp(' + i + ','obs',this)">💬 Obs.</button><button class="q-opt ' + (q.allowNA?'an':'') + '" onclick="toggleProp(' + i + ','allowNA',this)">— N/A</button></div>';
+        ql.appendChild(d);
       });
     }
 
-    window.toggleEditor = function() {
-      const ed = document.getElementById('formEditor');
-      const btn = document.getElementById('editorToggleBtn');
-      if (ed.style.display === 'none') {
-        ed.style.display = 'block';
-        btn.textContent = '▼ Cerrar';
-        renderEditor();
-      } else {
-        ed.style.display = 'none';
-        btn.textContent = '▶ Abrir';
-      }
-    };
+    function toggleEditor() {
+      const b = document.getElementById('editorBody');
+      const btn = document.getElementById('edBtn');
+      const open = b.style.display !== 'none';
+      b.style.display = open ? 'none' : 'block';
+      btn.textContent = open ? 'Abrir ▶' : 'Cerrar ▼';
+      if (!open) renderCL();
+    }
 
-    window.moveQ = function(i, dir) {
-      const j = i + dir;
-      if (j < 0 || j >= checklist.length) return;
-      [checklist[i], checklist[j]] = [checklist[j], checklist[i]];
-      renderEditor();
-    };
-
-    window.delQ = function(i) {
-      if (confirm('¿Eliminar esta pregunta?')) {
-        checklist.splice(i, 1);
-        renderEditor();
-      }
-    };
-
-    window.toggleProp = function(i, prop, btn) {
-      checklist[i][prop] = !checklist[i][prop];
-      const cls = prop === 'photo' ? 'active-photo' : prop === 'obs' ? 'active-obs' : 'active-na';
-      btn.classList.toggle(cls, checklist[i][prop]);
-    };
-
-    window.addQuestion = function() {
+    function moveQ(i, d) { const j=i+d; if(j<0||j>=cl.length)return; [cl[i],cl[j]]=[cl[j],cl[i]]; renderCL(); }
+    function delQ(i) { if(confirm('¿Eliminar esta pregunta?')){ cl.splice(i,1); renderCL(); } }
+    function toggleProp(i, prop, btn) {
+      cl[i][prop] = !cl[i][prop];
+      const c = prop==='photo'?'ap':prop==='obs'?'ao':'an';
+      btn.classList.toggle(c, cl[i][prop]);
+    }
+    function addQ() {
       const inp = document.getElementById('newQText');
       const txt = inp.value.trim();
       if (!txt) return;
-      checklist.push({ text: txt, photo: false, obs: false, allowNA: true });
+      cl.push({text:txt,photo:false,obs:false,allowNA:true});
       inp.value = '';
-      renderEditor();
-    };
-
-    window.saveChecklist = function() {
-      localStorage.setItem('cm_checklist_v2', JSON.stringify(checklist));
-      localStorage.setItem('cm_checklist', JSON.stringify(checklist.map(q => q.text)));
+      renderCL();
+    }
+    function saveChecklist() {
+      localStorage.setItem('cm_checklist_v2', JSON.stringify(cl));
+      localStorage.setItem('cm_checklist', JSON.stringify(cl.map(q=>q.text)));
       const msg = document.getElementById('savedMsg');
       msg.style.display = 'block';
       setTimeout(() => msg.style.display = 'none', 3000);
-    };
-
-    window.resetChecklist = function() {
-      if (confirm('¿Restaurar las preguntas predeterminadas? Se perderán los cambios.')) {
-        checklist = DEFAULT_CHECKLIST.map(d => ({...d}));
+    }
+    function resetChecklist() {
+      if (confirm('¿Restaurar preguntas predeterminadas?')) {
+        cl = DEFAULT_CL.map(d=>({...d}));
         localStorage.removeItem('cm_checklist_v2');
-        localStorage.removeItem('cm_checklist');
-        renderEditor();
-      }
-    };
-
-    window.openModal = function(id) { document.getElementById(id).classList.add('open'); };
-    window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
-    window.openAddMobileModal = function() { openModal('addMobileModal'); };
-    window.openAddTechModal   = function() { openModal('addTechModal');   };
-
-    document.querySelectorAll('.modal-overlay').forEach(m => {
-      m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
-    });
-
-    window.saveMobile = async function() {
-      const code = document.getElementById('mCode').value.trim();
-      if (!code) { alert('El código es obligatorio.'); return; }
-      const body = {
-        code,
-        zone:          document.getElementById('mZone').value,
-        vehicle_model: document.getElementById('mModel').value.trim() || 'Chevrolet Express',
-        plate:         document.getElementById('mPlate').value.trim() || null,
-        status:        document.getElementById('mStatus').value,
-      };
-      try {
-        const r = await fetch(`${API}/mobiles`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify(body)
-        });
-        const d = await r.json();
-        if (!r.ok) throw new Error(d.detail || 'Error');
-        alert('✅ Móvil creada: ' + (d.code || code));
-        closeModal('addMobileModal');
-        loadConfig();
-      } catch(e) { alert('❌ ' + e.message); }
-    };
-
-    window.saveTech = async function() {
-      const name = document.getElementById('tName').value.trim();
-      if (!name) { alert('El nombre es obligatorio.'); return; }
-      const body = {
-        full_name: name,
-        status:    document.getElementById('tStatus').value,
-        notes:     document.getElementById('tNotes').value.trim() || null,
-      };
-      try {
-        const r = await fetch(`${API}/technicians`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify(body)
-        });
-        const d = await r.json();
-        if (!r.ok) throw new Error(d.detail || 'Error');
-        alert('✅ Técnico creado: ' + name);
-        closeModal('addTechModal');
-        loadConfig();
-      } catch(e) { alert('❌ ' + e.message); }
-    };
-
-    async function loadConfig() {
-      try {
-        const [rt, rm] = await Promise.all([
-          fetch(`${API}/technicians`, { headers: { 'Authorization': `Bearer ${token}` } }),
-          fetch(`${API}/mobiles`,     { headers: { 'Authorization': `Bearer ${token}` } }),
-        ]);
-        if (!rt.ok || !rm.ok) throw new Error('Auth error');
-
-        const techs   = await rt.json();
-        const mobiles = await rm.json();
-
-        const tList = document.getElementById('techConfigList');
-        tList.innerHTML = techs.length ? techs.map(t => `
-          <div class="config-card">
-            <div style="flex:1;">
-              <strong>${t.full_name}</strong><br>
-              <small>${t.status} ${t.current_mobile_id ? '· En móvil #' + t.current_mobile_id : ''}</small>
-            </div>
-          </div>`).join('') : '<p class="text-muted text-sm">No hay técnicos.</p>';
-
-        const mList = document.getElementById('mobileConfigList');
-        mList.innerHTML = mobiles.length ? mobiles.map(m => `
-          <div class="config-card">
-            <img src="/app/img/van.jpg" alt="Movil" style="width:38px;height:26px;object-fit:cover;border-radius:5px;flex-shrink:0;">
-            <div style="flex:1;">
-              <strong>${m.code} — ${m.zone || 'Sin zona'}</strong><br>
-              <small>${m.plate || 'Sin placa'} · ${m.status}</small>
-            </div>
-            <a href="/app/movil_detalle.html?id=${m.id}" class="btn btn-sm btn-secondary" style="font-size:0.72rem;">Ver →</a>
-          </div>`).join('') : '<p class="text-muted text-sm">No hay móviles.</p>';
-
-      } catch(e) {
-        console.error(e);
-        if (e.message === 'Auth error') window.location.replace('/app/login.html');
+        renderCL();
       }
     }
 
-    loadChecklist();
-    loadConfig();
+    loadCL();
+    loadLists();
   </script>
 </body>
 </html>
