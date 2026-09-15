@@ -207,7 +207,7 @@
     // ── Fetch mobile data ──
     async function loadMobile() {
       try {
-        var r = await fetch(API + '/mobiles/' + mobileId, { headers: { 'Authorization': 'Bearer ' + token } });
+        var r = await fetch(API + '/mobiles/' + mobileId + '/profile', { headers: { 'Authorization': 'Bearer ' + token } });
         if (r.status === 401) { window.location.replace('/app/login.html'); return; }
         if (!r.ok) { alert('Movil no encontrada.'); window.location.replace('/app/moviles.html'); return; }
         mobileData = await r.json();
@@ -245,7 +245,7 @@
       btn.disabled = true; btn.textContent = 'Guardando...';
       try {
         var r = await fetch(API + '/mobiles/' + mobileId, {
-          method: 'PATCH',
+          method: 'PUT',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify({
             cleanliness_status: document.getElementById('sClean').value,
@@ -280,7 +280,7 @@
       var btn = this; btn.disabled = true; btn.textContent = 'Guardando...';
       try {
         var r = await fetch(API + '/mobiles/' + mobileId, {
-          method: 'PATCH',
+          method: 'PUT',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify({
             code: document.getElementById('editCode').value.trim(),
@@ -416,7 +416,7 @@
       try {
         await Promise.all(updates.map(function(u) {
           return fetch(API + '/mobiles/' + mobileId + '/inventory/' + u.id, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
             body: JSON.stringify({ status: u.status })
           });

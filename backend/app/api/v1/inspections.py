@@ -200,48 +200,6 @@ async def upload_inspection_photo(
         "message": "Fotografía guardada exitosamente"
     }
 
-@router.get("/{inspection_id}")
-def get_inspection_detail(inspection_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    insp = db.query(Inspection).filter(Inspection.id == inspection_id).first()
-    if not insp:
-        raise HTTPException(status_code=404, detail="Inspección no encontrada")
-
-    return {
-        "id": insp.id,
-        "inspection_code": insp.inspection_code,
-        "inspection_date": insp.inspection_date.isoformat(),
-        "mobile_id": insp.mobile_id,
-        "mobile_code": insp.mobile.code if insp.mobile else None,
-        "technician_id": insp.technician_id,
-        "technician_name": insp.technician.full_name if insp.technician else None,
-        "order_number": insp.order_number,
-        "order_type": insp.order_type,
-        "general_result": insp.general_result,
-        "observations": insp.observations,
-        "corrective_action": insp.corrective_action,
-        "supervisor_name": insp.supervisor.full_name if insp.supervisor else None,
-        "items": [{
-            "id": it.id,
-            "category_name": it.category_name,
-            "question_text": it.question_text,
-            "result": it.result,
-            "notes": it.notes
-        } for it in insp.items],
-        "photos": [{
-            "id": p.id,
-            "photo_url": p.photo_url,
-            "photo_type": p.photo_type,
-            "caption": p.caption,
-            "created_at": p.created_at.isoformat()
-        } for p in insp.photos],
-        "non_conformities": [{
-            "id": nc.id,
-            "category_name": nc.category_name,
-            "description": nc.description,
-            "status": nc.status
-        } for nc in insp.non_conformities]
-    }
-
 @router.get("/export")
 async def export_inspections_excel(
     from_date: str = None,
@@ -318,3 +276,46 @@ async def export_inspections_excel(
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": f"attachment; filename={filename}"}
     )
+
+@router.get("/{inspection_id}")
+def get_inspection_detail(inspection_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    insp = db.query(Inspection).filter(Inspection.id == inspection_id).first()
+    if not insp:
+        raise HTTPException(status_code=404, detail="Inspección no encontrada")
+
+    return {
+        "id": insp.id,
+        "inspection_code": insp.inspection_code,
+        "inspection_date": insp.inspection_date.isoformat(),
+        "mobile_id": insp.mobile_id,
+        "mobile_code": insp.mobile.code if insp.mobile else None,
+        "technician_id": insp.technician_id,
+        "technician_name": insp.technician.full_name if insp.technician else None,
+        "order_number": insp.order_number,
+        "order_type": insp.order_type,
+        "general_result": insp.general_result,
+        "observations": insp.observations,
+        "corrective_action": insp.corrective_action,
+        "supervisor_name": insp.supervisor.full_name if insp.supervisor else None,
+        "items": [{
+            "id": it.id,
+            "category_name": it.category_name,
+            "question_text": it.question_text,
+            "result": it.result,
+            "notes": it.notes
+        } for it in insp.items],
+        "photos": [{
+            "id": p.id,
+            "photo_url": p.photo_url,
+            "photo_type": p.photo_type,
+            "caption": p.caption,
+            "created_at": p.created_at.isoformat()
+        } for p in insp.photos],
+        "non_conformities": [{
+            "id": nc.id,
+            "category_name": nc.category_name,
+            "description": nc.description,
+            "status": nc.status
+        } for nc in insp.non_conformities]
+    }
+
