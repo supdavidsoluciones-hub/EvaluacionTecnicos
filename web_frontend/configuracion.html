@@ -4,67 +4,59 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Configuracion - Control Operativo</title>
-  <link rel="stylesheet" href="/app/css/style.css?v=6">
+  <link rel="icon" type="image/png" href="/app/img/logo.png">
+  <link rel="apple-touch-icon" href="/app/img/logo.png">
   <style>
-    body { background: #F5F7FA; font-family: 'Inter', sans-serif; margin: 0; }
-    .top-bar { background: #fff; border-bottom: 1px solid #EEF2F7; padding: 16px 20px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
-    .back-btn { font-size: 1.2rem; text-decoration: none; color: #1A2B4A; }
-    .top-bar strong { font-size: 1rem; font-weight: 800; color: #1A2B4A; }
-
-    .content { padding: 16px 16px 90px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #F5F7FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1A2B4A; }
+    .top-bar { background: #1A2B4A; color: #fff; padding: 16px 20px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 50; }
+    .back-btn { color: #fff; text-decoration: none; font-size: 1.4rem; line-height: 1; }
+    .top-bar strong { font-size: 1rem; font-weight: 800; }
+    .content { padding: 16px 16px 80px; }
     .sec-label { font-size: 0.72rem; font-weight: 800; color: #8A94A6; text-transform: uppercase; letter-spacing: 0.06em; margin: 20px 0 10px; }
+    .sec-label:first-of-type { margin-top: 4px; }
 
-    /* Action cards */
-    .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 4px; }
-    .action-card {
-      background: #fff; border-radius: 14px; border: 1px solid #EEF2F7;
-      padding: 16px 12px; display: flex; flex-direction: column; align-items: center;
-      cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: all 0.15s;
-    }
-    .action-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: #4A7C6F; }
-    .ac-icon { font-size: 1.6rem; margin-bottom: 8px; }
+    /* Action row */
+    .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ac { background: #fff; border-radius: 14px; border: 1.5px solid #EEF2F7; padding: 20px 12px 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: all 0.15s; }
+    .ac:hover { border-color: #4A7C6F; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .ac-icon { font-size: 2rem; line-height: 1; }
     .ac-label { font-size: 0.82rem; font-weight: 700; color: #1A2B4A; text-align: center; }
 
-    /* Export card - full width */
-    .export-card {
-      background: #fff; border-radius: 14px; border: 1px solid #EEF2F7;
-      padding: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); margin-bottom: 8px;
-    }
-    .export-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    /* Export card */
+    .export-card { background: #fff; border-radius: 14px; border: 1px solid #EEF2F7; padding: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    .export-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
     .export-icon { font-size: 1.4rem; }
-    .export-title { font-weight: 700; color: #1A2B4A; font-size: 0.9rem; }
+    .export-title { font-weight: 700; font-size: 0.9rem; color: #1A2B4A; }
     .export-sub { font-size: 0.72rem; color: #8A94A6; }
-    .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-    .date-row label { font-size: 0.72rem; font-weight: 700; color: #8A94A6; display: block; margin-bottom: 4px; }
-    .date-row input { width: 100%; padding: 8px 10px; border: 1px solid #DEE2E8; border-radius: 8px; font-size: 0.82rem; box-sizing: border-box; }
+    .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .date-row label { font-size: 0.72rem; font-weight: 700; color: #8A94A6; display: block; margin-bottom: 4px; text-transform: uppercase; }
+    .date-row input { width: 100%; padding: 9px 10px; border: 1px solid #DEE2E8; border-radius: 8px; font-size: 0.82rem; background: #F9FAFB; }
+    .btn-export { width: 100%; background: #1E7C50; color: #fff; border: none; border-radius: 10px; padding: 12px; font-size: 0.88rem; font-weight: 700; cursor: pointer; }
+    .btn-export:hover { background: #166640; }
+    .btn-export:disabled { background: #8A94A6; cursor: not-allowed; }
 
-    /* List cards */
-    .list-card {
-      background: #fff; border: 1px solid #EEF2F7; border-radius: 12px;
-      padding: 14px 16px; margin-bottom: 8px;
-      display: flex; align-items: center; gap: 12px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    }
+    /* Lists */
+    .list-card { background: #fff; border: 1px solid #EEF2F7; border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.03); }
     .list-card-info { flex: 1; }
     .list-card-info strong { font-size: 0.88rem; color: #1A2B4A; display: block; }
     .list-card-info small { font-size: 0.72rem; color: #8A94A6; }
-    .btn-ver { background: #F5F7FA; border: 1px solid #DEE2E8; border-radius: 8px; padding: 5px 10px; font-size: 0.72rem; font-weight: 700; color: #1A2B4A; text-decoration: none; cursor: pointer; }
+    .btn-ver { background: #F5F7FA; border: 1px solid #DEE2E8; border-radius: 8px; padding: 5px 10px; font-size: 0.72rem; font-weight: 700; color: #1A2B4A; text-decoration: none; cursor: pointer; flex-shrink: 0; }
 
     /* Checklist editor */
     .editor-card { background: #fff; border-radius: 14px; border: 1px solid #EEF2F7; padding: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
-    .editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .editor-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
     .editor-title { font-weight: 700; color: #1A2B4A; font-size: 0.9rem; }
     .editor-sub { font-size: 0.72rem; color: #8A94A6; margin-top: 2px; }
-    .toggle-btn { background: #F5F7FA; border: 1px solid #DEE2E8; border-radius: 8px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; color: #1A2B4A; cursor: pointer; }
-
+    .toggle-btn { background: #F5F7FA; border: 1px solid #DEE2E8; border-radius: 8px; padding: 7px 12px; font-size: 0.78rem; font-weight: 700; color: #1A2B4A; cursor: pointer; white-space: nowrap; }
     .q-card { background: #F9FAFB; border: 1px solid #EEF2F7; border-radius: 10px; padding: 12px; margin-bottom: 8px; }
     .q-top { display: flex; gap: 8px; align-items: flex-start; }
-    .q-num { font-weight: 800; font-size: 0.8rem; color: #1A2B4A; padding-top: 8px; min-width: 22px; }
-    .q-textarea { flex: 1; padding: 7px 10px; border: 1px solid #DEE2E8; border-radius: 8px; font-size: 0.82rem; font-family: inherit; resize: vertical; min-height: 44px; background: #fff; }
+    .q-num { font-weight: 800; font-size: 0.8rem; color: #4A7C6F; padding-top: 8px; min-width: 22px; }
+    .q-ta { flex: 1; padding: 7px 10px; border: 1px solid #DEE2E8; border-radius: 8px; font-size: 0.82rem; font-family: inherit; resize: vertical; min-height: 44px; background: #fff; }
     .q-moves { display: flex; flex-direction: column; gap: 3px; }
-    .q-move-btn { width: 24px; height: 20px; border: 1px solid #DEE2E8; border-radius: 4px; background: #fff; cursor: pointer; font-size: 0.6rem; color: #8A94A6; }
-    .q-move-btn:hover { background: #1A2B4A; color: #fff; }
-    .q-del { width: 28px; height: 28px; border: none; background: transparent; cursor: pointer; color: #E05252; font-size: 1rem; padding-top: 4px; }
+    .q-mv { width: 24px; height: 20px; border: 1px solid #DEE2E8; border-radius: 4px; background: #fff; cursor: pointer; font-size: 0.6rem; color: #8A94A6; }
+    .q-mv:hover { background: #1A2B4A; color: #fff; }
+    .q-del { width: 28px; height: 28px; border: none; background: transparent; cursor: pointer; color: #E05252; font-size: 1rem; }
     .q-opts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #EEF2F7; }
     .q-opt { padding: 4px 8px; border: 1.5px solid #DEE2E8; border-radius: 20px; font-size: 0.7rem; font-weight: 700; cursor: pointer; background: #F9FAFB; color: #8A94A6; }
     .q-opt.ap { background: #1C3D4F; color: #fff; border-color: #1C3D4F; }
@@ -73,116 +65,95 @@
     .add-q { display: flex; gap: 8px; margin-top: 10px; }
     .add-q input { flex: 1; padding: 9px 12px; border: 1px solid #DEE2E8; border-radius: 10px; font-size: 0.82rem; font-family: inherit; background: #F9FAFB; }
     .save-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+    .btn-save { background: #1A2B4A; color: #fff; border: none; border-radius: 10px; padding: 11px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+    .btn-reset { background: #F5F7FA; color: #E05252; border: 1.5px solid #E05252; border-radius: 10px; padding: 11px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
     .saved-ok { display: none; margin-top: 10px; text-align: center; background: #E6F9F0; color: #1E7C50; border-radius: 8px; padding: 8px; font-weight: 700; font-size: 0.8rem; }
 
     /* Modals */
-    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: flex-end; }
-    .modal-bg.open { display: flex; }
-    .modal-sheet { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 20px 40px; width: 100%; box-sizing: border-box; max-height: 90vh; overflow-y: auto; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: flex-end; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal-sheet { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 20px 40px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
     .modal-handle { width: 36px; height: 4px; background: #DEE2E8; border-radius: 2px; margin: 0 auto 20px; }
     .modal-title { font-weight: 800; font-size: 1.05rem; color: #1A2B4A; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
     .fgroup { margin-bottom: 14px; }
-    .fgroup label { display: block; font-size: 0.75rem; font-weight: 700; color: #8A94A6; margin-bottom: 5px; text-transform: uppercase; }
-    .fgroup input, .fgroup select, .fgroup textarea { width: 100%; padding: 10px 12px; border: 1px solid #DEE2E8; border-radius: 10px; font-size: 0.88rem; font-family: inherit; background: #F9FAFB; box-sizing: border-box; }
+    .fgroup label { display: block; font-size: 0.72rem; font-weight: 700; color: #8A94A6; margin-bottom: 5px; text-transform: uppercase; }
+    .fgroup input, .fgroup select, .fgroup textarea { width: 100%; padding: 11px 12px; border: 1px solid #DEE2E8; border-radius: 10px; font-size: 0.9rem; font-family: inherit; background: #F9FAFB; }
     .fgroup input:focus, .fgroup select:focus { outline: none; border-color: #1A2B4A; background: #fff; }
-
-    /* Buttons */
-    .btn-primary { background: #1A2B4A; color: #fff; border: none; border-radius: 10px; padding: 12px; font-size: 0.88rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 4px; }
-    .btn-secondary { background: #F5F7FA; color: #1A2B4A; border: 1px solid #DEE2E8; border-radius: 10px; padding: 12px; font-size: 0.88rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; }
-    .btn-export { background: #1E7C50; color: #fff; border: none; border-radius: 10px; padding: 11px; font-size: 0.85rem; font-weight: 700; cursor: pointer; width: 100%; }
-    .btn-export:hover { background: #166640; }
-
-    /* Bottom Nav */
-    
-    
-    
-    
-    
-    
+    .btn-primary { width: 100%; background: #1A2B4A; color: #fff; border: none; border-radius: 10px; padding: 13px; font-size: 0.92rem; font-weight: 700; cursor: pointer; margin-top: 4px; }
+    .btn-secondary { width: 100%; background: #F5F7FA; color: #1A2B4A; border: 1px solid #DEE2E8; border-radius: 10px; padding: 13px; font-size: 0.92rem; font-weight: 700; cursor: pointer; margin-top: 8px; }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <a href="/app/dashboard.html" class="back-btn">←</a>
+    <a href="/app/dashboard.html" class="back-btn">&#8592;</a>
     <strong>CONFIGURACION</strong>
   </div>
 
   <div class="content">
-    <!-- Action Buttons -->
     <div class="sec-label">Agregar</div>
     <div class="action-row">
-      <div class="action-card" onclick="openModal('modalMovil')">
-        <div class="ac-icon"><img src="/app/img/van.jpg" style="width:40px;border-radius:6px;"></div>
+      <div class="ac" id="btnNewMovil">
+        <div class="ac-icon"><img src="/app/img/van.jpg" style="width:44px;border-radius:6px;"></div>
         <div class="ac-label">+ Nueva Movil</div>
       </div>
-      <div class="action-card" onclick="openModal('modalTecnico')">
-        <div class="ac-icon">👤</div>
+      <div class="ac" id="btnNewTech">
+        <div class="ac-icon">&#128100;</div>
         <div class="ac-label">+ Nuevo Tecnico</div>
       </div>
     </div>
 
-    <!-- Export Section -->
     <div class="sec-label">Exportar Registros</div>
     <div class="export-card">
-      <div class="export-header">
-        <div class="export-icon">📊</div>
+      <div class="export-head">
+        <div class="export-icon">&#128202;</div>
         <div>
           <div class="export-title">Descargar Inspecciones (Excel)</div>
-          <div class="export-sub">Exporta todos los registros por rango de fechas</div>
+          <div class="export-sub">Exporta registros por rango de fechas</div>
         </div>
       </div>
       <div class="date-row">
-        <div>
-          <label>Fecha Inicio</label>
-          <input type="date" id="expFrom">
-        </div>
-        <div>
-          <label>Fecha Fin</label>
-          <input type="date" id="expTo">
-        </div>
+        <div><label>Fecha Inicio</label><input type="date" id="expFrom"></div>
+        <div><label>Fecha Fin</label><input type="date" id="expTo"></div>
       </div>
-      <button class="btn-export" onclick="exportExcel()">📥 Descargar Excel</button>
+      <button class="btn-export" id="btnExport">&#128229; Descargar Excel</button>
     </div>
 
-    <!-- Tecnicos -->
     <div class="sec-label">Tecnicos Registrados</div>
-    <div id="techList"><div class="list-card"><div class="list-card-info"><small style="color:#AAB4C4;">Cargando...</small></div></div></div>
+    <div id="techList"><p style="color:#AAB4C4;font-size:0.82rem;padding:8px 0;">Cargando...</p></div>
 
-    <!-- Moviles -->
     <div class="sec-label"><img src="/app/img/van.jpg" style="width:14px;border-radius:2px;vertical-align:middle;"> Moviles Registradas</div>
-    <div id="mobileList"><div class="list-card"><div class="list-card-info"><small style="color:#AAB4C4;">Cargando...</small></div></div></div>
+    <div id="mobileList"><p style="color:#AAB4C4;font-size:0.82rem;padding:8px 0;">Cargando...</p></div>
 
-    <!-- Checklist Editor -->
     <div class="sec-label">Formulario de Inspeccion</div>
     <div class="editor-card">
-      <div class="editor-header">
+      <div class="editor-head">
         <div>
           <div class="editor-title">Editor de Preguntas</div>
-          <div class="editor-sub">Edita, reordena o agrega preguntas al formulario</div>
+          <div class="editor-sub">Edita, reordena o agrega preguntas</div>
         </div>
-        <button class="toggle-btn" id="edBtn" onclick="toggleEditor()">Abrir ▶</button>
+        <button class="toggle-btn" id="edBtn">Abrir &#9654;</button>
       </div>
       <div id="editorBody" style="display:none;">
         <div id="qList"></div>
         <div class="add-q">
           <input type="text" id="newQText" placeholder="Nueva pregunta...">
-          <button class="btn-primary" style="width:auto;padding:9px 14px;margin:0;" onclick="addQ()">+ Agregar</button>
+          <button class="btn-save" style="width:auto;padding:9px 14px;" id="btnAddQ">+ Agregar</button>
         </div>
         <div class="save-strip">
-          <button class="btn-primary" style="margin:0;" onclick="saveChecklist()">💾 Guardar</button>
-          <button class="btn-secondary" style="margin:0;" onclick="resetChecklist()">↩ Restaurar</button>
+          <button class="btn-save" id="btnSaveCL">&#128190; Guardar</button>
+          <button class="btn-reset" id="btnResetCL">&#8629; Restaurar</button>
         </div>
-        <div class="saved-ok" id="savedMsg">✅ Formulario guardado con exito</div>
+        <div class="saved-ok" id="savedMsg">Formulario guardado con exito</div>
       </div>
     </div>
   </div>
 
   <!-- Modal: Nueva Movil -->
-  <div class="modal-bg" id="modalMovil">
+  <div class="modal-overlay" id="modalMovil">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
       <div class="modal-title"><img src="/app/img/van.jpg" style="width:22px;border-radius:4px;"> Nueva Movil</div>
-      <div class="fgroup"><label>Codigo *</label><input id="mCode" placeholder="Ej. M205"></div>
+      <div class="fgroup"><label>Codigo *</label><input type="text" id="mCode" placeholder="Ej. M201"></div>
       <div class="fgroup"><label>Zona *</label>
         <select id="mZone">
           <option value="Chiriqui">Chiriqui</option>
@@ -190,8 +161,8 @@
           <option value="Panama">Panama</option>
         </select>
       </div>
-      <div class="fgroup"><label>Modelo del Vehiculo</label><input id="mModel" placeholder="Ej. Chevrolet Express 2022"></div>
-      <div class="fgroup"><label>Placa</label><input id="mPlate" placeholder="Ej. AB-1234"></div>
+      <div class="fgroup"><label>Modelo del Vehiculo</label><input type="text" id="mModel" placeholder="Ej. Chevrolet Express 2022"></div>
+      <div class="fgroup"><label>Placa</label><input type="text" id="mPlate" placeholder="Ej. AB-1234"></div>
       <div class="fgroup"><label>Estado</label>
         <select id="mStatus">
           <option value="activa">Activa</option>
@@ -199,18 +170,18 @@
           <option value="inactiva">Inactiva</option>
         </select>
       </div>
-      <button class="btn-primary" onclick="saveMobile()">Guardar Movil</button>
-      <button class="btn-secondary" onclick="closeModal('modalMovil')">Cancelar</button>
+      <button class="btn-primary" id="btnSaveMovil">Guardar Movil</button>
+      <button class="btn-secondary" id="btnCancelMovil">Cancelar</button>
     </div>
   </div>
 
   <!-- Modal: Nuevo Tecnico -->
-  <div class="modal-bg" id="modalTecnico">
+  <div class="modal-overlay" id="modalTecnico">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">👤 Nuevo Tecnico</div>
-      <div class="fgroup"><label>Nombre Completo *</label><input id="tName" placeholder="Ej. Juan Perez"></div>
-      <div class="fgroup"><label>Zona / Area</label>
+      <div class="modal-title">&#128100; Nuevo Tecnico</div>
+      <div class="fgroup"><label>Nombre Completo *</label><input type="text" id="tName" placeholder="Ej. Juan Perez"></div>
+      <div class="fgroup"><label>Zona</label>
         <select id="tZone">
           <option value="Chiriqui">Chiriqui</option>
           <option value="Santiago">Santiago</option>
@@ -224,53 +195,137 @@
         </select>
       </div>
       <div class="fgroup"><label>Notas</label><textarea id="tNotes" rows="2" placeholder="Opcional..."></textarea></div>
-      <button class="btn-primary" onclick="saveTech()">Guardar Tecnico</button>
-      <button class="btn-secondary" onclick="closeModal('modalTecnico')">Cancelar</button>
+      <button class="btn-primary" id="btnSaveTech">Guardar Tecnico</button>
+      <button class="btn-secondary" id="btnCancelTech">Cancelar</button>
     </div>
   </div>
 
-  <!-- Bottom Nav -->
-  
-
   <script>
-    const API = '/api/v1';
-    const token = localStorage.getItem('cm_token');
-    if (!token) window.location.replace('/app/login.html');
+    var API = '/api/v1';
+    var token = localStorage.getItem('cm_token');
+    if (!token) { window.location.replace('/app/login.html'); }
 
-    // Set default dates for export (current month)
-    const today = new Date();
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+    // Set default dates
+    var today = new Date();
+    var firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
     document.getElementById('expFrom').value = firstDay.toISOString().split('T')[0];
     document.getElementById('expTo').value = today.toISOString().split('T')[0];
 
-    // ── Modals ──
-    function openModal(id) { document.getElementById(id).classList.add('open'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-    document.querySelectorAll('.modal-bg').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+    // ── Modal helpers ──
+    function openModal(id) {
+      document.getElementById(id).classList.add('open');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    // Close on backdrop click
+    document.querySelectorAll('.modal-overlay').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (e.target === el) closeModal(el.id);
+      });
+    });
+
+    // Button event listeners (using addEventListener - no inline onclick)
+    document.getElementById('btnNewMovil').addEventListener('click', function() { openModal('modalMovil'); });
+    document.getElementById('btnNewTech').addEventListener('click', function() { openModal('modalTecnico'); });
+    document.getElementById('btnCancelMovil').addEventListener('click', function() { closeModal('modalMovil'); });
+    document.getElementById('btnCancelTech').addEventListener('click', function() { closeModal('modalTecnico'); });
+
+    document.getElementById('btnSaveMovil').addEventListener('click', saveMobile);
+    document.getElementById('btnSaveTech').addEventListener('click', saveTech);
+    document.getElementById('btnExport').addEventListener('click', exportExcel);
+    document.getElementById('edBtn').addEventListener('click', toggleEditor);
+    document.getElementById('btnAddQ').addEventListener('click', addQ);
+    document.getElementById('btnSaveCL').addEventListener('click', saveChecklist);
+    document.getElementById('btnResetCL').addEventListener('click', resetChecklist);
+
+    // ── Save Mobile ──
+    async function saveMobile() {
+      var code = document.getElementById('mCode').value.trim();
+      if (!code) { alert('El codigo es obligatorio.'); return; }
+      var btn = document.getElementById('btnSaveMovil');
+      btn.disabled = true; btn.textContent = 'Guardando...';
+      try {
+        var r = await fetch(API + '/mobiles', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({
+            code: code,
+            zone: document.getElementById('mZone').value,
+            vehicle_model: document.getElementById('mModel').value.trim() || 'Chevrolet Express',
+            plate: document.getElementById('mPlate').value.trim() || null,
+            status: document.getElementById('mStatus').value
+          })
+        });
+        var d = await r.json();
+        if (!r.ok) throw new Error(d.detail || 'Error al crear');
+        alert('Movil creada: ' + code);
+        closeModal('modalMovil');
+        document.getElementById('mCode').value = '';
+        document.getElementById('mModel').value = '';
+        document.getElementById('mPlate').value = '';
+        loadLists();
+      } catch(e) {
+        alert('Error: ' + e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Guardar Movil';
+      }
+    }
+
+    // ── Save Technician ──
+    async function saveTech() {
+      var name = document.getElementById('tName').value.trim();
+      if (!name) { alert('El nombre es obligatorio.'); return; }
+      var btn = document.getElementById('btnSaveTech');
+      btn.disabled = true; btn.textContent = 'Guardando...';
+      try {
+        var zone = document.getElementById('tZone').value;
+        var notes = document.getElementById('tNotes').value.trim();
+        var r = await fetch(API + '/technicians', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({
+            full_name: name,
+            status: document.getElementById('tStatus').value,
+            notes: zone + (notes ? ' - ' + notes : '')
+          })
+        });
+        var d = await r.json();
+        if (!r.ok) throw new Error(d.detail || 'Error al crear');
+        alert('Tecnico creado: ' + name);
+        closeModal('modalTecnico');
+        document.getElementById('tName').value = '';
+        document.getElementById('tNotes').value = '';
+        loadLists();
+      } catch(e) {
+        alert('Error: ' + e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Guardar Tecnico';
+      }
+    }
 
     // ── Export Excel ──
     async function exportExcel() {
-      const from = document.getElementById('expFrom').value;
-      const to = document.getElementById('expTo').value;
+      var from = document.getElementById('expFrom').value;
+      var to = document.getElementById('expTo').value;
       if (!from || !to) { alert('Selecciona las fechas de inicio y fin primero.'); return; }
-      
-      const btn = event.target;
-      btn.textContent = 'Descargando...';
-      btn.disabled = true;
-      
+      var btn = document.getElementById('btnExport');
+      btn.disabled = true; btn.textContent = 'Descargando...';
       try {
-        const r = await fetch(API + '/inspections/export?from=' + from + '&to=' + to, {
+        var r = await fetch(API + '/inspections/export?from=' + from + '&to=' + to, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (r.status === 401) { window.location.replace('/app/login.html'); return; }
         if (!r.ok) {
-          const err = await r.json().catch(() => ({}));
+          var err = {};
+          try { err = await r.json(); } catch(e2) {}
           alert('Error al exportar: ' + (err.detail || r.status));
           return;
         }
-        const blob = await r.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
+        var blob = await r.blob();
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
         a.href = url;
         a.download = 'Inspecciones_' + from + '_al_' + to + '.xlsx';
         document.body.appendChild(a);
@@ -278,158 +333,148 @@
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
       } catch(e) {
-        console.error(e);
-        alert('Error de conexion al exportar: ' + e.message);
+        alert('Error de conexion: ' + e.message);
       } finally {
-        btn.textContent = 'Descargar Excel';
-        btn.disabled = false;
+        btn.disabled = false; btn.textContent = '&#128229; Descargar Excel';
+        document.getElementById('btnExport').innerHTML = '&#128229; Descargar Excel';
       }
-    }
-
-    // ── Save Mobile ──
-    async function saveMobile() {
-      const code = document.getElementById('mCode').value.trim();
-      if (!code) { alert('El codigo es obligatorio.'); return; }
-      try {
-        const r = await fetch(API + '/mobiles', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-          body: JSON.stringify({
-            code,
-            zone: document.getElementById('mZone').value,
-            vehicle_model: document.getElementById('mModel').value.trim() || 'Chevrolet Express',
-            plate: document.getElementById('mPlate').value.trim() || null,
-            status: document.getElementById('mStatus').value,
-          })
-        });
-        const d = await r.json();
-        if (!r.ok) throw new Error(d.detail || 'Error');
-        alert('Movil creada: ' + (d.code || code));
-        closeModal('modalMovil');
-        document.getElementById('mCode').value = '';
-        document.getElementById('mModel').value = '';
-        document.getElementById('mPlate').value = '';
-        loadLists();
-      } catch(e) { alert('Error: ' + e.message); }
-    }
-
-    // ── Save Technician ──
-    async function saveTech() {
-      const name = document.getElementById('tName').value.trim();
-      if (!name) { alert('El nombre es obligatorio.'); return; }
-      try {
-        const r = await fetch(API + '/technicians', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-          body: JSON.stringify({
-            full_name: name,
-            status: document.getElementById('tStatus').value,
-            notes: (document.getElementById('tZone').value + ' - ' + (document.getElementById('tNotes').value.trim() || '')).trim().replace(/ - $/, ''),
-          })
-        });
-        const d = await r.json();
-        if (!r.ok) throw new Error(d.detail || 'Error');
-        alert('Tecnico creado: ' + name);
-        closeModal('modalTecnico');
-        document.getElementById('tName').value = '';
-        document.getElementById('tNotes').value = '';
-        loadLists();
-      } catch(e) { alert('Error: ' + e.message); }
     }
 
     // ── Load Lists ──
     async function loadLists() {
       try {
-        const [rt, rm] = await Promise.all([
-          fetch(API + '/technicians', { headers: { 'Authorization': 'Bearer ' + token } }),
-          fetch(API + '/mobiles', { headers: { 'Authorization': 'Bearer ' + token } }),
-        ]);
-        const techs = await rt.json();
-        const mobiles = await rm.json();
+        var rt = await fetch(API + '/technicians', { headers: { 'Authorization': 'Bearer ' + token } });
+        var rm = await fetch(API + '/mobiles', { headers: { 'Authorization': 'Bearer ' + token } });
+        if (rt.status === 401 || rm.status === 401) { window.location.replace('/app/login.html'); return; }
+        var techs = await rt.json();
+        var mobiles = await rm.json();
 
-        const tl = document.getElementById('techList');
-        tl.innerHTML = !techs.length
-          ? '<p style="color:#AAB4C4;font-size:0.82rem;padding:8px 0;">Sin tecnicos registrados.</p>'
-          : techs.map(t => '<div class="list-card"><div class="list-card-info"><strong>' + t.full_name + '</strong><small>' + t.status + (t.notes ? ' &bull; ' + t.notes : '') + '</small></div></div>').join('');
+        var tl = document.getElementById('techList');
+        if (!techs.length) {
+          tl.innerHTML = '<p style="color:#AAB4C4;font-size:0.82rem;padding:8px 0;">Sin tecnicos registrados.</p>';
+        } else {
+          tl.innerHTML = techs.map(function(t) {
+            return '<div class="list-card"><div class="list-card-info"><strong>' + t.full_name + '</strong><small>' + t.status + (t.notes ? ' &bull; ' + t.notes : '') + '</small></div></div>';
+          }).join('');
+        }
 
-        const ml = document.getElementById('mobileList');
-        ml.innerHTML = !mobiles.length
-          ? '<p style="color:#AAB4C4;font-size:0.82rem;padding:8px 0;">Sin moviles registradas.</p>'
-          : mobiles.map(m => '<div class="list-card"><img src="/app/img/van.jpg" style="width:38px;height:26px;object-fit:cover;border-radius:6px;flex-shrink:0;"><div class="list-card-info"><strong>' + m.code + ' &mdash; ' + (m.zone || '') + '</strong><small>' + (m.plate || 'Sin placa') + ' &bull; ' + m.status + '</small></div><a href="/app/movil_detalle.html?id=' + m.id + '" class="btn-ver">Ver &rarr;</a></div>').join('');
-      } catch(e) { console.error(e); }
+        var ml = document.getElementById('mobileList');
+        if (!mobiles.length) {
+          ml.innerHTML = '<p style="color:#AAB4C4;font-size:0.82rem;padding:8px 0;">Sin moviles registradas.</p>';
+        } else {
+          ml.innerHTML = mobiles.map(function(m) {
+            return '<div class="list-card"><img src="/app/img/van.jpg" style="width:38px;height:26px;object-fit:cover;border-radius:6px;flex-shrink:0;"><div class="list-card-info"><strong>' + m.code + ' &mdash; ' + (m.zone || '') + '</strong><small>' + (m.plate || 'Sin placa') + ' &bull; ' + m.status + '</small></div><a href="/app/movil_detalle.html?id=' + m.id + '" class="btn-ver">Ver &rarr;</a></div>';
+          }).join('');
+        }
+      } catch(e) {
+        console.error('loadLists error:', e);
+      }
     }
 
     // ── Checklist Editor ──
-    const DEFAULT_CL = [
-      {text:'¿Cumplió con las normas de instalación?',photo:true,obs:false,allowNA:true},
-      {text:'¿Utilizó rutas adecuadas de instalación?',photo:false,obs:false,allowNA:true},
-      {text:'¿Realizó las configuraciones adecuadas dentro del módem, cajas de TV y extensores?',photo:false,obs:true,allowNA:true},
-      {text:'¿Explicó el WiFi y la caja de TV al cliente?',photo:false,obs:false,allowNA:false},
-      {text:'¿Conectó al cliente al WiFi y explicó las bondades del servicio?',photo:false,obs:false,allowNA:false},
-      {text:'Si lleva Eero: ¿Realizó la configuración adecuada del Eero?',photo:false,obs:false,allowNA:true},
-      {text:'Si lleva Eero: ¿Explicó las bondades del Eero al cliente?',photo:false,obs:false,allowNA:true},
-      {text:'¿Realizó bien el cableado de fibra?',photo:true,obs:false,allowNA:true},
-      {text:'¿Realizó el recorrido correcto en NAP?',photo:true,obs:false,allowNA:true},
-      {text:'¿Utilizó los equipos de seguridad adecuadamente? (conos, casco y arnés)',photo:false,obs:false,allowNA:false},
-      {text:'¿Dejó limpia el área de trabajo?',photo:true,obs:false,allowNA:false}
+    var DEFAULT_CL = [
+      {text:'Cumplio con las normas de instalacion?',photo:true,obs:false,allowNA:true},
+      {text:'Utilizo rutas adecuadas de instalacion?',photo:false,obs:false,allowNA:true},
+      {text:'Realizo las configuraciones adecuadas dentro del modem, cajas de TV y extensores?',photo:false,obs:true,allowNA:true},
+      {text:'Explico el WiFi y la caja de TV al cliente?',photo:false,obs:false,allowNA:false},
+      {text:'Conecto al cliente al WiFi y explico las bondades del servicio?',photo:false,obs:false,allowNA:false},
+      {text:'Si lleva Eero: Realizo la configuracion adecuada del Eero?',photo:false,obs:false,allowNA:true},
+      {text:'Si lleva Eero: Explico las bondades del Eero al cliente?',photo:false,obs:false,allowNA:true},
+      {text:'Realizo bien el cableado de fibra?',photo:true,obs:false,allowNA:true},
+      {text:'Realizo el recorrido correcto en NAP?',photo:true,obs:false,allowNA:true},
+      {text:'Utilizo los equipos de seguridad adecuadamente? (conos, casco y arnes)',photo:false,obs:false,allowNA:false},
+      {text:'Dejo limpia el area de trabajo?',photo:true,obs:false,allowNA:false}
     ];
-    let cl = [];
+    var cl = [];
 
     function loadCL() {
-      try { const s = localStorage.getItem('cm_checklist_v2'); if(s) { cl = JSON.parse(s); return; } } catch(e) {}
-      cl = DEFAULT_CL.map(d => ({...d}));
+      try { var s = localStorage.getItem('cm_checklist_v2'); if (s) { cl = JSON.parse(s); return; } } catch(e) {}
+      cl = DEFAULT_CL.map(function(d) { return Object.assign({}, d); });
     }
 
     function renderCL() {
-      const ql = document.getElementById('qList');
+      var ql = document.getElementById('qList');
       ql.innerHTML = '';
-      cl.forEach((q, i) => {
-        const d = document.createElement('div');
+      cl.forEach(function(q, i) {
+        var d = document.createElement('div');
         d.className = 'q-card';
-        d.innerHTML = '<div class="q-top"><span class="q-num">' + (i+1) + '.</span><textarea class="q-textarea" onchange="cl[' + i + '].text=this.value">' + q.text + '</textarea><div class="q-moves"><button class="q-move-btn" onclick="moveQ(' + i + ',-1)">▲</button><button class="q-move-btn" onclick="moveQ(' + i + ',1)">▼</button></div><button class="q-del" onclick="delQ(' + i + ')">✕</button></div><div class="q-opts"><button class="q-opt ' + (q.photo?'ap':'') + '" onclick="toggleProp(' + i + ','photo',this)">📸 Foto</button><button class="q-opt ' + (q.obs?'ao':'') + '" onclick="toggleProp(' + i + ','obs',this)">💬 Obs.</button><button class="q-opt ' + (q.allowNA?'an':'') + '" onclick="toggleProp(' + i + ','allowNA',this)">— N/A</button></div>';
+        d.innerHTML = '<div class="q-top"><span class="q-num">' + (i+1) + '.</span>'
+          + '<textarea class="q-ta" data-idx="' + i + '">' + q.text + '</textarea>'
+          + '<div class="q-moves"><button class="q-mv" data-i="' + i + '" data-d="-1">&#9650;</button><button class="q-mv" data-i="' + i + '" data-d="1">&#9660;</button></div>'
+          + '<button class="q-del" data-i="' + i + '">&#10005;</button></div>'
+          + '<div class="q-opts">'
+          + '<button class="q-opt ' + (q.photo ? 'ap' : '') + '" data-i="' + i + '" data-p="photo">Foto</button>'
+          + '<button class="q-opt ' + (q.obs ? 'ao' : '') + '" data-i="' + i + '" data-p="obs">Obs.</button>'
+          + '<button class="q-opt ' + (q.allowNA ? 'an' : '') + '" data-i="' + i + '" data-p="allowNA">N/A</button>'
+          + '</div>';
         ql.appendChild(d);
+      });
+
+      // Textarea change
+      ql.querySelectorAll('.q-ta').forEach(function(ta) {
+        ta.addEventListener('change', function() {
+          cl[parseInt(ta.dataset.idx)].text = ta.value;
+        });
+      });
+      // Move buttons
+      ql.querySelectorAll('.q-mv').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var i = parseInt(btn.dataset.i), d = parseInt(btn.dataset.d), j = i + d;
+          if (j >= 0 && j < cl.length) { var tmp = cl[i]; cl[i] = cl[j]; cl[j] = tmp; renderCL(); }
+        });
+      });
+      // Delete buttons
+      ql.querySelectorAll('.q-del').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (confirm('Eliminar esta pregunta?')) { cl.splice(parseInt(btn.dataset.i), 1); renderCL(); }
+        });
+      });
+      // Toggle props
+      ql.querySelectorAll('.q-opt').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var i = parseInt(btn.dataset.i), prop = btn.dataset.p;
+          cl[i][prop] = !cl[i][prop];
+          var cls = prop === 'photo' ? 'ap' : prop === 'obs' ? 'ao' : 'an';
+          btn.classList.toggle(cls, cl[i][prop]);
+        });
       });
     }
 
     function toggleEditor() {
-      const b = document.getElementById('editorBody');
-      const btn = document.getElementById('edBtn');
-      const open = b.style.display !== 'none';
-      b.style.display = open ? 'none' : 'block';
-      btn.textContent = open ? 'Abrir ▶' : 'Cerrar ▼';
+      var body = document.getElementById('editorBody');
+      var btn = document.getElementById('edBtn');
+      var open = body.style.display !== 'none';
+      body.style.display = open ? 'none' : 'block';
+      btn.innerHTML = open ? 'Abrir &#9654;' : 'Cerrar &#9660;';
       if (!open) renderCL();
     }
 
-    function moveQ(i, d) { const j=i+d; if(j<0||j>=cl.length)return; [cl[i],cl[j]]=[cl[j],cl[i]]; renderCL(); }
-    function delQ(i) { if(confirm('¿Eliminar esta pregunta?')){ cl.splice(i,1); renderCL(); } }
-    function toggleProp(i, prop, btn) {
-      cl[i][prop] = !cl[i][prop];
-      const c = prop==='photo'?'ap':prop==='obs'?'ao':'an';
-      btn.classList.toggle(c, cl[i][prop]);
-    }
     function addQ() {
-      const inp = document.getElementById('newQText');
-      const txt = inp.value.trim();
+      var inp = document.getElementById('newQText');
+      var txt = inp.value.trim();
       if (!txt) return;
-      cl.push({text:txt,photo:false,obs:false,allowNA:true});
+      cl.push({text: txt, photo: false, obs: false, allowNA: true});
       inp.value = '';
       renderCL();
     }
+
     function saveChecklist() {
       localStorage.setItem('cm_checklist_v2', JSON.stringify(cl));
-      localStorage.setItem('cm_checklist', JSON.stringify(cl.map(q=>q.text)));
-      const msg = document.getElementById('savedMsg');
+      localStorage.setItem('cm_checklist', JSON.stringify(cl.map(function(q) { return q.text; })));
+      var msg = document.getElementById('savedMsg');
       msg.style.display = 'block';
-      setTimeout(() => msg.style.display = 'none', 3000);
+      setTimeout(function() { msg.style.display = 'none'; }, 3000);
     }
+
     function resetChecklist() {
-      if (confirm('¿Restaurar preguntas predeterminadas?')) {
-        cl = DEFAULT_CL.map(d=>({...d}));
+      if (confirm('Restaurar preguntas predeterminadas?')) {
+        cl = DEFAULT_CL.map(function(d) { return Object.assign({}, d); });
         localStorage.removeItem('cm_checklist_v2');
         renderCL();
       }
     }
 
+    // Init
     loadCL();
     loadLists();
   </script>
