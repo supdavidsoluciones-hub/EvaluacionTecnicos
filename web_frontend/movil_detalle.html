@@ -344,16 +344,18 @@
 
     document.getElementById('btnSaveTech').addEventListener('click', async function() {
       var btn = this; btn.disabled = true; btn.textContent = 'Guardando...';
-      var techIds = [];
       var pId = document.getElementById('selTechP').value;
       var sId = document.getElementById('selTechS').value;
-      if (pId) techIds.push({ technician_id: parseInt(pId), role_in_mobile: 'principal' });
-      if (sId) techIds.push({ technician_id: parseInt(sId), role_in_mobile: 'secundario' });
+      if (!pId) { alert('Debe seleccionar al menos un tecnico principal'); btn.disabled = false; btn.textContent = 'Guardar Asignacion'; return; }
+      
       try {
         var r = await fetch(API + '/mobiles/' + mobileId + '/assign-technicians', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-          body: JSON.stringify({ technician_assignments: techIds })
+          body: JSON.stringify({ 
+            primary_technician_id: parseInt(pId), 
+            secondary_technician_id: sId ? parseInt(sId) : null 
+          })
         });
         if (!r.ok) { var d = await r.json(); alert('Error: ' + (d.detail || r.status)); return; }
         document.getElementById('modalTech').classList.remove('open');

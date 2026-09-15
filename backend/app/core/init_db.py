@@ -4,7 +4,14 @@ from backend.app.models.models import (
 )
 from backend.app.core.security import get_password_hash
 
+from sqlalchemy import text
+
 def init_db(db: Session):
+
+    # Fix existing fiber tools to quantity 1
+    db.execute(text("UPDATE vehicle_inventory SET quantity_required = 1, quantity_current = 1 WHERE category = 'Fibra Óptica' AND quantity_required > 1"))
+    db.commit()
+
     # 1. Crear Roles si no existen
     admin_role = db.query(Role).filter(Role.name == "Admin").first()
     if not admin_role:
@@ -126,13 +133,13 @@ def _seed_inventory(mobile_id: int, db: Session):
         ("Broca 3/8\" Metal",                  "Eléctrico",   1),
         ("Brocas 5/16 x 12 Metal",             "Eléctrico",   1),
         # ── Fibra Óptica ──────────────────────────────────────────────────────
-        ("Cleaver F.O Sumitomo (Cortadora F.O)", "Fibra Óptica", 2),
-        ("Peladora Fibra 3 Calibres",          "Fibra Óptica", 2),
-        ("Peladora Cable Drop",                "Fibra Óptica", 2),
-        ("Regla para Cortador",                "Fibra Óptica", 2),
-        ("Limpiador de Conectores One-Click (SC-2.5MM)", "Fibra Óptica", 2),
+        ("Cleaver F.O Sumitomo (Cortadora F.O)", "Fibra Óptica", 1),
+        ("Peladora Fibra 3 Calibres",          "Fibra Óptica", 1),
+        ("Peladora Cable Drop",                "Fibra Óptica", 1),
+        ("Regla para Cortador",                "Fibra Óptica", 1),
+        ("Limpiador de Conectores One-Click (SC-2.5MM)", "Fibra Óptica", 1),
         ("Medidor de Potencia PON FTTH",       "Fibra Óptica", 1),
-        ("Localizador Óptico de Falla Visual F.O [FFL-50/1]", "Fibra Óptica", 2),
+        ("Localizador Óptico de Falla Visual F.O [FFL-50/1]", "Fibra Óptica", 1),
         # ── EPP (Equipo de Protección Personal) ───────────────────────────────
         ("Arnés Rota Confort Faja Lumbar 3 Puntos", "EPP", 1),
         ("Casco de Seguridad",                 "EPP", 2),
