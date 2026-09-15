@@ -1,110 +1,121 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Móviles – Control Operativo</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/app/css/style.css?v=4" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moviles - Control Operativo</title>
   <style>
-    .vehicle-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-    .vehicle-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all var(--transition); }
-    .vehicle-card:hover { background: var(--bg-card2); border-color: var(--border-light); transform: translateY(-2px); box-shadow: var(--shadow-card); }
-    .vehicle-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); background: var(--bg-card2); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
-    .vehicle-info { flex: 1; min-width: 0; }
-    .vehicle-code { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-    .vehicle-detail { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .vehicle-status { text-align: right; display: flex; align-items: center; gap: 8px; }
-    
-    
-    
-    
-    
-    .bnav-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
-    
+    * { box-sizing: border-box; }
+    body { background: #F5F7FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; color: #1A2B4A; }
+    .top-bar { background: #1A2B4A; color: #fff; padding: 16px 20px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 50; }
+    .back-btn { color: #fff; text-decoration: none; font-size: 1.4rem; line-height: 1; }
+    .top-bar-title { font-size: 1rem; font-weight: 800; flex: 1; display: flex; align-items: center; gap: 8px; }
+    .top-bar-title img { width: 26px; height: 18px; object-fit: cover; border-radius: 4px; }
+    .content { padding: 16px 16px 40px; }
+    .filter-row { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 2px; }
+    .chip { padding: 7px 14px; border-radius: 20px; border: 1.5px solid #DEE2E8; font-size: 0.78rem; font-weight: 700; cursor: pointer; white-space: nowrap; background: #fff; color: #8A94A6; }
+    .chip.active { background: #1A2B4A; color: #fff; border-color: #1A2B4A; }
+    .mobile-card {
+      background: #fff; border: 1px solid #EEF2F7; border-radius: 14px; padding: 14px 16px;
+      display: flex; align-items: center; gap: 14px; margin-bottom: 10px;
+      cursor: pointer; text-decoration: none; color: inherit;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: all 0.15s;
+    }
+    .mobile-card:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.08); transform: translateY(-1px); }
+    .mobile-card img { width: 48px; height: 33px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+    .mobile-info { flex: 1; }
+    .mobile-code { font-size: 0.95rem; font-weight: 800; color: #1A2B4A; }
+    .mobile-zone { font-size: 0.75rem; color: #8A94A6; margin-top: 2px; }
+    .mobile-status { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+    .status-activa { background: #E6F9F0; color: #1E7C50; }
+    .status-mantenimiento { background: #FFF8E1; color: #B7860D; }
+    .status-inactiva { background: #FEE8E8; color: #C0392B; }
+    .arrow { font-size: 1.1rem; color: #DEE2E8; }
+    .empty-box { text-align: center; padding: 60px 20px; }
+    .empty-box img { width: 70px; border-radius: 10px; opacity: 0.35; margin-bottom: 16px; }
+    .empty-title { font-weight: 700; color: #AAB4C4; font-size: 1rem; margin-bottom: 6px; }
+    .empty-sub { font-size: 0.78rem; color: #C5CDD8; }
   </style>
 </head>
 <body>
-  
-  <nav class="navbar">
-    <button class="btn-back" onclick="window.location.href='/app/dashboard.html'">â†</button>
-    <div class="navbar-title"><img src="/app/img/van.jpg" alt="Movil" style="width:22px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;"> Móviles</div>
-    <div class="navbar-actions">
-      <button class="btn btn-sm btn-primary" id="btnAddMovil">+ Nueva</button>
+  <div class="top-bar">
+    <a href="/app/dashboard.html" class="back-btn">&#8592;</a>
+    <div class="top-bar-title">
+      <img src="/app/img/van.jpg" alt="van"> Moviles
     </div>
-  </nav>
+  </div>
 
-  <main class="main-content">
-    <div class="container-wide">
-      
-      <div class="chips-row mb-16">
-        <div class="chip active" data-zone="all">Todos</div>
-        <div class="chip" data-zone="chiriqui">Chiriquí</div>
-        <div class="chip" data-zone="santiago">Santiago</div>
-      </div>
-
-      <div class="vehicle-list" id="listaMoviles">
-        <div class="skeleton skeleton-card"></div>
-        <div class="skeleton skeleton-card"></div>
-        <div class="skeleton skeleton-card"></div>
-      </div>
-
+  <div class="content">
+    <div class="filter-row">
+      <div class="chip active" data-zone="all" onclick="setZone('all', this)">Todos</div>
+      <div class="chip" data-zone="Chiriqui" onclick="setZone('Chiriqui', this)">Chiriqui</div>
+      <div class="chip" data-zone="Santiago" onclick="setZone('Santiago', this)">Santiago</div>
+      <div class="chip" data-zone="Panama" onclick="setZone('Panama', this)">Panama</div>
     </div>
-  </main>
+    <div id="listContainer">
+      <div style="text-align:center; padding:40px; color:#8A94A6; font-size:0.85rem;">Cargando...</div>
+    </div>
+  </div>
 
-  
+  <script>
+    const API = '/api/v1';
+    const token = localStorage.getItem('cm_token');
+    if (!token) window.location.replace('/app/login.html');
 
-  <script type="module">
-    import { requireAuth, getMobiles, semafBadge } from '/app/js/app.js';
+    let allMobiles = [];
+    let currentZone = 'all';
 
-    let mobilesData = [];
+    function setZone(zone, el) {
+      currentZone = zone;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      render();
+    }
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      requireAuth();
-      
-      const chips = document.querySelectorAll('.chip');
-      chips.forEach(c => c.addEventListener('click', (e) => {
-        chips.forEach(ch => ch.classList.remove('active'));
-        e.target.classList.add('active');
-        renderMobiles(e.target.dataset.zone);
-      }));
-
-      try {
-        mobilesData = await getMobiles();
-        renderMobiles('all');
-      } catch(e) {
-        document.getElementById('listaMoviles').innerHTML = `<p class="text-red text-center py-4">Error cargando móviles</p>`;
+    function render() {
+      const container = document.getElementById('listContainer');
+      let filtered = allMobiles;
+      if (currentZone !== 'all') {
+        filtered = allMobiles.filter(m => (m.zone || '').toLowerCase() === currentZone.toLowerCase());
       }
-    });
 
-    function renderMobiles(zone) {
-      const list = document.getElementById('listaMoviles');
-      
-      let filtered = mobilesData;
-      if(zone === 'chiriqui') filtered = mobilesData.filter(m => m.zona === 'Chiriquí' || parseInt(m.codigo.substring(1)) <= 206);
-      if(zone === 'santiago') filtered = mobilesData.filter(m => m.zona === 'Santiago' || parseInt(m.codigo.substring(1)) >= 207);
-
-      if(!filtered || filtered.length === 0) {
-        list.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><img src="/app/img/van.jpg" alt="Movil" style="width:40px;height:28px;object-fit:cover;border-radius:4px;vertical-align:middle;"></div><div class="empty-state-title">No hay móviles</div><div class="empty-state-desc">No se encontraron móviles registrados.</div></div>`;
+      if (!filtered.length) {
+        container.innerHTML = `
+          <div class="empty-box">
+            <img src="/app/img/van.jpg" alt="empty">
+            <div class="empty-title">` + (allMobiles.length === 0 ? 'No hay moviles registradas' : 'Sin moviles en esta zona') + `</div>
+            <div class="empty-sub">` + (allMobiles.length === 0 ? 'Ve a Configuracion para agregar la primera movil.' : 'Prueba con otro filtro de zona.') + `</div>
+          </div>`;
         return;
       }
 
-      list.innerHTML = filtered.map(m => `
-        <div class="vehicle-card" onclick="window.location.href='/app/movil_detalle.html?id=' + m.id" style="cursor:pointer;">
-          <div class="vehicle-icon"><img src="/app/img/van.jpg" alt="Movil" style="width:40px;height:28px;object-fit:cover;border-radius:4px;vertical-align:middle;"></div>
-          <div class="vehicle-info">
-            <div class="vehicle-code">${m.codigo} <span class="badge badge-neutral">${m.placa || 'N/A'}</span></div>
-            <div class="vehicle-detail">${m.tecnico?.nombre || 'Técnico sin asignar'}</div>
+      container.innerHTML = filtered.map(m => {
+        const statusCls = m.status === 'activa' ? 'status-activa' : m.status === 'mantenimiento' ? 'status-mantenimiento' : 'status-inactiva';
+        const statusLabel = m.status === 'activa' ? 'Activa' : m.status === 'mantenimiento' ? 'Mantenimiento' : 'Inactiva';
+        return `<a class="mobile-card" href="/app/movil_detalle.html?id=${m.id}">
+          <img src="/app/img/van.jpg" alt="${m.code}">
+          <div class="mobile-info">
+            <div class="mobile-code">${m.code || 'Sin codigo'}</div>
+            <div class="mobile-zone">${m.zone || 'Sin zona'} &bull; ${m.plate || 'Sin placa'}</div>
           </div>
-          <div class="vehicle-status">
-            ${semafBadge(m.score_calidad)}
-            <span class="text-muted" style="font-size:1.2rem;">â€º</span>
-          </div>
-        </div>
-      `).join('');
+          <span class="mobile-status ${statusCls}">${statusLabel}</span>
+          <span class="arrow">&#8250;</span>
+        </a>`;
+      }).join('');
     }
+
+    async function load() {
+      try {
+        const r = await fetch(API + '/mobiles', { headers: { Authorization: 'Bearer ' + token } });
+        if (r.status === 401) { window.location.replace('/app/login.html'); return; }
+        allMobiles = await r.json();
+        render();
+      } catch(e) {
+        document.getElementById('listContainer').innerHTML = '<div style="text-align:center;padding:40px;color:#E05252;">Error cargando moviles. Verifica tu conexion.</div>';
+      }
+    }
+
+    load();
   </script>
 </body>
 </html>
