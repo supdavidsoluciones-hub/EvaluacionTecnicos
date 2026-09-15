@@ -1,135 +1,149 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Inspecciones - Control Operativo</title>
   <link rel="icon" type="image/png" href="/app/img/logo.png">
-  <link rel="apple-touch-icon" href="/app/img/logo.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inspecciones – Control Operativo</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/app/css/style.css?v=4" />
   <style>
-    .insp-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #F5F7FA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1A2B4A; padding-bottom: 80px; }
     
-    .filter-bar { display: flex; gap: 8px; margin-bottom: 16px; }
-    .filter-input { flex: 1; padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); outline: none; }
-    .filter-input:focus { border-color: var(--teal); }
+    .top-bar { background: #1A2B4A; color: #fff; padding: 14px 18px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 50; }
+    .back-btn { color: #fff; text-decoration: none; font-size: 1.4rem; line-height: 1; margin-top: -2px; }
+    .top-bar strong { font-size: 0.95rem; font-weight: 800; flex: 1; }
 
+    .content { padding: 14px; }
     
+    .search-box { background: #fff; border-radius: 12px; border: 1px solid #EEF2F7; padding: 10px 14px; display: flex; align-items: center; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .search-input { border: none; outline: none; width: 100%; font-size: 0.85rem; color: #1A2B4A; }
+    .search-input::placeholder { color: #AAB4C4; }
+
+    .filters { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 4px; }
+    .chip { padding: 6px 14px; border: 1px solid #DEE2E8; background: #fff; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: #8A94A6; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+    .chip.active { background: #1A2B4A; color: #fff; border-color: #1A2B4A; }
+
+    .insp-list { display: flex; flex-direction: column; gap: 10px; }
+    .card { background: #fff; border-radius: 14px; padding: 16px; border: 1px solid #EEF2F7; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: stretch; }
+    .card-info { flex: 1; }
+    .card-title { font-weight: 800; font-size: 0.9rem; margin-bottom: 4px; color: #1A2B4A; }
+    .card-sub { font-size: 0.72rem; color: #8A94A6; font-weight: 600; margin-bottom: 6px; }
+    .card-tech { font-size: 0.72rem; color: #4A7C6F; font-weight: 700; display: inline-block; background: #E6F9F0; padding: 3px 8px; border-radius: 6px; }
     
-    
-    
-    .bnav-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
-    
+    .card-status-col { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; min-width: 80px; }
+    .badge { padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; text-align: center; }
+    .bg-green { background: #E6F9F0; color: #1E7C50; }
+    .bg-red { background: #FEE8E8; color: #C0392B; }
+    .bg-yellow { background: #FFF8E1; color: #B7860D; }
+    .card-date { font-size: 0.65rem; color: #AAB4C4; font-weight: 600; }
+
+    .empty-state { text-align: center; padding: 40px 20px; }
+    .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.3; }
+    .empty-text { font-size: 0.9rem; font-weight: 700; color: #8A94A6; }
   </style>
 </head>
 <body>
-  
-  <nav class="navbar">
-    <button class="btn-back" onclick="window.location.href='/app/dashboard.html'" style="font-size:1.4rem;text-decoration:none;border:none;background:none;color:#fff;">&#8592;</button>
-    <div class="navbar-title">📋 Lista de Inspecciones</div>
-  </nav>
 
-  <main class="main-content">
-    <div class="container-wide">
-      
-      <div class="filter-bar">
-        <input type="text" id="searchInput" class="filter-input" placeholder="Buscar por móvil, técnico u orden...">
-      </div>
-      
-      <div class="chips-row mb-16">
-        <div class="chip active" data-filter="all">Todas</div>
-        <div class="chip" data-filter="green">Óptimas</div>
-        <div class="chip" data-filter="amber">Regulares</div>
-        <div class="chip" data-filter="red">Críticas</div>
-      </div>
+  <div class="top-bar">
+    <a href="/app/dashboard.html" class="back-btn">&#8592;</a>
+    <strong>&#128203; Lista de Inspecciones</strong>
+  </div>
 
-      <div class="insp-list" id="listaInspecciones">
-        <div class="skeleton skeleton-card"></div>
-        <div class="skeleton skeleton-card"></div>
-        <div class="skeleton skeleton-card"></div>
-      </div>
-
+  <div class="content">
+    <div class="search-box">
+      <input type="text" id="searchInput" class="search-input" placeholder="Buscar por mvil, tcnico u orden...">
     </div>
-  </main>
 
-  
+    <div class="filters">
+      <div class="chip active" data-f="all">Todas</div>
+      <div class="chip" data-f="cumple">Cumplen</div>
+      <div class="chip" data-f="nocumple">No Cumplen</div>
+      <div class="chip" data-f="parcial">Parciales</div>
+    </div>
 
-  <script type="module">
-    import { requireAuth, getInspections, formatDate, scoreColor } from '/app/js/app.js';
+    <div class="insp-list" id="listContainer">
+      <div class="empty-state"><div class="empty-text">Cargando...</div></div>
+    </div>
+  </div>
+
+  <script>
+    const API = '/api/v1';
+    const token = localStorage.getItem('cm_token');
+    if (!token) window.location.replace('/app/login.html');
 
     let allInspections = [];
+    let currentFilter = 'all';
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      requireAuth();
-      
-      const chips = document.querySelectorAll('.chip');
-      chips.forEach(c => c.addEventListener('click', (e) => {
-        chips.forEach(ch => ch.classList.remove('active'));
-        e.target.classList.add('active');
-        applyFilters();
-      }));
-
-      document.getElementById('searchInput').addEventListener('input', applyFilters);
-
+    async function loadData() {
       try {
-        allInspections = await getInspections();
-        applyFilters();
-      } catch(e) {
-        document.getElementById('listaInspecciones').innerHTML = `<p class="text-red text-center py-4">Error cargando inspecciones</p>`;
+        const r = await fetch(API + '/inspections?limit=200', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (r.status === 401) { window.location.replace('/app/login.html'); return; }
+        allInspections = await r.json();
+        renderList();
+      } catch (e) {
+        document.getElementById('listContainer').innerHTML = '<div class="empty-state"><div class="empty-text">Error de conexin</div></div>';
       }
-    });
-
-    function applyFilters() {
-      const search = document.getElementById('searchInput').value.toLowerCase();
-      const activeFilter = document.querySelector('.chip.active').dataset.filter;
-      
-      let filtered = allInspections;
-      
-      if(search) {
-        filtered = filtered.filter(i => 
-          (i.movil_codigo && i.movil_codigo.toLowerCase().includes(search)) ||
-          (i.numero_orden && i.numero_orden.toLowerCase().includes(search)) ||
-          (i.tecnico_nombre && i.tecnico_nombre.toLowerCase().includes(search)) ||
-          (i.cliente && i.cliente.toLowerCase().includes(search))
-        );
-      }
-      
-      if(activeFilter === 'green') filtered = filtered.filter(i => i.score >= 85);
-      if(activeFilter === 'amber') filtered = filtered.filter(i => i.score >= 65 && i.score < 85);
-      if(activeFilter === 'red')   filtered = filtered.filter(i => i.score < 65);
-
-      renderList(filtered);
     }
 
-    function renderList(list) {
-      const container = document.getElementById('listaInspecciones');
+    function renderList() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const container = document.getElementById('listContainer');
       
-      if(!list || list.length === 0) {
-        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">ðŸ“­</div><div class="empty-state-title">No hay resultados</div><div class="empty-state-desc">Intenta cambiar los filtros de búsqueda.</div></div>`;
+      let filtered = allInspections.filter(i => {
+        // Text search
+        const txt = [i.inspection_code, i.mobile_code, i.technician_name, i.order_number, i.client_name].join(' ').toLowerCase();
+        if (q && !txt.includes(q)) return false;
+        
+        // Tab filter
+        const res = (i.general_result || '').toLowerCase();
+        if (currentFilter === 'cumple' && res !== 'cumple') return false;
+        if (currentFilter === 'nocumple' && res !== 'no cumple') return false;
+        if (currentFilter === 'parcial' && !res.includes('parcial')) return false;
+
+        return true;
+      });
+
+      if (!filtered.length) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128269;</div><div class="empty-text">No se encontraron inspecciones</div></div>';
         return;
       }
 
-      container.innerHTML = list.map(i => `
-        <div class="insp-card">
-          <div class="insp-card-left">
-            <div class="insp-mobile-badge">${i.movil_codigo}</div>
+      container.innerHTML = filtered.map(i => {
+        const res = i.general_result || 'Desconocido';
+        let bClass = 'bg-yellow';
+        if (res === 'Cumple') bClass = 'bg-green';
+        if (res === 'No cumple') bClass = 'bg-red';
+
+        return `<div class="card">
+          <div class="card-info">
+            <div class="card-title">Mvil ${i.mobile_code || '-'} &bull; Ord: ${i.order_number || '-'}</div>
+            <div class="card-sub">${i.client_name || 'Sin cliente'} - ${i.order_type || ''}</div>
+            <div class="card-tech">&#128100; ${i.technician_name || 'Sin Tcnico'}</div>
           </div>
-          <div class="insp-card-center">
-            <div class="insp-client-name">Orden: ${i.numero_orden} - ${i.cliente}</div>
-            <div class="insp-tech-name">${i.tecnico_nombre || 'Desconocido'}</div>
-            <div class="insp-date">${formatDate(i.fecha)}</div>
+          <div class="card-status-col">
+            <div class="badge ${bClass}">${res}</div>
+            <div class="card-date">${i.inspection_date || ''}</div>
           </div>
-          <div class="insp-card-right">
-            <div class="insp-score-value" style="color: ${scoreColor(i.score)}">${i.score}%</div>
-            <div class="insp-arrow">â€º</div>
-          </div>
-        </div>
-      `).join('');
+        </div>`;
+      }).join('');
     }
+
+    // Events
+    document.querySelectorAll('.chip').forEach(c => {
+      c.addEventListener('click', () => {
+        document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+        c.classList.add('active');
+        currentFilter = c.dataset.f;
+        renderList();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', renderList);
+
+    // Start
+    loadData();
   </script>
 </body>
 </html>
