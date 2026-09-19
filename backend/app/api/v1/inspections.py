@@ -207,9 +207,10 @@ async def export_inspections_excel(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Export inspections to Excel file for a date range."""
+    """Export inspections to a modernized Excel file."""
     from datetime import date
     import openpyxl
+    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
     from io import BytesIO
     from fastapi.responses import StreamingResponse
 
@@ -232,39 +233,104 @@ async def export_inspections_excel(
 
     wb = openpyxl.Workbook()
     ws = wb.active
-    ws.title = "Inspecciones"
+    ws.title = "Reporte de Inspecciones"
 
     headers = [
-        "Codigo", "Fecha", "Movil", "Tecnico", "No. Orden", "Tipo",
-        "Cliente", "Contrato", "Resultado General", "Observaciones",
-        "Accion Correctiva", "GPS Lat", "GPS Lon", "Creado"
+        "CÓDIGO", "FECHA", "MÓVIL", "TÉCNICO", "TIPO ORDEN", "N° ORDEN",
+        "CLIENTE", "RESULTADO GENERAL", "FALLAS REGISTRADAS (NO CUMPLE)", 
+        "OBSERVACIONES", "FOTOS (EVIDENCIA)"
     ]
     ws.append(headers)
 
-    for row in ws[1]:
-        row.font = openpyxl.styles.Font(bold=True)
-        row.fill = openpyxl.styles.PatternFill("solid", fgColor="1A2B4A")
-        row.font = openpyxl.styles.Font(bold=True, color="FFFFFF")
+    # Styles
+    header_fill = PatternFill("solid", fgColor="1A2B4A")
+    header_font = Font(bold=True, color="FFFFFF", size=10)
+    align_center = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    align_left = Alignment(horizontal="left", vertical="center", wrap_text=True)
+    border = Border(left=Side(style='thin', color='DDDDDD'), 
+                    right=Side(style='thin', color='DDDDDD'), 
+                    top=Side(style='thin', color='DDDDDD'), 
+                    bottom=Side(style='thin', color='DDDDDD'))
+    
+    pass_fill = PatternFill("solid", fgColor="E6F9F0")
+    pass_font = Font(color="1E7C50", bold=True)
+    fail_fill = PatternFill("solid", fgColor="FEE8E8")
+    fail_font = Font(color="C0392B", bold=True)
+    warn_fill = PatternFill("solid", fgColor="FFF8E1")
+    warn_font = Font(color="B7860D", bold=True)
 
+    # Apply header styles
+    for cell in ws[1]:
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = align_center
+
+    row_num = 2
     for ins in inspections:
-        mobile_code = ins.mobile.code if ins.mobile else ""
-        tech_name = ins.technician.full_name if ins.technician else ""
-        ws.append([
-            ins.inspection_code,
+        mobile_code = ins.mobile.code if ins.mobile else "N/A"
+        tech_name = ins.technician.full_name if ins.technician else "N/A"
+        
+        # Get failures
+        failures = [f"- {it.question_text}" for it in ins.items if it.result == "No cumple"]
+        failures_str = "
+".join(failures) if failures else "Sin fallas"
+
+        # Get photos
+        photos = [p.photo_url for p in ins.photos if p.photo_url]
+        photos_str = "
+
+".join(photos) if photos else "Sin evidencias"
+
+        row_data = [
+            ins.inspection_code or "",
             str(ins.inspection_date) if ins.inspection_date else "",
             mobile_code,
             tech_name,
-            ins.order_number or "",
             ins.order_type or "",
+            ins.order_number or "",
             ins.client_name or "",
-            ins.contract_number or "",
             ins.general_result or "",
-            ins.observations or "",
-            ins.corrective_action or "",
-            ins.gps_lat or "",
-            ins.gps_lon or "",
-            str(ins.created_at)[:19] if ins.created_at else "",
-        ])
+            failures_str,
+            ins.observations or "Ninguna",
+            photos_str
+        ]
+        ws.append(row_data)
+
+        # Apply styles to row
+        for col_idx, cell in enumerate(ws[row_num], 1):
+            cell.border = border
+            if col_idx == 8: # Resultado General
+                cell.alignment = align_center
+                if cell.value == 'Cumple':
+                    cell.fill, cell.font = pass_fill, pass_font
+                elif cell.value == 'No cumple':
+                    cell.fill, cell.font = fail_fill, fail_font
+                else:
+                    cell.fill, cell.font = warn_fill, warn_font
+            elif col_idx in (9, 10, 11): # Text fields
+                cell.alignment = align_left
+            else:
+                cell.alignment = align_center
+        
+        # Make links clickable for photos
+        if photos_str != "Sin evidencias":
+            # Just set hyperlinking styling
+            ws.cell(row=row_num, column=11).font = Font(color="0563C1", underline="single")
+            
+        row_num += 1
+
+    # Column widths
+    ws.column_dimensions['A'].width = 18
+    ws.column_dimensions['B'].width = 12
+    ws.column_dimensions['C'].width = 10
+    ws.column_dimensions['D'].width = 25
+    ws.column_dimensions['E'].width = 25
+    ws.column_dimensions['F'].width = 15
+    ws.column_dimensions['G'].width = 20
+    ws.column_dimensions['H'].width = 20
+    ws.column_dimensions['I'].width = 40
+    ws.column_dimensions['J'].width = 30
+    ws.column_dimensions['K'].width = 50
 
     stream = BytesIO()
     wb.save(stream)

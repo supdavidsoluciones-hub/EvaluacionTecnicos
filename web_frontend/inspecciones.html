@@ -24,7 +24,8 @@
     .chip.active { background: #1A2B4A; color: #fff; border-color: #1A2B4A; }
 
     .insp-list { display: flex; flex-direction: column; gap: 10px; }
-    .card { background: #fff; border-radius: 14px; padding: 16px; border: 1px solid #EEF2F7; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: stretch; }
+    .card { background: #fff; border-radius: 14px; padding: 16px; border: 1px solid #EEF2F7; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: stretch; cursor: pointer; transition: transform 0.1s; }
+    .card:active { transform: scale(0.98); }
     .card-info { flex: 1; }
     .card-title { font-weight: 800; font-size: 0.9rem; margin-bottom: 4px; color: #1A2B4A; }
     .card-sub { font-size: 0.72rem; color: #8A94A6; font-weight: 600; margin-bottom: 6px; }
@@ -40,6 +41,36 @@
     .empty-state { text-align: center; padding: 40px 20px; }
     .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.3; }
     .empty-text { font-size: 0.9rem; font-weight: 700; color: #8A94A6; }
+
+    /* Modal for Inspection Details */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; align-items: flex-end; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal-sheet { background: #fff; border-radius: 24px 24px 0 0; padding: 22px 18px 40px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
+    .modal-handle { width: 36px; height: 4px; background: #DEE2E8; border-radius: 2px; margin: 0 auto 18px; }
+    
+    .md-title { font-size: 1.1rem; font-weight: 900; margin-bottom: 4px; color: #1A2B4A; }
+    .md-sub { font-size: 0.8rem; color: #8A94A6; font-weight: 600; margin-bottom: 16px; border-bottom: 1px solid #EEF2F7; padding-bottom: 14px; }
+    
+    .md-section-title { font-size: 0.75rem; font-weight: 800; color: #8A94A6; text-transform: uppercase; margin: 16px 0 10px; }
+    
+    .md-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .md-info-box { background: #F5F7FA; padding: 12px; border-radius: 12px; }
+    .md-info-lbl { font-size: 0.65rem; color: #8A94A6; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+    .md-info-val { font-size: 0.85rem; font-weight: 700; color: #1A2B4A; }
+
+    .md-items-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .md-item { background: #fff; border: 1px solid #EEF2F7; border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; }
+    .md-item-name { font-size: 0.8rem; font-weight: 600; flex: 1; margin-right: 10px; }
+    .md-item-badge { font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; }
+
+    .md-obs-box { background: #FFF8E1; border-left: 3px solid #B7860D; padding: 12px; border-radius: 0 12px 12px 0; font-size: 0.82rem; color: #1A2B4A; margin-bottom: 16px; }
+
+    .md-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .md-photo-item { position: relative; border-radius: 12px; overflow: hidden; background: #EEF2F7; aspect-ratio: 4/3; }
+    .md-photo-item img { width: 100%; height: 100%; object-fit: cover; }
+    .md-photo-cap { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: #fff; font-size: 0.65rem; font-weight: 600; padding: 4px 8px; }
+
+    .btn-close-modal { width: 100%; background: #1A2B4A; color: #fff; border: none; border-radius: 12px; padding: 14px; font-size: 0.9rem; font-weight: 700; cursor: pointer; margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -51,7 +82,7 @@
 
   <div class="content">
     <div class="search-box">
-      <input type="text" id="searchInput" class="search-input" placeholder="Buscar por mvil, tcnico u orden...">
+      <input type="text" id="searchInput" class="search-input" placeholder="Buscar por móvil, técnico u orden...">
     </div>
 
     <div class="filters">
@@ -63,6 +94,17 @@
 
     <div class="insp-list" id="listContainer">
       <div class="empty-state"><div class="empty-text">Cargando...</div></div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="modalDetail">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div id="modalContent">
+        <div class="empty-state" style="padding: 20px;"><div class="empty-text">Cargando detalles...</div></div>
+      </div>
+      <button class="btn-close-modal" id="btnCloseModal">Cerrar</button>
     </div>
   </div>
 
@@ -83,7 +125,7 @@
         allInspections = await r.json();
         renderList();
       } catch (e) {
-        document.getElementById('listContainer').innerHTML = '<div class="empty-state"><div class="empty-text">Error de conexin</div></div>';
+        document.getElementById('listContainer').innerHTML = '<div class="empty-state"><div class="empty-text">Error de conexión</div></div>';
       }
     }
 
@@ -116,11 +158,11 @@
         if (res === 'Cumple') bClass = 'bg-green';
         if (res === 'No cumple') bClass = 'bg-red';
 
-        return `<div class="card">
+        return `<div class="card" onclick="openDetail(${i.id})">
           <div class="card-info">
-            <div class="card-title">Mvil ${i.mobile_code || '-'} &bull; Ord: ${i.order_number || '-'}</div>
+            <div class="card-title">Móvil ${i.mobile_code || '-'} &bull; Ord: ${i.order_number || '-'}</div>
             <div class="card-sub">${i.client_name || 'Sin cliente'} - ${i.order_type || ''}</div>
-            <div class="card-tech">&#128100; ${i.technician_name || 'Sin Tcnico'}</div>
+            <div class="card-tech">&#128100; ${i.technician_name || 'Sin Técnico'}</div>
           </div>
           <div class="card-status-col">
             <div class="badge ${bClass}">${res}</div>
@@ -128,6 +170,67 @@
           </div>
         </div>`;
       }).join('');
+    }
+
+    async function openDetail(id) {
+      const modal = document.getElementById('modalDetail');
+      const mc = document.getElementById('modalContent');
+      modal.classList.add('open');
+      mc.innerHTML = '<div class="empty-state" style="padding: 20px;"><div class="empty-text">Cargando detalles...</div></div>';
+      
+      try {
+        const r = await fetch(API + '/inspections/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
+        if (!r.ok) throw new Error("Error fetching details");
+        const d = await r.json();
+
+        let bClass = 'bg-yellow';
+        if (d.general_result === 'Cumple') bClass = 'bg-green';
+        if (d.general_result === 'No cumple') bClass = 'bg-red';
+
+        // Filter out N/A items for cleaner view
+        const items = (d.items || []).filter(i => i.result !== 'N/A');
+        
+        // Photos
+        const photos = d.photos || [];
+
+        let html = `
+          <div class="md-title">Inspección ${d.inspection_code || '-'}</div>
+          <div class="md-sub">${d.inspection_date} &bull; Supervisor: ${d.supervisor_name || '-'}</div>
+          
+          <div class="md-info-grid">
+            <div class="md-info-box"><div class="md-info-lbl">Técnico</div><div class="md-info-val">${d.technician_name || '-'}</div></div>
+            <div class="md-info-box"><div class="md-info-lbl">Móvil</div><div class="md-info-val">${d.mobile_code || '-'}</div></div>
+            <div class="md-info-box"><div class="md-info-lbl">Orden</div><div class="md-info-val">${d.order_number || '-'}</div></div>
+            <div class="md-info-box"><div class="md-info-lbl">Resultado</div><div class="badge ${bClass}" style="display:inline-block; margin-top:2px;">${d.general_result}</div></div>
+          </div>
+        `;
+
+        if (d.observations) {
+            html += `<div class="md-obs-box"><strong>Observaciones:</strong><br>${d.observations}</div>`;
+        }
+
+        if (items.length > 0) {
+            html += `<div class="md-section-title">Revisión de Puntos</div><div class="md-items-list">`;
+            items.forEach(it => {
+                let badge = it.result === 'Cumple' ? 'bg-green' : (it.result === 'No cumple' ? 'bg-red' : 'bg-yellow');
+                html += `<div class="md-item"><div class="md-item-name">${it.question_text}</div><div class="md-item-badge ${badge}">${it.result}</div></div>`;
+            });
+            html += `</div>`;
+        }
+
+        if (photos.length > 0) {
+            html += `<div class="md-section-title">Evidencias Fotográficas</div><div class="md-photos">`;
+            photos.forEach(p => {
+                html += `<div class="md-photo-item"><a href="${p.photo_url}" target="_blank"><img src="${p.photo_url}"></a><div class="md-photo-cap">${p.photo_type || 'Evidencia'}</div></div>`;
+            });
+            html += `</div>`;
+        }
+
+        mc.innerHTML = html;
+
+      } catch (e) {
+        mc.innerHTML = '<div class="empty-state" style="padding: 20px;"><div class="empty-text">Error al cargar la inspección.</div></div>';
+      }
     }
 
     // Events
@@ -141,6 +244,14 @@
     });
 
     document.getElementById('searchInput').addEventListener('input', renderList);
+
+    document.getElementById('btnCloseModal').addEventListener('click', () => {
+      document.getElementById('modalDetail').classList.remove('open');
+    });
+    
+    document.getElementById('modalDetail').addEventListener('click', function(e) {
+      if (e.target === this) this.classList.remove('open');
+    });
 
     // Start
     loadData();
