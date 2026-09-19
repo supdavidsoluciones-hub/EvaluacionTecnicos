@@ -34,20 +34,13 @@ def init_engine():
     engine = create_engine(
         db_url,
         pool_pre_ping=True,
-        pool_size=5,
-        max_overflow=10,
+        pool_size=3,
+        max_overflow=5,
         pool_recycle=300,
         connect_args={"connect_timeout": 10}
     )
 
-    try:
-        with engine.connect() as conn:
-            conn.execute(text("SELECT 1"))
-        logger.info("Conexion exitosa a PostgreSQL (Supabase Pooler)")
-    except Exception as e:
-        logger.error(f"Error conectando a PostgreSQL: {e}")
-        raise RuntimeError(f"No se puede conectar a la base de datos: {e}")
-
+    logger.info("PostgreSQL engine created (Supabase Pooler)")
     return engine
 
 engine = init_engine()
