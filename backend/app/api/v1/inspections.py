@@ -272,14 +272,11 @@ async def export_inspections_excel(
         
         # Get failures
         failures = [f"- {it.question_text}" for it in ins.items if it.result == "No cumple"]
-        failures_str = "
-".join(failures) if failures else "Sin fallas"
+        failures_str = "\n".join(failures) if failures else "Sin fallas"
 
         # Get photos
         photos = [p.photo_url for p in ins.photos if p.photo_url]
-        photos_str = "
-
-".join(photos) if photos else "Sin evidencias"
+        photos_str = "\n\n".join(photos) if photos else "Sin evidencias"
 
         row_data = [
             ins.inspection_code or "",
