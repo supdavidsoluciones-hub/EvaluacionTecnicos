@@ -9,37 +9,46 @@ Base = declarative_base()
 
 def init_engine():
     db_url = settings.DATABASE_URL
+
     if db_url.startswith("postgres://"):
         db_url = db_url.replace("postgres://", "postgresql://", 1)
 
-    connect_args = {}
-    engine_kwargs = {"pool_pre_ping": True}
-
     if db_url.startswith("sqlite"):
-        connect_args = {"check_same_thread": False}
-        return create_engine(db_url, connect_args=connect_args, **engine_kwargs)
-    elif db_url.startswith("postgresql"):
-        # Detect Supabase direct IPv6 connection that fails on Render IPv4
-        if "supabase.co" in db_url and "pooler" not in db_url:
-            logger.warning("⚠️ Supabase direct IPv6 URL detected. Switching to local SQLite engine to avoid timeout.")
-            return create_engine("sqlite:///./chiriqui_operativo.db", connect_args={"check_same_thread": False})
+        return create_engine(db_url, connect_args={"check_same_thread": False}, pool_pre_ping=True)
 
-        if "sslmode" not in db_url:
-            db_url += "?sslmode=require"
-        engine_kwargs["pool_size"] = 5
-        engine_kwargs["max_overflow"] = 10
-        engine_kwargs["pool_recycle"] = 300
-        connect_args["connect_timeout"] = 3
-        
-        try:
-            temp_engine = create_engine(db_url, connect_args=connect_args, **engine_kwargs)
-            with temp_engine.connect() as conn:
-                conn.execute(text("SELECT 1"))
-            logger.info("✅ Conexión exitosa a PostgreSQL")
-            return temp_engine
-        except Exception as e:
-            logger.warning(f"⚠️ Error conectando a PostgreSQL ({e}). Usando fallback a SQLite.")
-            return create_engine("sqlite:///./chiriqui_operativo.db", connect_args={"check_same_thread": False})
+    # Supabase requires pooler URL for IPv4 (Render is IPv4 only)
+    # Convert direct connection to pooler automatically
+    if "db.vpivzxkttjsgkpxyvpvp.supabase.co" in db_url:
+        db_url = db_url.replace(
+            "db.vpivzxkttjsgkpxyvpvp.supabase.co:5432",
+            "aws-0-us-east-1.pooler.supabase.com:6543"
+        )
+        db_url = db_url.replace(
+            "postgresql://postgres:",
+            "postgresql://postgres.vpivzxkttjsgkpxyvpvp:"
+        )
+
+    if "sslmode" not in db_url:
+        db_url += "?sslmode=require"
+
+    engine = create_engine(
+        db_url,
+        pool_pre_ping=True,
+        pool_size=5,
+        max_overflow=10,
+        pool_recycle=300,
+        connect_args={"connect_timeout": 10}
+    )
+
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        logger.info("Conexion exitosa a PostgreSQL (Supabase Pooler)")
+    except Exception as e:
+        logger.error(f"Error conectando a PostgreSQL: {e}")
+        raise RuntimeError(f"No se puede conectar a la base de datos: {e}")
+
+    return engine
 
 engine = init_engine()
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -50,4 +59,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
