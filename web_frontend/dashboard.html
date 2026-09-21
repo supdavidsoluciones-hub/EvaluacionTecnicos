@@ -90,9 +90,9 @@
   <script>
     const API = '/api/v1';
     const token = localStorage.getItem('cm_token');
-    if (!token) window.location.replace('/app/login.html');
+    if (!token) localStorage.removeItem('cm_token'); window.location.replace('/app/login.html');
 
-    function doLogout() { localStorage.removeItem('cm_token'); window.location.replace('/app/login.html'); }
+    function doLogout() { localStorage.removeItem('cm_token'); localStorage.removeItem('cm_token'); window.location.replace('/app/login.html'); }
 
     async function loadDash() {
       try {
@@ -101,7 +101,7 @@
           fetch(API + '/mobiles', { headers: { 'Authorization': 'Bearer ' + token } })
         ]);
         
-        if (rInsp.status === 401 || rMov.status === 401) { window.location.replace('/app/login.html'); return; }
+        if (rInsp.status === 401 || rMov.status === 401) { localStorage.removeItem('cm_token'); window.location.replace('/app/login.html'); return; }
         
         const insps = await rInsp.json();
         const mobiles = await rMov.json();

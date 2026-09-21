@@ -111,7 +111,7 @@
   <script>
     const API = '/api/v1';
     const token = localStorage.getItem('cm_token');
-    if (!token) window.location.replace('/app/login.html');
+    if (!token) localStorage.removeItem('cm_token'); window.location.replace('/app/login.html');
 
     let allInspections = [];
     let currentFilter = 'all';
@@ -121,7 +121,7 @@
         const r = await fetch(API + '/inspections?limit=200', {
           headers: { 'Authorization': 'Bearer ' + token }
         });
-        if (r.status === 401) { window.location.replace('/app/login.html'); return; }
+        if (r.status === 401) { localStorage.removeItem('cm_token'); window.location.replace('/app/login.html'); return; }
         allInspections = await r.json();
         renderList();
       } catch (e) {
