@@ -11,10 +11,7 @@ class Settings(BaseSettings):
 
     # Base de Datos PostgreSQL de Supabase / Render
     # En producción usar: postgresql://postgres:PASSWORD@db.PROJECT.supabase.co:5432/postgres
-    DATABASE_URL: str = os.getenv(
-        "DATABASE_URL",
-        "sqlite:///./chiriqui_operativo.db"
-    )
+    DATABASE_URL: str = "postgresql://neondb_owner:npg_31svklzRFrOW@ep-icy-art-b5i6vmo6-pooler.c-7.us-east-2.aws.neon.tech/neondb?sslmode=require"
 
     @property
     def database_url_with_ssl(self) -> str:
