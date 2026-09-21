@@ -22,6 +22,20 @@ from backend.app.api.v1.action_plans import router as action_plans_router
 from backend.app.api.v1.dashboard import router as dashboard_router
 from backend.app.api.v1.reports import router as reports_router
 
+
+import traceback
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    print("GLOBAL ERROR:", str(exc))
+    print(traceback.format_exc())
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal Server Error", "error_message": str(exc), "trace": traceback.format_exc()},
+    )
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
