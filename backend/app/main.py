@@ -23,6 +23,12 @@ from backend.app.api.v1.dashboard import router as dashboard_router
 from backend.app.api.v1.reports import router as reports_router
 
 
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    description="API REST del Sistema de Control Operativo de Móviles - Chiriquí"
+)
+
 import traceback
 from fastapi import Request
 from fastapi.responses import JSONResponse
@@ -36,11 +42,7 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={"detail": "Internal Server Error", "error_message": str(exc), "trace": traceback.format_exc()},
     )
 
-app = FastAPI(
-    title=settings.PROJECT_NAME,
-    openapi_url=f"{settings.API_V1_STR}/openapi.json",
-    description="API REST del Sistema de Control Operativo de Móviles - Chiriquí"
-)
+
 
 # Habilitar CORS
 app.add_middleware(
