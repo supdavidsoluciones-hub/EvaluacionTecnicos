@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 Base = declarative_base()
 
 def init_engine():
-    db_url = settings.DATABASE_URL
+    db_url = "postgresql://neondb_owner:npg_31svklzRFrOW@ep-icy-art-b5i6vmo6-pooler.c-7.us-east-2.aws.neon.tech/neondb?sslmode=require"
 
     # Fix old postgres:// prefix
     if db_url.startswith("postgres://"):
