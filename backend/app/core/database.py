@@ -10,27 +10,14 @@ Base = declarative_base()
 def init_engine():
     db_url = settings.DATABASE_URL
 
+    # Fix old postgres:// prefix
     if db_url.startswith("postgres://"):
         db_url = db_url.replace("postgres://", "postgresql://", 1)
 
     if db_url.startswith("sqlite"):
         return create_engine(db_url, connect_args={"check_same_thread": False}, pool_pre_ping=True)
 
-    # Supabase requires pooler URL for IPv4 (Render is IPv4 only)
-    # Convert direct connection to pooler automatically
-    if "db.vpivzxkttjsgkpxyvpvp.supabase.co" in db_url:
-        db_url = db_url.replace(
-            "db.vpivzxkttjsgkpxyvpvp.supabase.co:5432",
-            "aws-0-us-east-1.pooler.supabase.com:6543"
-        )
-        db_url = db_url.replace(
-            "postgresql://postgres:",
-            "postgresql://postgres.vpivzxkttjsgkpxyvpvp:"
-        )
-
-    if "sslmode" not in db_url:
-        db_url += "?sslmode=require"
-
+    # PostgreSQL (Neon, Supabase, etc.)
     engine = create_engine(
         db_url,
         pool_pre_ping=True,
@@ -39,8 +26,7 @@ def init_engine():
         pool_recycle=300,
         connect_args={"connect_timeout": 10}
     )
-
-    logger.info("PostgreSQL engine created (Supabase Pooler)")
+    logger.info("PostgreSQL engine created")
     return engine
 
 engine = init_engine()
