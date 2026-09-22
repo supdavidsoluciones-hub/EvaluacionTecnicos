@@ -195,7 +195,7 @@
   <script>
     var API = '/api/v1';
     var token = localStorage.getItem('cm_token');
-    if (!token) { localStorage.removeItem('cm_token'); window.location.replace('/app/login.html'); return; }
+    if (!token) { localStorage.removeItem('cm_token'); window.location.replace('/app/login.html'); }
 
     var mobileId = new URLSearchParams(location.search).get('id');
     if (!mobileId) window.location.replace('/app/moviles.html');
@@ -209,7 +209,7 @@
       try {
         var r = await fetch(API + '/mobiles/' + mobileId + '/profile', { headers: { 'Authorization': 'Bearer ' + token } });
         if (r.status === 401) { localStorage.removeItem('cm_token'); window.location.replace('/app/login.html'); return; }
-        if (!r.ok) { alert('Movil no encontrada.'); window.location.replace('/app/moviles.html'); return; }
+        if (!r.ok) { alert('Movil no encontrada.'); window.location.replace('/app/moviles.html'); }
         mobileData = await r.json();
         renderHero();
         loadTechs();

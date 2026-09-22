@@ -153,7 +153,7 @@
   <script>
     const API = '/api/v1';
     const token = localStorage.getItem('cm_token');
-    if (!token) { localStorage.removeItem('cm_token'); window.location.replace('/app/login.html'); return; }
+    if (!token) { localStorage.removeItem('cm_token'); window.location.replace('/app/login.html'); }
 
     let gpsLat = null, gpsLon = null;
 
