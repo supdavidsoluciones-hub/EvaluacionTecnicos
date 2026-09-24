@@ -305,16 +305,16 @@
         allTechs = await rt.json();
         
         // Render assigned techs in the tab
-        var pTech = mobileData.primary_technician;
-        var sTech = mobileData.secondary_technician;
+        var pTech = (mobileData.technicians || []).find(t => t.role === 'principal');
+        var sTech = (mobileData.technicians || []).find(t => t.role === 'auxiliar');
         var container = document.getElementById('techListContainer');
         
         if (!pTech && !sTech) {
           container.innerHTML = '<div class="empty-msg">Sin tecnicos asignados.<br>Usa el boton de abajo para asignar.</div>';
         } else {
           container.innerHTML = [
-            pTech ? '<div class="tech-card"><div class="tech-avatar">&#128100;</div><div><div class="tech-name">' + pTech.full_name + '</div><div class="tech-role">Principal</div></div></div>' : '',
-            sTech ? '<div class="tech-card"><div class="tech-avatar">&#128100;</div><div><div class="tech-name">' + sTech.full_name + '</div><div class="tech-role">Secundario</div></div></div>' : ''
+            pTech ? '<div class="tech-card"><div class="tech-avatar">&#128100;</div><div><div class="tech-name">' + pTech.name + '</div><div class="tech-role">Principal</div></div></div>' : '',
+            sTech ? '<div class="tech-card"><div class="tech-avatar">&#128100;</div><div><div class="tech-name">' + sTech.name + '</div><div class="tech-role">Secundario</div></div></div>' : ''
           ].join('');
         }
 
@@ -377,6 +377,15 @@
       }
     }
 
+    
+    function updateRowColor(sel) {
+      var row = sel.closest('.inv-row');
+      row.classList.remove('s-ok', 's-low', 's-miss');
+      if (sel.value === 'ok') row.classList.add('s-ok');
+      else if (sel.value === 'cambio') row.classList.add('s-low');
+      else row.classList.add('s-miss'); // incompleto y falta son rojos
+    }
+    
     function renderInventory() {
       var container = document.getElementById('invContainer');
       if (!inventoryData.length) { container.innerHTML = '<div class="empty-msg">Sin herramientas en inventario.</div>'; return; }
@@ -391,16 +400,16 @@
       Object.keys(cats).forEach(function(cat) {
         html += '<div class="inv-cat-title">' + cat + '</div>';
         cats[cat].forEach(function(item) {
-          var pct = item.quantity_required > 0 ? item.quantity_current / item.quantity_required : 1;
-          var sc = pct >= 1 ? 's-ok' : pct > 0 ? 's-low' : 's-miss';
-          var sl = pct >= 1 ? 'OK' : pct > 0 ? 'Incompleto' : 'Falta';
-          html += '<div class="inv-row" data-id="' + item.id + '">'
+          var st = item.status || 'ok';
+          var bgClass = st === 'ok' ? 's-ok' : (st === 'cambio' ? 's-low' : (st === 'incompleto' ? 's-low' : 's-miss'));
+          html += '<div class="inv-row ' + bgClass + '" data-id="' + item.id + '">'
             + '<span class="inv-name">' + item.tool_name + '</span>'
             + '<span class="inv-qty">' + item.quantity_current + '/' + item.quantity_required + '</span>'
-            + '<select class="inv-status-sel" data-id="' + item.id + '" style="font-size:0.72rem;border-radius:6px;border:1px solid #DEE2E8;padding:3px 6px;background:#F9FAFB;">'
-            + '<option value="ok"' + (item.status === 'ok' ? ' selected' : '') + '>OK</option>'
-            + '<option value="incompleto"' + (item.status === 'incompleto' ? ' selected' : '') + '>Incompleto</option>'
-            + '<option value="falta"' + (item.status === 'falta' ? ' selected' : '') + '>Falta</option>'
+            + '<select class="inv-status-sel" data-id="' + item.id + '" onchange="updateRowColor(this)" style="font-size:0.72rem;border-radius:6px;border:1px solid #DEE2E8;padding:3px 6px;background:#fff;">'
+            + '<option value="ok"' + (st === 'ok' ? ' selected' : '') + '>Completo (Verde)</option>'
+            + '<option value="incompleto"' + (st === 'incompleto' ? ' selected' : '') + '>Incompleto (Rojo)</option>'
+            + '<option value="cambio"' + (st === 'cambio' ? ' selected' : '') + '>De Cambio (Amari)</option>'
+            + '<option value="falta"' + (st === 'falta' ? ' selected' : '') + '>Falta (Rojo)</option>'
             + '</select>'
             + '</div>';
         });
@@ -416,13 +425,13 @@
       sels.forEach(function(sel) { updates.push({ id: parseInt(sel.dataset.id), status: sel.value }); });
 
       try {
-        await Promise.all(updates.map(function(u) {
-          return fetch(API + '/mobiles/' + mobileId + '/inventory/' + u.id, {
+        for (let u of updates) {
+          await fetch(API + '/mobiles/' + mobileId + '/inventory/' + u.id, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
             body: JSON.stringify({ status: u.status })
           });
-        }));
+        }
         alert('Inventario guardado.');
       } catch(e) { alert('Error: ' + e.message); }
       finally { btn.disabled = false; btn.textContent = 'Guardar Cambios de Inventario'; }
