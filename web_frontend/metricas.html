@@ -72,13 +72,20 @@
         <div class="sc-lbl">Inspecciones</div>
       </div>
       <div class="stat-card">
-        <div class="sc-val" id="stOk">-</div>
+        <div class="sc-val" id="stOk" style="color:#1E7C50">-</div>
         <div class="sc-lbl">Cumplen</div>
       </div>
       <div class="stat-card">
-        <div class="sc-val" id="stErr">-</div>
+        <div class="sc-val" id="stErr" style="color:#C0392B">-</div>
         <div class="sc-lbl">No Cumplen</div>
       </div>
+    </div>
+
+    <!-- CHART SECTION -->
+    <div style="background:#fff; border-radius:14px; border:1px solid #EEF2F7; padding:16px; margin-bottom:16px; box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+      <div class="sec-label" style="margin-bottom:14px;">&#128202; Resultados de Inspecciones</div>
+      <canvas id="chartCanvas" height="180" style="width:100%;"></canvas>
+      <div style="display:flex;gap:16px;justify-content:center;margin-top:12px;flex-wrap:wrap;" id="chartLegend"></div>
     </div>
 
     <div class="sec-label">Rendimiento por Movil (Filtrado)</div>
@@ -145,21 +152,26 @@
           });
         }
 
-        let ok = 0, err = 0;
-        const movData = {}; // stats by mobile
+        let ok = 0, err = 0, parcial = 0;
+        const movData = {};
 
         insps.forEach(i => {
-          if (i.general_result === 'Cumple') ok++;
-          else if (i.general_result === 'No cumple') err++;
+          const res = (i.general_result || '').toLowerCase();
+          if (res === 'cumple') ok++;
+          else if (res === 'no cumple') err++;
+          else parcial++;
           
           if (!movData[i.mobile_id]) movData[i.mobile_id] = {id: i.mobile_id, total: 0, ok: 0};
           movData[i.mobile_id].total++;
-          if (i.general_result === 'Cumple') movData[i.mobile_id].ok++;
+          if (res === 'cumple') movData[i.mobile_id].ok++;
         });
 
         document.getElementById('stTotal').textContent = insps.length;
         document.getElementById('stOk').textContent = ok;
         document.getElementById('stErr').textContent = err;
+
+        // Draw chart
+        drawChart(ok, parcial, err, insps.length);
 
         const rankArr = Object.values(movData).sort((a,b) => b.total - a.total);
         const list = document.getElementById('rankList');
@@ -181,6 +193,87 @@
           }).join('');
         }
       } catch(e) { console.error(e); }
+    }
+
+    function drawChart(ok, parcial, err, total) {
+      const canvas = document.getElementById('chartCanvas');
+      if (!canvas) return;
+      const cw = canvas.offsetWidth || 300;
+      canvas.width = cw;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, cw, 180);
+
+      if (total === 0) {
+        ctx.fillStyle = '#8A94A6';
+        ctx.font = '14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Sin datos en este periodo', cw / 2, 90);
+        document.getElementById('chartLegend').innerHTML = '';
+        return;
+      }
+
+      const data = [
+        { label: 'Cumple', value: ok, color: '#1E7C50' },
+        { label: 'Parcial', value: parcial, color: '#E8A020' },
+        { label: 'No Cumple', value: err, color: '#C0392B' }
+      ].filter(d => d.value > 0);
+
+      const barH = 36;
+      const gap = 14;
+      const labelW = 80;
+      const maxVal = Math.max(...data.map(d => d.value));
+      const barMaxW = cw - labelW - 60;
+
+      data.forEach((d, i) => {
+        const y = i * (barH + gap) + 10;
+        const bw = maxVal > 0 ? (d.value / maxVal) * barMaxW : 0;
+        
+        // Background bar
+        ctx.fillStyle = '#EEF2F7';
+        ctx.beginPath();
+        ctx.roundRect(labelW, y, barMaxW, barH, 8);
+        ctx.fill();
+
+        // Filled bar
+        ctx.fillStyle = d.color;
+        ctx.beginPath();
+        if (bw > 0) {
+          ctx.roundRect(labelW, y, bw, barH, 8);
+          ctx.fill();
+        }
+
+        // Label
+        ctx.fillStyle = '#1A2B4A';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(d.label, labelW - 8, y + barH / 2 + 4);
+
+        // Value
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.textAlign = 'left';
+        if (bw > 40) {
+          ctx.fillText(d.value, labelW + 10, y + barH / 2 + 5);
+        } else {
+          ctx.fillStyle = '#1A2B4A';
+          ctx.fillText(d.value, labelW + bw + 8, y + barH / 2 + 5);
+        }
+
+        // Percentage
+        const pct = Math.round((d.value / total) * 100);
+        ctx.fillStyle = '#8A94A6';
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(pct + '%', cw - 36, y + barH / 2 + 4);
+      });
+
+      // Legend
+      document.getElementById('chartLegend').innerHTML = data.map(d =>
+        `<span style="display:flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:700;color:#1A2B4A;">
+          <span style="width:10px;height:10px;border-radius:3px;background:${d.color};display:inline-block;"></span>
+          ${d.label}: ${d.value}
+        </span>`
+      ).join('');
     }
 
     async function exportData() {

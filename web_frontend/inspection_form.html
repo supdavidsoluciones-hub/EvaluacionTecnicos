@@ -330,7 +330,44 @@
         });
         const d = await r.json();
         if (!r.ok) throw new Error(d.detail || 'Error al guardar');
-        alert('Inspeccion guardada correctamente.');
+        
+        const inspId = d.id;
+        btn.textContent = 'Subiendo fotos...';
+
+        // Upload general photos
+        const generalPhotos = document.getElementById('photoInput').files;
+        for (let i = 0; i < generalPhotos.length; i++) {
+          const fd = new FormData();
+          fd.append('file', generalPhotos[i]);
+          fd.append('photo_type', 'General');
+          fd.append('caption', 'Foto general de inspeccion');
+          await fetch(API + '/inspections/' + inspId + '/photos', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token },
+            body: fd
+          });
+        }
+
+        // Upload per-question photos
+        const qInputs = document.querySelectorAll('[id^="qphoto_"]');
+        for (let qi of qInputs) {
+          if (qi.files && qi.files.length > 0) {
+            const qIdx = qi.id.replace('qphoto_', '');
+            const qtextEl = document.querySelector('#radios_' + qIdx)?.closest('.q-block')?.querySelector('.q-text');
+            const qtext = qtextEl ? qtextEl.textContent.trim().replace(/^\d+\. /, '') : 'Pregunta ' + qIdx;
+            const fd = new FormData();
+            fd.append('file', qi.files[0]);
+            fd.append('photo_type', 'Checklist');
+            fd.append('caption', qtext.substring(0, 100));
+            await fetch(API + '/inspections/' + inspId + '/photos', {
+              method: 'POST',
+              headers: { 'Authorization': 'Bearer ' + token },
+              body: fd
+            });
+          }
+        }
+
+        alert('Inspeccion y fotos guardadas correctamente.');
         window.location.replace('/app/dashboard.html');
       } catch(err) {
         alert('Error: ' + err.message);
